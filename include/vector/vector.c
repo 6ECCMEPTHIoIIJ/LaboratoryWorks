@@ -2,18 +2,20 @@
 
 #include <malloc.h>
 #include <windows.h>
+#include <stdint.h>
 
-static void throwException(const char *message) {
-    fprintf(stderr, message);
-    exit(1);
-}
+#define throwException(MESSAGE, ...) fprintf(stderr, MESSAGE, __VA_ARGS__); exit(1)
 
 vector createVector(const size_t capacity) {
     vector_base_t *data;
     if (capacity != 0) {
         data = malloc(capacity * sizeof(vector_base_t));
         if (data == NULL) {
-            throwException("Allocation error\n");
+            if (capacity <= SIZE_MAX / sizeof(vector_base_t)) {
+                throwException("Allocation error: system can`t allocate %zu bytes of memory\n", capacity * sizeof(vector_base_t));
+            } else {
+                throwException("Allocation error: system can`t allocate %zu * %zu bytes of memory\n", capacity, sizeof(vector_base_t));
+            }
         }
     } else {
         data = NULL;
@@ -33,7 +35,11 @@ void reserveVector(vector *v, const size_t newCapacity) {
     if (newCapacity != 0) {
         v->data = realloc(v->data, newCapacity * sizeof(vector_base_t));
         if (v->data == NULL) {
-            throwException("Allocation error\n");
+            if (newCapacity <= SIZE_MAX / sizeof(vector_base_t)) {
+                throwException("Allocation error: system can`t allocate %zu bytes of memory\n", newCapacity * sizeof(vector_base_t));
+            } else {
+                throwException("Allocation error: system can`t allocate %zu * %zu bytes of memory\n", newCapacity, sizeof(vector_base_t));
+            }
         }
     } else {
         v->data = NULL;
