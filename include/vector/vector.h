@@ -14,29 +14,29 @@ typedef struct vector {
 } vector;
 
 /**
- * @brief       Create a vector object with vector object capacity field setted to given value
- *              and vector object size field setted to zero value.
- *              Throw an exception "Allocation error" if system can`t allocate memory for vector object data field
- *
- * @param size  amount of elements that vector object data field contatins
- * @return      vector
- */
-vector createVector(size_t size);
-
-/**
- * @brief           Reallocate memory area for vector object data field,
- *                  set vector object capacity field value to given value anyway and
- *                  set vector object size field value to given value
- *                  if given value is less than vector object size field value and
- *                  keep vector object size field value
- *                  if given value is more than vector object size field value or equal to it.
+ * @brief           Create a vector object with vector object capacity field setted to given value
+ *                  and vector object size field setted to zero value.
  *                  Throw an exception "Allocation error" if system can`t allocate memory for vector object data field
  *
- *
- * @param v         pointer to a vector object
- * @param capacity  new vector object capacity field value
+ * @param capacity  vector object capacity field value that is equal to amount of elements that vector object data field can contain
+ * @return          vector
  */
-void reserveVector(vector *v, size_t capacity);
+vector createVector(size_t capacity);
+
+/**
+ * @brief               Reallocate memory area for vector object data field,
+ *                      set vector object capacity field value to given value anyway and
+ *                      set vector object size field value to given value
+ *                      if given value is less than vector object size field value and
+ *                      keep vector object size field value
+ *                      if given value is more than vector object size field value or equal to it.
+ *                      Throw an exception "Allocation error" if system can`t allocate memory for vector object data field
+ *
+ *
+ * @param v             pointer to a vector object
+ * @param newCapacity   new vector object capacity field value
+ */
+void reserveVector(vector *v, size_t newCapacity);
 
 /**
  * @brief   Free all memory reserved for vector object data field and
