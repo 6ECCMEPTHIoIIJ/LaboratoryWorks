@@ -63,4 +63,29 @@ void clearVector(vector *v);
  */
 void shrinkVectorToFit(vector *v);
 
+/**
+ * @brief   Check if vector object data field doesn`t contain any element
+ *
+ * @param v pointer to vector object
+ * @return  'true' if vector object size field value is equal to zero value and 'false' otherwise
+ */
+bool isVectorEmpty(const vector *v);
+
+/**
+ * @brief   Check if vector object data field is full of elements
+ *
+ * @param v pointer to vector object
+ * @return  'true' if vector object size field value is equal to vector object capacity field value and 'false' otherwise
+ */
+bool isVectorFull(const vector *v);
+
+/**
+ * @brief Get value of vector object data field element with given position
+ *
+ * @param v pointer to vector object
+ * @param i position of sought element
+ * @return value of vector object data field element
+ */
+vector_base_t getVectorValue(const vector *v, size_t i);
+
 #endif // !VECTOR

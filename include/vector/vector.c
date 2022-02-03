@@ -57,3 +57,11 @@ void clearVector(vector *v) {
 void shrinkVectorToFit(vector *v) {
     reserveVector(v, v->size);
 }
+
+bool isVectorEmpty(const vector *v) {
+    return v->size == 0;
+}
+
+bool isVectorFull(const vector *v) {
+    return v->size == v->capacity;
+}

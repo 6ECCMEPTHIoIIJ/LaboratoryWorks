@@ -262,6 +262,91 @@ static void test_shrinkVectorToFit() {
     test_shrinkVectorToFit_full();
 }
 
+static void test_isVectorEmpty_null() {
+    printf("\t\t [ null ] \t -> \t ");
+
+    vector v = createVector(EMPTY);
+    assert(isVectorEmpty(&v) == true);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorEmpty_empty() {
+    printf("\t\t [ empty ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    assert(isVectorEmpty(&v) == true);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorEmpty_notEmpty() {
+    printf("\t\t [ not empty ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    v.size = SMALL;
+    assert(isVectorEmpty(&v) == false);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorEmpty() {
+    printf("\t [ isVectorEmpty() ]\n");
+
+    test_isVectorEmpty_empty();
+    test_isVectorEmpty_notEmpty();
+    test_isVectorEmpty_null();
+}
+
+static void test_isVectorFull_null() {
+    printf("\t\t [ null ] \t -> \t ");
+
+    vector v = createVector(EMPTY);
+    assert(isVectorFull(&v) == true);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorFull_full() {
+    printf("\t\t [ full ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    v.size = v.capacity;
+    assert(isVectorFull(&v) == true);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorFull_notFull() {
+    printf("\t\t [ not full ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    v.size = SMALL;
+    assert(isVectorFull(&v) == false);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_isVectorFull() {
+    printf("\t [ isVectorFull() ]\n");
+
+    test_isVectorFull_full();
+    test_isVectorFull_notFull();
+    test_isVectorFull_null();
+}
+
 void test_vector() {
     printf("[ vector ]\n");
 
@@ -269,4 +354,6 @@ void test_vector() {
     test_reserveVector();
     test_clearVector();
     test_shrinkVectorToFit();
+    test_isVectorEmpty();
+    test_isVectorFull();
 }
