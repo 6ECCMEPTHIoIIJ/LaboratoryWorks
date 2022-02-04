@@ -347,6 +347,112 @@ static void test_isVectorFull() {
     test_isVectorFull_null();
 }
 
+static void test_vectorPushBack_empty() {
+    printf("\t\t [ empty ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    const vector_base_t el = 100;
+    vectorPushBack(&v, el);
+    assert(v.data[0] == el);
+    assert(v.size == 1);
+    assert(v.capacity == NORMAL);
+
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPushBack_notEmpty() {
+    printf("\t\t [ not empty ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    v.size = SMALL;
+    const vector_base_t el = 100;
+    vectorPushBack(&v, el);
+    assert(v.data[SMALL] == el);
+    assert(v.size == SMALL + 1);
+    assert(v.capacity == NORMAL);
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPushBack_full() {
+    printf("\t\t [ full ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    v.size = v.capacity;
+    const vector_base_t el = 100;
+    vectorPushBack(&v, el);
+    assert(v.data[NORMAL] == el);
+    assert(v.size == NORMAL + 1);
+    assert(v.capacity == NORMAL * 2);
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPushBack_null() {
+    printf("\t\t [ null ] \t -> \t ");
+
+    vector v = createVector(EMPTY);
+    const vector_base_t el = 100;
+    vectorPushBack(&v, el);
+    assert(v.data[0] == el);
+    assert(v.size == 1);
+    assert(v.capacity == 1);
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPushBack() {
+    printf("\t [ vectorPushBack() ]\n");
+
+    test_vectorPushBack_empty();
+    test_vectorPushBack_full();
+    test_vectorPushBack_notEmpty();
+    test_vectorPushBack_null();
+}
+
+static void test_vectorPopBack_oneEl() {
+    printf("\t\t [ one element ] \t -> \t ");
+
+    vector v = createVector(EMPTY);
+    const vector_base_t el = 100;
+    vectorPushBack(&v, el);
+    vectorPopBack(&v);
+    assert(v.data != NULL);
+    assert(v.size == 0);
+    assert(v.capacity == 1);
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPopBack_full() {
+    printf("\t\t [ full ] \t -> \t ");
+
+    vector v = createVector(NORMAL);
+    for (size_t i = 0; i < v.capacity; i++) {
+        vectorPushBack(&v, i);
+    }
+    vectorPopBack(&v);
+    assert(v.data[v.size - 1] == NORMAL - 2);
+    assert(v.size == NORMAL - 1);
+    assert(v.capacity == NORMAL);
+    destroyVector(&v);
+
+    printf("{ PASSED }\n");
+}
+
+static void test_vectorPopBack() {
+    printf("\t [ vectorPopBack() ]\n");
+
+    test_vectorPopBack_oneEl();
+    test_vectorPopBack_full();
+}
+
 void test_vector() {
     printf("[ vector ]\n");
 
@@ -356,4 +462,6 @@ void test_vector() {
     test_shrinkVectorToFit();
     test_isVectorEmpty();
     test_isVectorFull();
+    test_vectorPushBack();
+    test_vectorPopBack();
 }

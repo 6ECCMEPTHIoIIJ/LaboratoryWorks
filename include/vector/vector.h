@@ -80,12 +80,33 @@ bool isVectorEmpty(const vector *v);
 bool isVectorFull(const vector *v);
 
 /**
- * @brief Get value of vector object data field element with given position
+ * @brief   Get value of vector object data field element with given position
  *
  * @param v pointer to vector object
  * @param i position of sought element
- * @return value of vector object data field element
+ * @return  value of vector object data field element
  */
 vector_base_t getVectorValue(const vector *v, size_t i);
+
+/**
+ * @brief       Append given value to the end of vector object data field,
+ *              increase vector object size field value by one;
+ *              if vector object size field value is equal to vector object capacity field value
+ *              increase vector object capacity field value and reallocate memory area for vector object data field
+ *              to make posible adding given element to vector object data field
+ *
+ * @param v     pointer to vector object
+ * @param el    appending value
+ */
+void vectorPushBack(vector *v, vector_base_t el);
+
+/**
+ * @brief       Remove last element of vector object data field and
+ *              decrease vector object size field by one;
+ *              Throw an exception "Data access error" if vector object size field value is equal to zero value
+ *
+ * @param v     pointer to vector object
+ */
+void vectorPopBack(vector *v);
 
 #endif // !VECTOR
