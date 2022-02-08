@@ -1,8 +1,7 @@
 #include "vector_tests.h"
+#include "vector.h"
 
 #include <assert.h>
-
-#include "vector.h"
 
 #define EMPTY 0
 #define SMALL 10
