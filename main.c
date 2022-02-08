@@ -7,6 +7,6 @@ int main() {
     test_vector();
 
     vector v = createVector(SIZE_MAX);
-
+    
     return 0;
 }

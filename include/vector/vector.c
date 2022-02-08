@@ -4,7 +4,10 @@
 #include <windows.h>
 #include <stdint.h>
 
-#define throwException(...) fprintf(stderr, __VA_ARGS__); exit(1)
+#define ALLOCTION_ERR_CODE 1
+#define DATA_ACCESS_ERR 2
+
+#define throwException(EXIT_CODE, ...) fprintf(stderr, __VA_ARGS__); exit(EXIT_CODE)
 
 vector createVector(const size_t capacity) {
     vector_base_t *data;
@@ -12,9 +15,9 @@ vector createVector(const size_t capacity) {
         data = (vector_base_t *) malloc(capacity * sizeof(vector_base_t));
         if (data == NULL) {
             if (capacity <= SIZE_MAX / sizeof(vector_base_t)) {
-                throwException("Allocation error: system can`t allocate %zu bytes of memory\n", capacity * sizeof(vector_base_t));
+                throwException(ALLOCTION_ERR_CODE, "Allocation error: system can`t allocate %zu bytes of memory\n", capacity * sizeof(vector_base_t));
             } else {
-                throwException("Allocation error: system can`t allocate %zu * %zu bytes of memory\n", capacity, sizeof(vector_base_t));
+                throwException(ALLOCTION_ERR_CODE, "Allocation error: system can`t allocate %zu * %zu bytes of memory\n", capacity, sizeof(vector_base_t));
             }
         }
     } else {
@@ -36,17 +39,17 @@ void reserveVector(vector *v, const size_t newCapacity) {
         v->data = (vector_base_t *) realloc(v->data, newCapacity * sizeof(vector_base_t));
         if (v->data == NULL) {
             if (newCapacity <= SIZE_MAX / sizeof(vector_base_t)) {
-                throwException("Allocation error: system can`t allocate %zu bytes of memory\n", newCapacity * sizeof(vector_base_t));
+                throwException(ALLOCTION_ERR_CODE, "Allocation error: system can`t allocate %zu bytes of memory\n", newCapacity * sizeof(vector_base_t));
             } else {
-                throwException("Allocation error: system can`t allocate %zu * %zu bytes of memory\n", newCapacity, sizeof(vector_base_t));
+                throwException(ALLOCTION_ERR_CODE, "Allocation error: system can`t allocate %zu * %zu bytes of memory\n", newCapacity, sizeof(vector_base_t));
             }
         }
+        v->capacity = newCapacity;
+        if (v->size > newCapacity) {
+            v->size = newCapacity;
+        }
     } else {
-        v->data = NULL;
-    }
-    v->capacity = newCapacity;
-    if (v->size > newCapacity) {
-        v->size = newCapacity;
+        destroyVector(v);
     }
 }
 
@@ -76,7 +79,23 @@ void vectorPushBack(vector *v, const vector_base_t el) {
 
 void vectorPopBack(vector *v) {
     if (isVectorEmpty(v)) {
-        throwException("Data access error: impossible to remove element from already empty vector\n");
+        throwException(DATA_ACCESS_ERR, "Data access error: impossible to remove element from already empty vector\n");
     }
     v->size--;
+}
+
+vector_base_t *atVector(const vector *v, const size_t i) {
+    if (i >= v->size) {
+        throwException(DATA_ACCESS_ERR, "Data access error: array index %zu is out of range; available values are [0 .. %zu]\n", i, v->size - 1);
+    }
+
+    return v->data + i;
+}
+
+vector_base_t *vectorBacK(const vector *v) {
+    return atVector(v, v->size - 1);
+}
+
+vector_base_t *vectorFront(const vector *v) {
+    return atVector(v, 0);
 }

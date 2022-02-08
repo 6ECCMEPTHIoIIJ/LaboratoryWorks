@@ -4,13 +4,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef int vector_base_t;  // Base type of vector object data field
+typedef int vector_base_t; // Base type of vector object data field
 
 // Dynamic array
 typedef struct vector {
-    vector_base_t *data;    // Array of elements that vector object contains
-    size_t size;            // Amount of elements that vector object contains at current moment
-    size_t capacity;        // Memoty in bytes * sizeof(vector_base_t) reserved for data field
+    vector_base_t *data; // Array of elements that vector object contains
+    size_t size;         // Amount of elements that vector object contains at current moment
+    size_t capacity;     // Memoty in bytes * sizeof(vector_base_t) reserved for data field
 } vector;
 
 /**
@@ -93,7 +93,7 @@ vector_base_t getVectorValue(const vector *v, size_t i);
  *              increase vector object size field value by one;
  *              if vector object size field value is equal to vector object capacity field value
  *              increase vector object capacity field value and reallocate memory area for vector object data field
- *              to make posible adding given element to vector object data field
+ *              to make possible adding given element to vector object data field
  *
  * @param v     pointer to vector object
  * @param el    appending value
@@ -108,5 +108,31 @@ void vectorPushBack(vector *v, vector_base_t el);
  * @param v     pointer to vector object
  */
 void vectorPopBack(vector *v);
+
+/**
+ * @brief   Get addres of vector object data field element with given index.
+ *          Throw an exception "Data access error" if given index value is more or equal than vector object size field value
+ *
+ * @param v pointer to vector object
+ * @param i index of sought element
+ * @return  pointer to the vector object data field element with given index
+ */
+vector_base_t *atVector(const vector *v, size_t i);
+
+/**
+ * @brief   Get adders of the last element of vector object data field
+ * 
+ * @param v pointer to vector object
+ * @return  pointer to the last vector object data field element
+ */
+vector_base_t *vectorBacK(const vector *v);
+
+/**
+ * @brief   Get adders of the first element of vector object data field
+ * 
+ * @param v pointer to vector object
+ * @return  pointer to the first vector object data field element
+ */
+vector_base_t *vectorFront(const vector *v);
 
 #endif // !VECTOR
