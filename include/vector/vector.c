@@ -79,6 +79,14 @@ bool isVectorFull(const vector *v) {
   return v->size == v->capacity;
 }
 
+vector_base_t getVectorValue(const vector *v, const size_t i) {
+  return v->data[i];
+}
+
+void setVectorValue(vector *v, const size_t i, const vector_base_t el) {
+  v->data[i] = el;
+}
+
 void vectorPushBack(vector *v, const vector_base_t el) {
   if (isVectorFull(v)) {
     reserveVector(v, v->capacity ? v->capacity * 2 : 1);

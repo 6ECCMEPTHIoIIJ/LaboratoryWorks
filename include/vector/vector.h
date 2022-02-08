@@ -93,6 +93,15 @@ bool isVectorFull(const vector *v);
 vector_base_t getVectorValue(const vector *v, size_t i);
 
 /**
+ * @brief     Set value of vector object data field element with given position to given value
+ * 
+ * @param v   pointer to vector object
+ * @param i   position of setted element
+ * @param el  value of setted element
+ */
+void setVectorValue(vector *v, const size_t i, const vector_base_t el);
+
+/**
  * @brief       Append given value to the end of vector object data field,
  *              increase vector object size field value by one;
  *              if vector object size field value is equal to vector object capacity field value

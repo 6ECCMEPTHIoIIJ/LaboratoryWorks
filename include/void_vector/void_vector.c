@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <windows.h>
 #include <stdint.h>
+#include <memory.h>
 
 #define TYPE_ERR_CODE 1
 #define ALLOCTION_ERR_CODE 1
@@ -75,4 +76,39 @@ void clearVectorV(vectorVoid *v) {
 
 void shrinkVectorVToFit(vectorVoid *v) {
 	reserveVectorV(v, v->size);
+}
+
+bool isVectorVEmpty(const vectorVoid *v) {
+	return v->size == 0;
+}
+
+bool isVectorVFull(const vectorVoid *v) {
+	return v->size == v->capacity;
+}
+
+void getVectorVValue(const vectorVoid *v, const size_t i, void *dst) {
+	const void *src = v->data + i * v->baseTypeSize;
+	memcpy(dst, src, v->baseTypeSize);
+}
+
+void setVectorVValue(vectorVoid *v, const size_t i, const void *src) {
+	void *dst = v->data + i * v->baseTypeSize;
+	memcpy(dst, src, v->baseTypeSize);
+}
+
+void vectorVPopBack(vectorVoid *v) {
+	if (isVectorVEmpty(v)) {
+    throwException(DATA_ACCESS_ERR_CODE,
+                   "Data access error: impossible to remove element from already empty vectorVoid\n");
+  }
+	v->size--;
+}
+
+void vectorVPushBack(vectorVoid *v, const void *src) {
+	if (isVectorVFull(v)) {
+    reserveVectorV(v, v->capacity ? v->capacity * 2 : 1);
+  }
+	void *dst = v->data + v->size * v->baseTypeSize;
+  memcpy(dst, src, v->baseTypeSize);
+  v->size++;
 }

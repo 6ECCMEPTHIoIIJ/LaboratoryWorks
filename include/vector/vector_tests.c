@@ -347,6 +347,24 @@ static void test_isVectorFull() {
   test_isVectorFull_null();
 }
 
+static void test_getVectorValue_setVectorValue() {
+  printf("\t [ getVectorValue() / setVectorValue() ]\n");
+
+  printf("\t\t [ ] \t -> \t");
+
+  vector v = createVector(NORMAL);
+  while (v.size < v.capacity) {
+    setVectorValue(&v, v.size, (vector_base_t)v.size);
+    assert(getVectorValue(&v, v.size) == v.data[v.size]);
+
+    v.size++;
+  }
+
+  destroyVector(&v);
+
+  printf("{ PASSED }\n");
+}
+
 static void test_vectorPushBack_empty() {
   printf("\t\t [ empty ] \t -> \t ");
 
@@ -506,6 +524,7 @@ void test_vector() {
   test_shrinkVectorToFit();
   test_isVectorEmpty();
   test_isVectorFull();
+  test_getVectorValue_setVectorValue();
   test_vectorPushBack();
   test_vectorPopBack();
   test_atVector();
