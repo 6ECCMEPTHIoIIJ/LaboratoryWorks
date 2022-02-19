@@ -1,2 +1,2 @@
-set(SRCS "main.c" "matrix.c")
-add_executable(${PRJCT} ${SRCS})
+set(SOURCES "main.c" "matrix.c" "matrix_tests.c")
+add_executable(${PROJECT_NAME} ${SOURCES})

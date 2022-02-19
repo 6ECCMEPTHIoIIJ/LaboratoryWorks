@@ -1,6 +1,7 @@
-#include <stdio.h>
+#include "../include/matrix_tests.h"
 
 int main() {
-	printf("Hello, World!\n");
+	test_matrix();
+
 	return 0;
 }

@@ -3,7 +3,6 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <windows.h>
 
 typedef struct Matrix {
 	int** data;
@@ -42,14 +41,18 @@ Matrix GetMemMatrix(size_t n_rows, size_t n_cols);
 Matrix* GetMemArrayOfMatrices(size_t n_matrices, size_t n_rows, size_t n_cols);
 
 /**
- * @brief Освобождение памяти, выделенной под элементы матрицы
+ * @brief Освобождение памяти, выделенной под элементы матрицы.
+ * 				Значения полей data, n_rows, n_cols устанавливаются в
+ * 				NULL, 0, 0 соответственно
  *
  * @param m	указатель на матрицу
  */
 void FreeMemMatrix(Matrix* m);
 
 /**
- * @brief Освобождение памяти, выделенной под массив матриц
+ * @brief Освобождение памяти, выделенной под массив матриц.
+ * 				Значения полей матриц data, n_rows, n_cols устанавливаются в
+ * 				NULL, 0, 0 соответственно
  *
  * @param ms 					указатель на начало массива
  * @param n_matrices 	количество матриц в массиве
