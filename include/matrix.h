@@ -17,33 +17,36 @@ typedef struct Position {
 
 /**
  * @brief Выделение памяти для размещения в ней элементов матрицы заданного
- * 				размера. Если одна из размерностей матрицы равна 0, поле data
- *				устанавливается в NULL.
- *			! Выбрасывает исключение: "Allocation error", если системе не удается
- *			!	выделить память под элементы матрицы
+ * 				размера. Если одна из размерностей матрицы равна
+ *				0	, поле data устанавливается в NULL.
+ *			  Выбрасывает исключение: "Allocation error", если системе не удается
+ * 			 	выделить память под элементы матрицы
  *
  * @param n_rows 	высота матрицы
  * @param n_cols 	ширина матрицы
  * @return пустую матрицу заданного размера
  */
-Matrix GetMemMatrix(size_t n_rows, size_t n_cols);
+Matrix GetMemMatrix(size_t n_rows,
+										size_t n_cols);
 
 /**
- * @brief Выделение памяти под массив матриц заданого размера.
- * 			! Выбрасывает исключение: "Allocation error", если системе не удается
- *			!	выделить память под элементы матрицы
+ * @brief Выделение памяти под массив матриц заданного размера.
+ * 			  Выбрасывает исключение: "Allocation error", если системе не удается
+ * 			 	выделить память под элементы матрицы
  *
  * @param n_matrices	количество матриц в массиве
  * @param n_rows 			высота каждой матрицы
  * @param n_cols 			ширина каждой матрицы
  * @return указатель на начало массива матриц
  */
-Matrix* GetMemArrayOfMatrices(size_t n_matrices, size_t n_rows, size_t n_cols);
+Matrix* GetMemArrayOfMatrices(size_t n_matrices,
+															size_t n_rows,
+															size_t n_cols);
 
 /**
  * @brief Освобождение памяти, выделенной под элементы матрицы.
- * 				Значения полей data, n_rows, n_cols устанавливаются в
- * 				NULL, 0, 0 соответственно
+ * 				Значения полей data, n_rows, n_cols
+ * устанавливаются в NULL, 0, 0 соответственно
  *
  * @param m	указатель на матрицу
  */
@@ -51,13 +54,14 @@ void FreeMemMatrix(Matrix* m);
 
 /**
  * @brief Освобождение памяти, выделенной под массив матриц.
- * 				Значения полей матриц data, n_rows, n_cols устанавливаются в
- * 				NULL, 0, 0 соответственно
+ * 				Значения полей матриц data, n_rows, n_cols
+ * устанавливаются в NULL, 0, 0 соответственно
  *
  * @param ms 					указатель на начало массива
  * @param n_matrices 	количество матриц в массиве
  */
-void FreeMemMatrices(Matrix* ms, size_t n_matrices);
+void FreeMemMatrices(Matrix* ms,
+										 size_t n_matrices);
 
 /**
  * @brief Ввод элементов матрицы
@@ -72,7 +76,8 @@ void InputMatrix(Matrix m);
  * @param ms					указатель на начало массива
  * @param n_matrices	количество элементов в массиве
  */
-void InputMatrices(Matrix* ms, size_t n_matrices);
+void InputMatrices(Matrix* ms,
+									 size_t n_matrices);
 
 /**
  * @brief Вывод элементов матрицы в консоль
@@ -87,7 +92,8 @@ void OutputMatrix(Matrix m);
  * @param ms 					указатель на начало массива
  * @param n_matrices 	количество матриц в массиве
  */
-void OutputMatrices(Matrix* ms, size_t n_matrices);
+void OutputMatrices(Matrix* ms,
+										size_t n_matrices);
 
 /**
  * @brief Обмен значений двух строк матрицы
@@ -96,7 +102,9 @@ void OutputMatrices(Matrix* ms, size_t n_matrices);
  * @param i1 	индекс первой строки
  * @param i2 	индекс второй строки
  */
-void SwapRows(Matrix m, size_t i1, size_t i2);
+void SwapRows(Matrix m,
+							size_t i1,
+							size_t i2);
 
 /**
  * @brief Обмен значений двух столбцов матрицы
@@ -105,7 +113,9 @@ void SwapRows(Matrix m, size_t i1, size_t i2);
  * @param i1 	индекс первого столбца
  * @param i2 	индекс второго столбца
  */
-void SwapCols(Matrix m, size_t i1, size_t i2);
+void SwapCols(Matrix m,
+							size_t i1,
+							size_t i2);
 
 /**
  * @brief Сортировка вставками строк матрицы по критерию
@@ -114,7 +124,8 @@ void SwapCols(Matrix m, size_t i1, size_t i2);
  * @param criteria	критерий сортировки
  */
 void InsertionSortRowsMatrixByRowCriteria(Matrix m,
-																					int (*criteria)(int*, size_t));
+																					int (* criteria)(int*,
+																													 size_t));
 
 /**
  * @brief Сортировка вставками столбцов матрицы по критерию
@@ -123,7 +134,8 @@ void InsertionSortRowsMatrixByRowCriteria(Matrix m,
  * @param criteria 	критерий сортировки
  */
 void InsertionSortColsMatrixByColCriteria(Matrix m,
-																					int (*criteria)(int*, size_t));
+																					int (* criteria)(int*,
+																													 size_t));
 
 /**
  * @brief Проверка, является ли данная матрица квадратной
@@ -142,7 +154,8 @@ bool IsSquareMatrix(Matrix m);
  * @return 	'true', если матрицы равны,
  * 					'false' в противном случае
  */
-bool AreTwoMatricesEqual(Matrix m1, Matrix m2);
+bool AreTwoMatricesEqual(Matrix m1,
+												 Matrix m2);
 
 /**
  * @brief Проверка, является ли данная матрица единичной
@@ -179,25 +192,28 @@ Position GetMinValuePos(Matrix m);
 Position GetMaxValuePos(Matrix m);
 
 /**
- * @brief Выделение памяти под массив матриц заданого размера и заполнение ее
+ * @brief Выделение памяти под массив матриц заданного размера и заполнение ее
  *			 	значениями элементов данного массива.
- *			! Выбрасывает исключение: "Allocation error", если системе не удается
- *			!	выделить память под элементы матрицы
+ *				Выбрасывает исключение: "Allocation error", если системе не удается
+ * 				выделить память под элементы матрицы
  *
  * @param arr			указатель на начало массива значений
  * @param n_rows	высота матрицы
  * @param n_cols	ширина матрицы
  * @return 	матрицу заданного размера с заполненными элементами
  */
-Matrix CreateMatrixFromArray(int* arr, size_t n_rows, size_t n_cols);
+Matrix CreateMatrixFromArray(int* arr,
+														 size_t n_rows,
+														 size_t n_cols);
 
 /**
  * @brief Выделение памяти под массив матриц заданного размера и заполнение их
  * 				значениями элементов данного массива.
- *  		! Выбрасывает исключение: "Allocation error", если системе не удается
- *			!	выделить память под элементы матрицы
+ *  			Выбрасывает исключение: "Allocation error", если системе не удается
+ * 				выделить память под элементы матрицы
  *
- * @param arr					указатель на начало массива значений
+ * @param arr					указатель на начало массива
+ *значений
  * @param n_matrices	количество матриц в массиве матриц
  * @param n_rows			высота каждой матрицы
  * @param n_cols			ширина каждой матрицы
@@ -210,13 +226,15 @@ Matrix* CreateArrayOfMatrixFromArray(int* arr,
 
 /**
  * @brief Вычисление произведения двух матриц
- * 			! Выбрасывает исключение: "Matrix size error", если
- * 			! матрицы невозможно переменожить из-за несоответствия их размеров
+ * 				Выбрасывает исключение: "Matrix size error", если невозможно
+ * 				вычислить произведение матриц из-за несоответствия
+ * 				их размеров
  *
  * @param m1 первая матрица
  * @param m2 вторая матрица
  * @return результат произведения матриц
  */
-Matrix MuLMatrices(Matrix m1, Matrix m2);
+Matrix MuLMatrices(Matrix m1,
+									 Matrix m2);
 
-#endif	// MATRIX_H
+#endif  // MATRIX_H

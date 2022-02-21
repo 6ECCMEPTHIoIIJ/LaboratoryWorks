@@ -3,4 +3,4 @@
 
 void test_matrix();
 
-#endif	// MATRIX_TESTS_H
+#endif  // MATRIX_TESTS_H
