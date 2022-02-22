@@ -574,6 +574,264 @@ static void test_InsertionSortColsMatrixByColCriteria() {
 	test_InsertionSortColsMatrixByColCriteria_OneEl();
 }
 
+static void test_IsSquareMatrix_True() {
+	printf("[--------] True\n");
+	const size_t kInitialNRows = 100;
+	const size_t kInitialNCols = 100;
+	Matrix m = GetMemMatrix(kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(IsSquareMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSquareMatrix_Toll() {
+	printf("[--------] Toll\n");
+	const size_t kInitialNRows = 101;
+	const size_t kInitialNCols = 100;
+	Matrix m = GetMemMatrix(kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsSquareMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSquareMatrix_Wide() {
+	printf("[--------] Wide\n");
+	const size_t kInitialNRows = 100;
+	const size_t kInitialNCols = 101;
+	Matrix m = GetMemMatrix(kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsSquareMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSquareMatrix() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_IsSquareMatrix_True();
+	test_IsSquareMatrix_Toll();
+	test_IsSquareMatrix_Wide();
+}
+
+static void test_AreTwoMatricesEqual_Equal() {
+	printf("[--------] Equal\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 2, 7, 11,
+											 2, 3, 8, 12,
+											 3, 4, 9, 12,
+											 4, 5, 10, 13,
+											 5, 6, 11, 14};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_AreTwoMatricesEqual_NotEqual() {
+	printf("[--------] NotEqual\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr_1[] = {1, 2, 7, 11,
+												 2, 3, 8, 12,
+												 3, 4, 9, 12,
+												 4, 5, 10, 13,
+												 5, 6, 11, 14};
+	int initial_arr_2[] = {1, 2, 7, 11,
+												 2, 3, 8, 12,
+												 3, 50, 9, 12,
+												 4, 5, 10, 13,
+												 5, 6, 11, 14};
+	Matrix m_1 = CreateMatrixFromArray(initial_arr_1, kInitialNRows,
+																		 kInitialNCols);
+	Matrix m_2 = CreateMatrixFromArray(initial_arr_2, kInitialNRows,
+																		 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!AreTwoMatricesEqual(m_1, m_2));
+
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	printf("[      OK]\n");
+}
+
+static void test_AreTwoMatricesEqual_DiffSizes() {
+	printf("[--------] DiffSizes\n");
+	const size_t kInitialNRows1 = 5;
+	const size_t kInitialNCols1 = 4;
+	const size_t kInitialNRows2 = 7;
+	const size_t kInitialNCols2 = 8;
+	Matrix m_1 = GetMemMatrix(kInitialNRows1, kInitialNCols1);
+	Matrix m_2 = GetMemMatrix(kInitialNRows2, kInitialNCols2);
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu, "
+				 "n_rows_2 = %zu, n_cols_2 = %zu\n",
+				 kInitialNRows1,
+				 kInitialNCols1,
+				 kInitialNRows2,
+				 kInitialNCols2);
+	printf("[RUN     ]\n");
+	assert(!AreTwoMatricesEqual(m_1, m_2));
+
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	printf("[      OK]\n");
+}
+
+static void test_AreTwoMatricesEqual() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_AreTwoMatricesEqual_Equal();
+	test_AreTwoMatricesEqual_NotEqual();
+	test_AreTwoMatricesEqual_DiffSizes();
+}
+
+static void test_IsEMatrix_True() {
+	printf("[--------] True\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 0, 0,
+											 0, 1, 0, 0,
+											 0, 0, 1, 0,
+											 0, 0, 0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(IsEMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsEMatrix_NotE() {
+	printf("[--------] NotE\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 7, 0,
+											 0, 1, 0, 0,
+											 0, 0, 1, 0,
+											 0, 0, 0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsEMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsEMatrix_NotSquare() {
+	printf("[--------] NotSquare\n");
+	const size_t kInitialNRows = 6;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 0, 0,
+											 0, 1, 0, 0,
+											 0, 0, 1, 0,
+											 0, 0, 0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsEMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsEMatrix() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_IsEMatrix_True();
+	test_IsEMatrix_NotSquare();
+	test_IsEMatrix_NotE();
+}
+
+static void test_IsSymmetricMatrix_NotSquare() {
+	printf("[--------] NotSquare\n");
+	const size_t kInitialNRows = 6;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 0, 0,
+											 0, 1, 0, 0,
+											 0, 0, 1, 0,
+											 0, 0, 0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsSymmetricMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSymmetricMatrix_NotSymmetric() {
+	printf("[--------] NotSymmetric\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 7, 0,
+											 0, 1, 0, 0,
+											 0, 0, 1, 0,
+											 0, 0, 0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsSymmetricMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSymmetricMatrix_True() {
+	printf("[--------] True\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 2, 3, 4,
+											 2, 9, 5, 6,
+											 3, 5, 9, 7,
+											 4, 6, 7, 0};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(IsSymmetricMatrix(m));
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_IsSymmetricMatrix() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_IsSymmetricMatrix_True();
+	test_IsSymmetricMatrix_NotSquare();
+	test_IsSymmetricMatrix_NotSymmetric();
+}
+
 void test_matrix() {
 	printf("[########] %s\n", __FILE__);
 	test_GetMemMatrix_FreeMemMatrix();
@@ -582,5 +840,9 @@ void test_matrix() {
 	test_SwapCols();
 	test_InsertionSortRowsMatrixByRowCriteria();
 	test_InsertionSortColsMatrixByColCriteria();
+	test_IsSquareMatrix();
+	test_AreTwoMatricesEqual();
+	test_IsEMatrix();
+	test_IsSymmetricMatrix();
 	printf("[ PASSED ]\n");
 }

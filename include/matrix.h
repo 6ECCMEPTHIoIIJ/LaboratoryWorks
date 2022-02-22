@@ -99,23 +99,23 @@ void OutputMatrices(Matrix* ms,
  * @brief Обмен значений двух строк матрицы
  *
  * @param m 	матрица
- * @param i1 	индекс первой строки
- * @param i2 	индекс второй строки
+ * @param i_1 	индекс первой строки
+ * @param i_2 	индекс второй строки
  */
 void SwapRows(Matrix m,
-							size_t i1,
-							size_t i2);
+							size_t i_1,
+							size_t i_2);
 
 /**
  * @brief Обмен значений двух столбцов матрицы
  *
  * @param m 	матрица
- * @param i1 	индекс первого столбца
- * @param i2 	индекс второго столбца
+ * @param i_1 	индекс первого столбца
+ * @param i_2 	индекс второго столбца
  */
 void SwapCols(Matrix m,
-							size_t i1,
-							size_t i2);
+							size_t i_1,
+							size_t i_2);
 
 /**
  * @brief Сортировка вставками строк матрицы по критерию
@@ -149,13 +149,13 @@ bool IsSquareMatrix(Matrix m);
 /**
  * @brief Проверка на равенство двух матриц
  *
- * @param m1	первая матрица
- * @param m2	вторая матрица
+ * @param m_1	первая матрица
+ * @param m_2	вторая матрица
  * @return 	'true', если матрицы равны,
  * 					'false' в противном случае
  */
-bool AreTwoMatricesEqual(Matrix m1,
-												 Matrix m2);
+bool AreTwoMatricesEqual(Matrix m_1,
+												 Matrix m_2);
 
 /**
  * @brief Проверка, является ли данная матрица единичной
@@ -230,11 +230,11 @@ Matrix* CreateArrayOfMatrixFromArray(int* arr,
  * 				вычислить произведение матриц из-за несоответствия
  * 				их размеров
  *
- * @param m1 первая матрица
- * @param m2 вторая матрица
+ * @param m_1 первая матрица
+ * @param m_2 вторая матрица
  * @return результат произведения матриц
  */
-Matrix MuLMatrices(Matrix m1,
-									 Matrix m2);
+Matrix MuLMatrices(Matrix m_1,
+									 Matrix m_2);
 
 #endif  // MATRIX_H

@@ -17,9 +17,9 @@ Matrix GetMemMatrix(const size_t n_rows,
 	if (data == NULL) {   // ! Allocation error
 		THROW_EX(2, "Allocation error\n");
 	}
-	for (size_t i = 0; i < n_rows; i++) {
-		data[i] = (int*) malloc(n_cols * sizeof(**data));
-		if (data[i] == NULL) {  // ! Allocation error
+	for (size_t row_i = 0; row_i < n_rows; row_i++) {
+		data[row_i] = (int*) malloc(n_cols * sizeof(**data));
+		if (data[row_i] == NULL) {  // ! Allocation error
 			THROW_EX(2, "Allocation error\n");
 		}
 	}
@@ -28,8 +28,8 @@ Matrix GetMemMatrix(const size_t n_rows,
 }
 
 void FreeMemMatrix(Matrix* m) {
-	for (size_t i = 0; i < m->n_rows; i++) {
-		free(m->data[i]);
+	for (size_t row_i = 0; row_i < m->n_rows; row_i++) {
+		free(m->data[row_i]);
 	}
 	free(m->data);
 	m->data = NULL;
@@ -48,8 +48,8 @@ Matrix* GetMemArrayOfMatrices(const size_t n_matrices,
 	if (ms == NULL) {   // ! Allocation error
 		THROW_EX(2, "Allocation error\n");
 	}
-	for (size_t i = 0; i < n_matrices; i++) {
-		ms[i] = GetMemMatrix(n_rows, n_cols);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		ms[matrix_i] = GetMemMatrix(n_rows, n_cols);
 	}
 
 	return ms;
@@ -57,31 +57,31 @@ Matrix* GetMemArrayOfMatrices(const size_t n_matrices,
 
 void FreeMemMatrices(Matrix* ms,
 										 const size_t n_matrices) {
-	for (size_t i = 0; i < n_matrices; i++) {
-		FreeMemMatrix(ms + i);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		FreeMemMatrix(ms + matrix_i);
 	}
 	free(ms);
 }
 
 void InputMatrix(Matrix m) {
-	for (size_t j = 0; j < m.n_rows; j++) {
-		for (size_t i = 0; i < m.n_cols; i++) {
-			scanf("%d", m.data[j] + i);
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			scanf("%d", m.data[row_i] + col_i);
 		}
 	}
 }
 
 void InputMatrices(Matrix* ms,
 									 const size_t n_matrices) {
-	for (size_t i = 0; i < n_matrices; i++) {
-		InputMatrix(ms[i]);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		InputMatrix(ms[matrix_i]);
 	}
 }
 
 void OutputMatrix(const Matrix m) {
-	for (size_t j = 0; j < m.n_rows; j++) {
-		for (size_t i = 0; i < m.n_cols; i++) {
-			printf("%d ", m.data[j][i]);
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			printf("%d ", m.data[row_i][col_i]);
 		}
 		printf("\n");
 	}
@@ -89,8 +89,8 @@ void OutputMatrix(const Matrix m) {
 
 void OutputMatrices(Matrix* ms,
 										const size_t n_matrices) {
-	for (size_t i = 0; i < n_matrices; i++) {
-		OutputMatrix(ms[i]);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		OutputMatrix(ms[matrix_i]);
 	}
 }
 
@@ -110,18 +110,18 @@ static void Swap(void* a,
 }
 
 void SwapRows(Matrix m,
-							const size_t i1,
-							const size_t i2) {
-	if (i1 != i2) {
-		Swap(m.data + i1, m.data + i2, sizeof(*m.data));
+							const size_t i_1,
+							const size_t i_2) {
+	if (i_1 != i_2) {
+		Swap(m.data + i_1, m.data + i_2, sizeof(*m.data));
 	}
 }
 
 void SwapCols(Matrix m,
-							const size_t i1,
-							const size_t i2) {
-	for (size_t i = 0; i < m.n_rows; i++) {
-		Swap(m.data[i] + i1, m.data[i] + i2, sizeof(**m.data));
+							const size_t i_1,
+							const size_t i_2) {
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		Swap(m.data[row_i] + i_1, m.data[row_i] + i_2, sizeof(**m.data));
 	}
 }
 
@@ -129,14 +129,16 @@ void InsertionSortRowsMatrixByRowCriteria(Matrix m,
 																					int (* criteria)(int*,
 																													 const size_t)) {
 	int* weights = (int*) malloc(m.n_rows * sizeof(**m.data));
-	for (size_t i = 0; i < m.n_rows; i++) {
-		weights[i] = criteria(m.data[i], m.n_cols);
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		weights[row_i] = criteria(m.data[row_i], m.n_cols);
 	}
 
-	for (size_t i = 1; i < m.n_rows; i++) {
-		for (size_t j = i; (j > 0) && (weights[j] < weights[j - 1]); j--) {
-			Swap(weights + j, weights + j - 1, sizeof(*weights));
-			SwapRows(m, j, j - 1);
+	for (size_t row_i = 1; row_i < m.n_rows; row_i++) {
+		for (size_t cur_i = row_i;
+				 cur_i > 0 && weights[cur_i] < weights[cur_i - 1];
+				 cur_i--) {
+			Swap(weights + cur_i, weights + cur_i - 1, sizeof(*weights));
+			SwapRows(m, cur_i, cur_i - 1);
 		}
 	}
 	free(weights);
@@ -147,18 +149,20 @@ void InsertionSortColsMatrixByColCriteria(Matrix m,
 																													 const size_t)) {
 	int* weights = (int*) malloc(m.n_cols * sizeof(*weights));
 	int* cur_col = (int*) malloc(m.n_rows * sizeof(**m.data));
-	for (size_t i = 0; i < m.n_cols; i++) {
-		for (size_t j = 0; j < m.n_rows; j++) {
-			cur_col[j] = m.data[j][i];
+	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+			cur_col[row_i] = m.data[row_i][col_i];
 		}
-		weights[i] = criteria(cur_col, m.n_rows);
+		weights[col_i] = criteria(cur_col, m.n_rows);
 	}
 	free(cur_col);
 
-	for (size_t i = 1; i < m.n_cols; i++) {
-		for (size_t j = i; (j > 0) && (weights[j] < weights[j - 1]); j--) {
-			Swap(weights + j, weights + j - 1, sizeof(*weights));
-			SwapCols(m, j, j - 1);
+	for (size_t col_i = 1; col_i < m.n_cols; col_i++) {
+		for (size_t cur_i = col_i;
+				 cur_i > 0 && weights[cur_i] < weights[cur_i - 1];
+				 cur_i--) {
+			Swap(weights + cur_i, weights + cur_i - 1, sizeof(*weights));
+			SwapCols(m, cur_i, cur_i - 1);
 		}
 	}
 	free(weights);
@@ -168,9 +172,66 @@ Matrix CreateMatrixFromArray(int* arr,
 														 const size_t n_rows,
 														 const size_t n_cols) {
 	Matrix m = GetMemMatrix(n_rows, n_cols);
-	for (size_t i = 0; i < n_rows; i++) {
-		memcpy(m.data[i], arr + i * n_cols, n_cols * sizeof(**m.data));
+	for (size_t row_i = 0; row_i < n_rows; row_i++) {
+		memcpy(m.data[row_i], arr + row_i * n_cols, n_cols * sizeof(**m.data));
 	}
 
 	return m;
+}
+
+bool IsSquareMatrix(const Matrix m) {
+	return m.n_rows == m.n_cols;
+}
+
+bool AreTwoMatricesEqual(const Matrix m_1,
+												 const Matrix m_2) {
+	if (m_1.n_rows != m_2.n_rows ||
+			m_1.n_cols != m_2.n_cols) {
+		return false;
+	}
+
+	const size_t n_rows = m_1.n_rows;
+	const size_t n_cols = m_1.n_cols;
+	for (size_t row_i = 0; row_i < n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < n_cols; col_i++) {
+			if (m_1.data[row_i][col_i] != m_2.data[row_i][col_i]) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool IsEMatrix(const Matrix m) {
+	if (!IsSquareMatrix(m)) {
+		return false;
+	}
+
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			if (row_i == col_i && m.data[row_i][col_i] != 1 ||
+					row_i != col_i && m.data[row_i][col_i] != 0) {
+				return false;
+			}
+		}
+	}
+
+	return true;
+}
+
+bool IsSymmetricMatrix(const Matrix m) {
+	if (!IsSquareMatrix(m)) {
+		return false;
+	}
+
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			if (m.data[row_i][col_i] != m.data[col_i][row_i]) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
