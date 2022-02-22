@@ -12,7 +12,8 @@
 //	#define TASK_6
 //	#define TASK_7
 //  #define TASK_8
-#define TASK_9
+//	#define TASK_9
+#define TASK_10
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1039,3 +1040,134 @@ int main() {
 }
 
 #endif // TASK_9
+
+//  Определить количество классов эквивалентных строк данной прямоугольной
+//	матрицы. Строки считать эквивалентными, если равны суммы их элементов.
+#ifdef TASK_10
+
+#include <stdlib.h>
+
+#define cmp(a, b)                                                            \
+((a) > (b) ? -1 : ((a) < (b) ? 1 : 0))
+
+/**
+ * @brief Вычисление суммы элементов массива
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов в массиве
+ * @return	сумму элементов массива
+ */
+int GetSum(int* arr,
+					 const size_t size) {
+	int sum = 0;
+	for (size_t i = 0; i < size; i++) {
+		sum += arr[i];
+	}
+
+	return sum;
+}
+
+/**
+ * @brief компаратор целочисленный переменных типа long long
+ * @param pa	указатель на первую переменную
+ * @param pb	указатель на вторую переменную
+ * @return	-1, если числа упорядочены по убыванию,
+ * 					1, если по возрастанию,
+ * 					0, если числа равны
+ */
+int cmp_long_long(const void* pa,
+									const void* pb) {
+	return cmp(*(long long*) pa, *(long long*) pb);
+}
+
+/**
+ * @brief Сортировка массива и подсчет кол-ва групп неуникальных элементов
+ * 				массива
+ * @param arr 	указатель на нулевой элемент массива
+ * @param size 	кол-во элементов массива
+ * @return	кол-во групп неуникальных элементов
+ */
+size_t CountNUnique(long long* arr,
+										const size_t size) {
+	if (size == 0) {
+		return 0;
+	}
+
+	qsort(arr, size, sizeof(*arr), cmp_long_long);
+	size_t n_unique_count = 1;
+	for (size_t i = 0; i < size - 1; i++) {
+		n_unique_count += arr[i] != arr[i + 1];
+	}
+
+	return n_unique_count;
+}
+
+size_t CountEqClassesByRowsSum(const Matrix m) {
+	long long* rows_sums = (long long*) malloc(m.n_cols * sizeof(*rows_sums));
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		rows_sums[row_i] = GetSum(m.data[row_i], m.n_cols);
+	}
+
+	const size_t n_unique_count = CountNUnique(rows_sums, m.n_rows);
+	free(rows_sums);
+
+	return n_unique_count;
+}
+
+static void test_CountEqClassesByRowsSum_OneClass() {
+	printf("[--------] OneClass\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {1, 9,
+											 10, 0,
+											 2, 8,
+											 4, 6,
+											 3, 7};
+	const size_t kEqClassesCount = 1;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(CountEqClassesByRowsSum(m) == kEqClassesCount);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_CountEqClassesByRowsSum_ManyClasses() {
+	printf("[--------] ManyClasses\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {7, 1,
+											 2, 7,
+											 5, 4,
+											 4, 3,
+											 1, 6,
+											 8, 0};
+	const size_t kEqClassesCount = 3;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(CountEqClassesByRowsSum(m) == kEqClassesCount);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_CountEqClassesByRowsSum() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_CountEqClassesByRowsSum_OneClass();
+	test_CountEqClassesByRowsSum_ManyClasses();
+}
+
+int main() {
+	test_CountEqClassesByRowsSum();
+
+	return 0;
+}
+
+#endif // TASK_10
