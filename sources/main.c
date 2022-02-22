@@ -1,6 +1,7 @@
 #include "../include/matrix.h"
 #include <assert.h>
 #include <malloc.h>
+#include <minmax.h>
 
 //	#define TASK_1
 // 	#define TASK_2
@@ -8,7 +9,8 @@
 // 	#define TASK_4
 //	#define TASK_5
 //	#define TASK_6
-#define TASK_7
+//	#define TASK_7
+#define TASK_8
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -655,7 +657,7 @@ int main() {
 
 //	Дана прямоугольная матрица. Назовем псевдодиагональю множество элементов
 //	этой матрицы, лежащих на прямой, параллельной прямой, содержащей элементы
-//	𝑎𝑖,𝑖. Найти сумму максимальных элементов всех псевдодиагоналей данной
+//	𝑎[𝑖,𝑖]. Найти сумму максимальных элементов всех псевдодиагоналей данной
 //	матрицы. На рисунке ниже все псевдодиагонали выделены различными
 //	цветами:
 #ifdef TASK_7
@@ -775,3 +777,124 @@ int main() {
 }
 
 #endif // TASK_7
+
+//	Дана прямоугольная матрица, все элементы которой различны. Найти минимальный
+//	элемент матрицы в выделенной области:
+#ifdef TASK_8
+
+/**
+ * @brief Поиск минимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	минимальное значение элементов массива
+ */
+int GetMin(int* arr,
+					 const size_t size) {
+	int min = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+
+	return min;
+}
+
+/**
+ * @brief Поиск минимального элемента, лежащего в треугольной области над
+ * 				максимальным элементом
+ * @param m матрица
+ * @return 	значение минимального элемента, лежащего в треугольной области над
+ * 					максимальным элементом
+ */
+int GetMinInMaxArea(const Matrix m) {
+	Position max_p = GetMaxValuePos(m);
+	int min = m.data[max_p.row_i][max_p.col_i];
+	for (size_t row_i = max_p.row_i; row_i != -1; row_i--) {
+		const size_t col_shift = max_p.row_i - row_i;
+		const size_t begin_col_i = max(0, max_p.col_i - col_shift);
+		const size_t end_col_i = min(m.n_cols - 1, max_p.col_i + col_shift);
+		min = GetMin(m.data[row_i] + begin_col_i, end_col_i - begin_col_i + 1);
+	}
+
+	return min;
+}
+
+static void test_GetMinInMaxArea_FullArea() {
+	printf("[--------] FullArea\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {10, 7, 5, 6,
+											 3, 11, 8, 9,
+											 4, 1, 12, 2};
+	const int kExpected = 5;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetMinInMaxArea(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinInMaxArea_NotFullArea() {
+	printf("[--------] NotFullArea\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {6, 8, 9, 2,
+											 7, 12, 3, 4,
+											 10, 11, 5, 1};
+	const int kExpected = 6;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetMinInMaxArea(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinInMaxArea_OneEl() {
+	printf("[--------] NotFullArea\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {6, 69, 9, 2,
+											 7, 12, 3, 4,
+											 10, 11, 5, 1};
+	const int kExpected = 69;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetMinInMaxArea(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinInMaxArea() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_GetMinInMaxArea_NotFullArea();
+	test_GetMinInMaxArea_OneEl();
+	test_GetMinInMaxArea_OneEl();
+}
+
+int main() {
+	test_GetMinInMaxArea();
+
+	return 0;
+}
+
+#endif // TASK_8
