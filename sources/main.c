@@ -2,7 +2,8 @@
 #include <assert.h>
 
 //	#define TASK_1
-#define TASK_2
+// #define TASK_2
+#define TASK_3
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -42,8 +43,8 @@ static void test_transposeMatrix_DiffRows() {
 												1, 2, 3};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
 																	 kInitialNCols);
-	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
-																						kInitialNRows);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
@@ -68,8 +69,8 @@ static void test_transposeMatrix_OneRow() {
 												-6, 8, 9};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
 																	 kInitialNCols);
-	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
-																						kInitialNRows);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
@@ -117,6 +118,12 @@ int GetMax(int* arr,
 	return max;
 }
 
+/**
+ * @brief Сортировка строк матрицы по неубыванию значений максимальных
+ * 				элементов строк
+ *
+ * @param m матрица
+ */
 void sortRowsByMaxElement(Matrix m) {
 	InsertionSortRowsMatrixByRowCriteria(m, GetMax);
 }
@@ -133,8 +140,8 @@ static void test_sortRowsByMaxElement_Unsorted() {
 												0, 128, 11};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
 																	 kInitialNCols);
-	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
-																						kInitialNRows);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
@@ -159,8 +166,8 @@ static void test_sortRowsByMaxElement_Sorted() {
 												7, 8, 9};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
 																	 kInitialNCols);
-	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
-																						kInitialNRows);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
@@ -186,3 +193,100 @@ int main() {
 }
 
 #endif // TASK_2
+
+#ifdef TASK_3
+
+/**
+ * @brief Поиск минимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	минимальное значение элементов массива
+ */
+int GetMin(int* arr,
+					 const size_t size) {
+	int min = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+
+	return min;
+}
+
+/**
+ * @brief Сортировка строк матрицы по неубыванию значений максимальных
+ * 				элементов строк
+ *
+ * @param m матрица
+ */
+void sortColsByMinElement(Matrix m) {
+	InsertionSortColsMatrixByColCriteria(m, GetMin);
+}
+
+static void test_sortColsByMinElement_Unsorted() {
+	printf("[--------] Unsorted\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 6;
+	int initial_arr[] = {3, 5, 2, 4, 3, 3,
+											 2, 5, 1, 8, 2, 7,
+											 6, 1, 4, 4, 8, 3};
+	int expected_arr[] = {5, 2, 3, 3, 3, 4,
+												5, 1, 2, 2, 7, 8,
+												1, 4, 6, 8, 3, 4};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	sortColsByMinElement(m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_sortColsByMinElement_Sorted() {
+	printf("[--------] Sorted\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, -7, 9,
+											 0, 128, 11,
+											 -123, -1, -4};
+	int expected_arr[] = {1, -7, 9,
+												0, 128, 11,
+												-123, -1, -4};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	sortColsByMinElement(m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_sortRowsByMaxElement() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_sortColsByMinElement_Unsorted();
+	test_sortColsByMinElement_Sorted();
+}
+
+int main() {
+	test_sortRowsByMaxElement();
+
+	return 0;
+}
+
+#endif // TASK_3
