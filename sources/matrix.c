@@ -242,7 +242,7 @@ Position GetMinValuePos(const Matrix m) {
 	return (Position) {min_row_i, min_col_i};
 }
 
-void transposeMatrix(Matrix* m) {
+void TransposeMatrix(Matrix* m) {
 	Matrix t_m = GetMemMatrix(m->n_cols, m->n_rows);
 	for (size_t t_row_i = 0; t_row_i < t_m.n_rows; t_row_i++) {
 		for (size_t t_col_i = 0; t_col_i < t_m.n_cols; t_col_i++) {

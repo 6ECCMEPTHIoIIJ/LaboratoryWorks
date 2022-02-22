@@ -966,7 +966,7 @@ static void test_MulMatrices() {
 	test_MulMatrices_Square();
 }
 
-static void test_transposeMatrix_Square() {
+static void test_TransposeMatrix_Square() {
 	printf("[--------] Square\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 3;
@@ -984,7 +984,7 @@ static void test_transposeMatrix_Square() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	transposeMatrix(&m);
+	TransposeMatrix(&m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -992,7 +992,7 @@ static void test_transposeMatrix_Square() {
 	printf("[      OK]\n");
 }
 
-static void test_transposeMatrix_NotSquare() {
+static void test_TransposeMatrix_NotSquare() {
 	printf("[--------] NotSquare\n");
 	const size_t kInitialNRows = 2;
 	const size_t kInitialNCols = 3;
@@ -1009,7 +1009,7 @@ static void test_transposeMatrix_NotSquare() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	transposeMatrix(&m);
+	TransposeMatrix(&m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -1017,10 +1017,10 @@ static void test_transposeMatrix_NotSquare() {
 	printf("[      OK]\n");
 }
 
-static void test_transposeMatrix() {
+static void test_TransposeMatrix() {
 	printf("[========] %s()\n", __FUNCTION__);
-	test_transposeMatrix_Square();
-	test_transposeMatrix_NotSquare();
+	test_TransposeMatrix_Square();
+	test_TransposeMatrix_NotSquare();
 }
 
 void test_matrix() {
@@ -1035,7 +1035,7 @@ void test_matrix() {
 	test_AreTwoMatricesEqual();
 	test_IsEMatrix();
 	test_IsSymmetricMatrix();
-	test_transposeMatrix();
+	test_TransposeMatrix();
 	test_GetMinValuePos_GetMinValuePos();
 	test_MulMatrices();
 	printf("[ PASSED ]\n");

@@ -181,7 +181,7 @@ bool IsSymmetricMatrix(Matrix m);
  *
  * @param m указатель на мтарицу
  */
-void transposeMatrix(Matrix* m);
+void TransposeMatrix(Matrix* m);
 
 /**
  * @brief Получение позиции минимального значения матрицы

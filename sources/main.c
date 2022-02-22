@@ -1,10 +1,12 @@
 #include "../include/matrix.h"
 #include <assert.h>
+#include <malloc.h>
 
 //	#define TASK_1
 // 	#define TASK_2
 //	#define TASK_3
-#define TASK_4
+// 	#define TASK_4
+#define TASK_5
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -225,11 +227,11 @@ int GetMin(int* arr,
  *
  * @param m матрица
  */
-void sortColsByMinElement(Matrix m) {
+void SortColsByMinElement(Matrix m) {
 	InsertionSortColsMatrixByColCriteria(m, GetMin);
 }
 
-static void test_sortColsByMinElement_Unsorted() {
+static void test_SortColsByMinElement_Unsorted() {
 	printf("[--------] Unsorted\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 6;
@@ -247,7 +249,7 @@ static void test_sortColsByMinElement_Unsorted() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	sortColsByMinElement(m);
+	SortColsByMinElement(m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -255,7 +257,7 @@ static void test_sortColsByMinElement_Unsorted() {
 	printf("[      OK]\n");
 }
 
-static void test_sortColsByMinElement_Sorted() {
+static void test_SortColsByMinElement_Sorted() {
 	printf("[--------] Sorted\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 3;
@@ -273,7 +275,7 @@ static void test_sortColsByMinElement_Sorted() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	sortColsByMinElement(m);
+	SortColsByMinElement(m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -281,14 +283,14 @@ static void test_sortColsByMinElement_Sorted() {
 	printf("[      OK]\n");
 }
 
-static void test_sortRowsByMaxElement() {
+static void test_SortRowsByMaxElement() {
 	printf("[========] %s()\n", __FUNCTION__);
-	test_sortColsByMinElement_Unsorted();
-	test_sortColsByMinElement_Sorted();
+	test_SortColsByMinElement_Unsorted();
+	test_SortColsByMinElement_Sorted();
 }
 
 int main() {
-	test_sortRowsByMaxElement();
+	test_SortRowsByMaxElement();
 
 	return 0;
 }
@@ -298,7 +300,12 @@ int main() {
 //	Если данная квадратная матрица 𝐴 симметрична, то заменить 𝐴 ее квадратом (𝐴2)
 #ifdef TASK_4
 
-void getSquareOfMatrixIfSymmetric(Matrix* m) {
+/**
+ * @brief Возведение в квадрат симметричной матрицы. Если матрица
+ * 				несимметрична, то ее значение не меняется
+ * @param m	указатель на матрицу
+ */
+void GetSquareOfMatrixIfSymmetric(Matrix* m) {
 	if (IsSymmetricMatrix(*m)) {
 		Matrix t = MulMatrices(*m, *m);
 		FreeMemMatrix(m);
@@ -306,7 +313,7 @@ void getSquareOfMatrixIfSymmetric(Matrix* m) {
 	}
 }
 
-static void test_getSquareOfMatrixIfSymmetric_Square() {
+static void test_GetSquareOfMatrixIfSymmetric_Square() {
 	printf("[--------] Square\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 3;
@@ -324,7 +331,7 @@ static void test_getSquareOfMatrixIfSymmetric_Square() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	getSquareOfMatrixIfSymmetric(&m);
+	GetSquareOfMatrixIfSymmetric(&m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -332,7 +339,7 @@ static void test_getSquareOfMatrixIfSymmetric_Square() {
 	printf("[      OK]\n");
 }
 
-static void test_getSquareOfMatrixIfSymmetric_NotSquare() {
+static void test_GetSquareOfMatrixIfSymmetric_NotSquare() {
 	printf("[--------] NotSquare\n");
 	const size_t kInitialNRows = 4;
 	const size_t kInitialNCols = 3;
@@ -352,7 +359,7 @@ static void test_getSquareOfMatrixIfSymmetric_NotSquare() {
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	getSquareOfMatrixIfSymmetric(&m);
+	GetSquareOfMatrixIfSymmetric(&m);
 	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
@@ -360,16 +367,161 @@ static void test_getSquareOfMatrixIfSymmetric_NotSquare() {
 	printf("[      OK]\n");
 }
 
-static void test_transposeMatrix() {
+static void test_GetSquareOfMatrixIfSymmetric() {
 	printf("[========] %s()\n", __FUNCTION__);
-	test_getSquareOfMatrixIfSymmetric_Square();
-	test_getSquareOfMatrixIfSymmetric_NotSquare();
+	test_GetSquareOfMatrixIfSymmetric_Square();
+	test_GetSquareOfMatrixIfSymmetric_NotSquare();
 }
 
 int main() {
-	test_transposeMatrix();
+	test_GetSquareOfMatrixIfSymmetric();
 
 	return 0;
 }
 
 #endif // TASK_4
+
+// 	Дана квадратная матрица. Если среди сумм элементов строк матрицы нет равных,
+// 	то транспонировать матрицу.
+#ifdef TASK_5
+
+/**
+ * @brief Вычисление суммы элементов массива
+ *
+ * @param arr 	указатель на первый элемент массива
+ * @param size 	кол-во элементов массива
+ * @return сумму элементов массива
+ */
+long long GetSum(int* arr,
+								 const size_t size) {
+	long long sum = 0;
+	for (size_t i = 0; i < size; i++) {
+		sum += arr[i];
+	}
+
+	return sum;
+}
+
+/**
+ * @brief Поиск индекса минимального элемента массива
+ * @param arr 	указатель на нулевой элемент массива
+ * @param size 	кол-во элементов массива
+ * @param el 		искомое значение
+ * @return индекс минимального элемента массива
+ */
+size_t Find(long long* arr,
+						const size_t size,
+						const long long el) {
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] == el) {
+			return i;
+		}
+	}
+
+	return size;
+}
+
+/**
+ * @brief Проверка элементов массива на уникальность
+ * @param arr 	указатель на первый элемент массива
+ * @param size 	кол-во элементов массива
+ * @return		'true', если элементы массива уникальны,
+ * 						'false' в противном случае
+ */
+bool IsUnique(long long* arr,
+							const size_t size) {
+	for (size_t i = 0; i < size; i++) {
+		const size_t pos = Find(arr, size, arr[i]);
+		if (pos != i && pos != size) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @brief Транспонирование матрицы, не имеющей строк с одинаковой суммой
+ * 				элементов. Если строки с одинаковой суммой имеются, то значение
+ * 				матрицы не меняется
+ * @param m указатель на матрицу
+ */
+void TransposeIfMatrixHasNotEqualSunOfRows(Matrix* m) {
+	long long* row_sums = (long long*) malloc(m->n_rows * sizeof(*row_sums));
+	for (size_t row_i = 0; row_i < m->n_rows; row_i++) {
+		row_sums[row_i] = GetSum(m->data[row_i], m->n_cols);
+	}
+
+	if (IsUnique(row_sums, m->n_rows)) {
+		TransposeMatrix(m);
+	}
+}
+
+static void test_TransposeIfMatrixHasNotEqualSunOfRows_NotEqual() {
+	printf("[--------] NotEqual\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 0, 0,
+											 0, 7, 0,
+											 0, 0, 2,
+											 9, 8, 7};
+	int expected_arr[] = {1, 0, 0, 9,
+												0, 7, 0, 8,
+												0, 0, 2, 7};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
+																						kInitialNRows);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	TransposeIfMatrixHasNotEqualSunOfRows(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_TransposeIfMatrixHasNotEqualSunOfRows_HasEqual() {
+	printf("[--------] HasEqual\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 0, 0,
+											 0, 7, 0,
+											 0, 0, 1,
+											 9, 8, 7};
+	int expected_arr[] = {1, 0, 0,
+												0, 7, 0,
+												0, 0, 1,
+												9, 8, 7};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	TransposeIfMatrixHasNotEqualSunOfRows(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_TransposeIfMatrixHasNotEqualSunOfRows() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_TransposeIfMatrixHasNotEqualSunOfRows_HasEqual();
+	test_TransposeIfMatrixHasNotEqualSunOfRows_NotEqual();
+}
+
+int main() {
+	test_TransposeIfMatrixHasNotEqualSunOfRows();
+
+	return 0;
+}
+
+#endif // TASK_5
