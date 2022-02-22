@@ -7,7 +7,8 @@
 //	#define TASK_3
 // 	#define TASK_4
 //	#define TASK_5
-#define TASK_6
+//	#define TASK_6
+#define TASK_7
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -540,8 +541,9 @@ int main() {
  */
 bool IsMutuallyInverseMatrices(const Matrix m_1,
 															 const Matrix m_2) {
-	if ((m_1.n_rows != m_2.n_rows ||
-			 m_1.n_cols != m_2.n_cols)) {
+	if (!(IsSquareMatrix(m_1) &&
+				(m_1.n_rows == m_2.n_rows &&
+				 m_1.n_cols == m_2.n_cols))) {
 		return false;
 	}
 
@@ -650,3 +652,126 @@ int main() {
 }
 
 #endif // TASK_6
+
+//	Дана прямоугольная матрица. Назовем псевдодиагональю множество элементов
+//	этой матрицы, лежащих на прямой, параллельной прямой, содержащей элементы
+//	𝑎𝑖,𝑖. Найти сумму максимальных элементов всех псевдодиагоналей данной
+//	матрицы. На рисунке ниже все псевдодиагонали выделены различными
+//	цветами:
+#ifdef TASK_7
+
+/**
+ * @brief Поиск максимального элемента диагонали матрицы
+ * @param m 		матрица
+ * @param row_i индекс строки начального элемента диагонали
+ * @param col_i индекс столбца начального элемента диагонали
+ * @return значение максимального элемента диагонали
+ */
+int FindMaxOnDiagonal(const Matrix m,
+											size_t row_i,
+											size_t col_i) {
+	int max = m.data[row_i][col_i];
+	while (col_i < m.n_cols && row_i < m.n_rows) {
+		if (m.data[row_i][col_i] > max) {
+			max = m.data[row_i][col_i];
+		}
+		row_i++;
+		col_i++;
+	}
+
+	return max;
+}
+
+/**
+ * @brief Вычисление суммы максимальных элементов всех псевдо-диагоналей матрицы
+ * @param m матрица
+ * @return сумма максимальных элементов всех псевдо-диагоналей матрицы
+ */
+long long FindSumOfMaxesOfPseudoDiagonal(const Matrix m) {
+	long long sum = 0;
+	for (size_t row_shift = m.n_rows - 1; row_shift > 0; row_shift--) {
+		sum += FindMaxOnDiagonal(m, row_shift, 0);
+	}
+
+	for (size_t col_shift = 1; col_shift < m.n_cols; col_shift++) {
+		sum += FindMaxOnDiagonal(m, 0, col_shift);
+	}
+
+	return sum;
+}
+
+static void test_FindSumOfMaxesOfPseudoDiagonal_Square() {
+	printf("[--------] Square\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 2, 3,
+											 4, 5, 6,
+											 7, 8, 9};
+	const int kExpected = 24;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(FindSumOfMaxesOfPseudoDiagonal(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_FindSumOfMaxesOfPseudoDiagonal_Wide() {
+	printf("[--------] Wide\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {3, 2, 5, 4,
+											 1, 3, 6, 3,
+											 3, 2, 1, 2};
+	const int kExpected = 20;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(FindSumOfMaxesOfPseudoDiagonal(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_FindSumOfMaxesOfPseudoDiagonal_Toll() {
+	printf("[--------] Toll\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {3, 2, 5,
+											 4, 1, 3,
+											 6, 3, 3,
+											 2, 1, 2};
+	const int kExpected = 20;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(FindSumOfMaxesOfPseudoDiagonal(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_sortRowsByMaxElement() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_FindSumOfMaxesOfPseudoDiagonal_Square();
+	test_FindSumOfMaxesOfPseudoDiagonal_Wide();
+	test_FindSumOfMaxesOfPseudoDiagonal_Toll();
+}
+
+int main() {
+	test_sortRowsByMaxElement();
+
+	return 0;
+}
+
+#endif // TASK_7
