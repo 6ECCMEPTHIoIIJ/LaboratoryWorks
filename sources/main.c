@@ -2,8 +2,9 @@
 #include <assert.h>
 
 //	#define TASK_1
-// #define TASK_2
-#define TASK_3
+// 	#define TASK_2
+//	#define TASK_3
+#define TASK_4
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -97,6 +98,7 @@ int main() {
 
 #endif // TASK_1
 
+//	Упорядочить строки матрицы по неубыванию наибольших элементов строк:
 #ifdef TASK_2
 
 /**
@@ -194,6 +196,8 @@ int main() {
 
 #endif // TASK_2
 
+//	Дана прямоугольная матрица. Упорядочить столбцы матрицы по неубыванию
+//	минимальных элементов столбцов:
 #ifdef TASK_3
 
 /**
@@ -290,3 +294,82 @@ int main() {
 }
 
 #endif // TASK_3
+
+//	Если данная квадратная матрица 𝐴 симметрична, то заменить 𝐴 ее квадратом (𝐴2)
+#ifdef TASK_4
+
+void getSquareOfMatrixIfSymmetric(Matrix* m) {
+	if (IsSymmetricMatrix(*m)) {
+		Matrix t = MulMatrices(*m, *m);
+		FreeMemMatrix(m);
+		*m = t;
+	}
+}
+
+static void test_getSquareOfMatrixIfSymmetric_Square() {
+	printf("[--------] Square\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 0, 0,
+											 0, 2, 0,
+											 0, 0, 13};
+	int expected_arr[] = {1, 0, 0,
+												0, 4, 0,
+												0, 0, 169};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	getSquareOfMatrixIfSymmetric(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_getSquareOfMatrixIfSymmetric_NotSquare() {
+	printf("[--------] NotSquare\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 0, 0,
+											 0, 7, 0,
+											 0, 0, 1,
+											 9, 8, 7};
+	int expected_arr[] = {1, 0, 0,
+												0, 7, 0,
+												0, 0, 1,
+												9, 8, 7};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	getSquareOfMatrixIfSymmetric(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_transposeMatrix() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_getSquareOfMatrixIfSymmetric_Square();
+	test_getSquareOfMatrixIfSymmetric_NotSquare();
+}
+
+int main() {
+	test_transposeMatrix();
+
+	return 0;
+}
+
+#endif // TASK_4
