@@ -128,7 +128,26 @@ void SwapCols(Matrix m,
 void InsertionSortRowsMatrixByRowCriteria(Matrix m,
 																					int (* criteria)(int*,
 																													 const size_t)) {
-	int* weights = (int*) malloc(m.n_rows * sizeof(**m.data));
+	int* weights = (int*) malloc(m.n_rows * sizeof(*weights));
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		weights[row_i] = criteria(m.data[row_i], m.n_cols);
+	}
+
+	for (size_t row_i = 1; row_i < m.n_rows; row_i++) {
+		for (size_t cur_i = row_i;
+				 cur_i > 0 && weights[cur_i] < weights[cur_i - 1];
+				 cur_i--) {
+			Swap(weights + cur_i, weights + cur_i - 1, sizeof(*weights));
+			SwapRows(m, cur_i, cur_i - 1);
+		}
+	}
+	free(weights);
+}
+
+void InsertionSortRowsMatrixByRowCriteriaF(Matrix m,
+																					 double (* criteria)(int*,
+																															 const size_t)) {
+	double* weights = (double*) malloc(m.n_rows * sizeof(*weights));
 	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
 		weights[row_i] = criteria(m.data[row_i], m.n_cols);
 	}
@@ -148,6 +167,30 @@ void InsertionSortColsMatrixByColCriteria(Matrix m,
 																					int (* criteria)(int*,
 																													 const size_t)) {
 	int* weights = (int*) malloc(m.n_cols * sizeof(*weights));
+	int* cur_col = (int*) malloc(m.n_rows * sizeof(**m.data));
+	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+			cur_col[row_i] = m.data[row_i][col_i];
+		}
+		weights[col_i] = criteria(cur_col, m.n_rows);
+	}
+	free(cur_col);
+
+	for (size_t col_i = 1; col_i < m.n_cols; col_i++) {
+		for (size_t cur_i = col_i;
+				 cur_i > 0 && weights[cur_i] < weights[cur_i - 1];
+				 cur_i--) {
+			Swap(weights + cur_i, weights + cur_i - 1, sizeof(*weights));
+			SwapCols(m, cur_i, cur_i - 1);
+		}
+	}
+	free(weights);
+}
+
+void InsertionSortColsMatrixByColCriteriaF(Matrix m,
+																					 double (* criteria)(int*,
+																															 const size_t)) {
+	double* weights = (double*) malloc(m.n_cols * sizeof(*weights));
 	int* cur_col = (int*) malloc(m.n_rows * sizeof(**m.data));
 	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
 		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {

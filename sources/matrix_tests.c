@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <memory.h>
+#include <math.h>
 
 #include "../include/matrix.h"
 
@@ -562,6 +563,193 @@ static void test_InsertionSortColsMatrixByColCriteria() {
 	test_InsertionSortColsMatrixByColCriteria_OneEl();
 }
 
+static long long GetSumOfSquares(int* arr,
+																 const size_t size) {
+	long long sum = 0;
+	for (size_t i = 0; i < size; i++) {
+		sum += arr[i] * arr[i];
+	}
+
+	return sum;
+}
+
+static double GetDistance(int* arr,
+													const size_t size) {
+	return sqrt(GetSumOfSquares(arr, size));
+}
+
+static void test_InsertionSortRowsMatrixByRowCriteriaF_Sorted() {
+	printf("[--------] Sorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 2, 3, 4,
+											 6, 7, 8, 9,
+											 10, 11, 12, 13,
+											 15, 16, 17, 19,
+											 20, 21, 22, 23};
+	int expected_arr[] = {1, 2, 3, 4,
+												6, 7, 8, 9,
+												10, 11, 12, 13,
+												15, 16, 17, 19,
+												20, 21, 22, 23};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortRowsMatrixByRowCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortRowsMatrixByRowCriteriaF_Unsorted() {
+	printf("[--------] Unsorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {20, 21, 22, 23,
+											 6, 7, 8, 9,
+											 10, 11, 12, 13,
+											 1, 2, 3, 4,
+											 15, 16, 17, 19};
+	int expected_arr[] = {1, 2, 3, 4,
+												6, 7, 8, 9,
+												10, 11, 12, 13,
+												15, 16, 17, 19,
+												20, 21, 22, 23};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortRowsMatrixByRowCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortRowsMatrixByRowCriteriaF_OneEl() {
+	printf("[--------] OneEl\n");
+	const size_t kInitialNRows = 1;
+	const size_t kInitialNCols = 1;
+	int initial_arr[] = {34};
+	int expected_arr[] = {34};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortRowsMatrixByRowCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortRowsMatrixByRowCriteriaF() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_InsertionSortRowsMatrixByRowCriteriaF_Unsorted();
+	test_InsertionSortRowsMatrixByRowCriteriaF_Sorted();
+	test_InsertionSortRowsMatrixByRowCriteriaF_OneEl();
+}
+
+static void test_InsertionSortColsMatrixByColCriteriaF_OneEl() {
+	printf("[--------] OneEl\n");
+	const size_t kInitialNRows = 1;
+	const size_t kInitialNCols = 1;
+	int initial_arr[] = {34};
+	int expected_arr[] = {34};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortColsMatrixByColCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortColsMatrixByColCriteriaF_Unsorted() {
+	printf("[--------] Unsorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {11, 2, 1, 7,
+											 12, 3, 2, 8,
+											 12, 4, 3, 9,
+											 13, 5, 4, 10,
+											 14, 6, 5, 11};
+	int expected_arr[] = {1, 2, 7, 11,
+												2, 3, 8, 12,
+												3, 4, 9, 12,
+												4, 5, 10, 13,
+												5, 6, 11, 14};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortColsMatrixByColCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortColsMatrixByColCriteriaF_Sorted() {
+	printf("[--------] Sorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 2, 7, 11,
+											 2, 3, 8, 12,
+											 3, 4, 9, 12,
+											 4, 5, 10, 13,
+											 5, 6, 11, 14};
+	int expected_arr[] = {1, 2, 7, 11,
+												2, 3, 8, 12,
+												3, 4, 9, 12,
+												4, 5, 10, 13,
+												5, 6, 11, 14};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	InsertionSortColsMatrixByColCriteriaF(m, GetDistance);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_InsertionSortColsMatrixByColCriteriaF() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_InsertionSortColsMatrixByColCriteriaF_Sorted();
+	test_InsertionSortColsMatrixByColCriteriaF_Unsorted();
+	test_InsertionSortColsMatrixByColCriteriaF_OneEl();
+}
+
 static void test_IsSquareMatrix_True() {
 	printf("[--------] True\n");
 	const size_t kInitialNRows = 100;
@@ -1030,7 +1218,9 @@ void test_matrix() {
 	test_SwapRows();
 	test_SwapCols();
 	test_InsertionSortRowsMatrixByRowCriteria();
+	test_InsertionSortRowsMatrixByRowCriteriaF();
 	test_InsertionSortColsMatrixByColCriteria();
+	test_InsertionSortColsMatrixByColCriteriaF();
 	test_IsSquareMatrix();
 	test_AreTwoMatricesEqual();
 	test_IsEMatrix();

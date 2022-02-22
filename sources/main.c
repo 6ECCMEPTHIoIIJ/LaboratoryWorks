@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <minmax.h>
 
+//	#define TEST_MATRIX
 //	#define TASK_1
 // 	#define TASK_2
 //	#define TASK_3
@@ -10,7 +11,8 @@
 //	#define TASK_5
 //	#define TASK_6
 //	#define TASK_7
-#define TASK_8
+//  #define TASK_8
+#define TASK_9
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -898,3 +900,142 @@ int main() {
 }
 
 #endif // TASK_8
+
+//	Дано 𝑛 точек в 𝑚-мерном пространстве. Упорядочить точки по неубыванию их
+//	расстояний до начала координат.
+#ifdef TASK_9
+
+#include <math.h>
+
+/**
+ * @brief Вычисление суммы квадратов элементов массива
+ * @param arr 	указатель на нулевой элемент массива
+ * @param size 	кол-во элементов массива
+ * @return сумму квадратов элементов массива
+ */
+long long GetSumOfSquares(int* arr,
+													const size_t size) {
+	long long sum = 0;
+	for (size_t i = 0; i < size; i++) {
+		sum += arr[i] * arr[i];
+	}
+
+	return sum;
+}
+
+/**
+ * @brief Вычисление расстояния от точки, заданной в n-мерном пространстве,
+ * 				до начала координат
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return 	расстояние от точки, заданной в n-мерном пространстве,
+ * 					до начала координат
+ */
+double GetDistance(int* arr,
+									 const size_t size) {
+	return sqrt(GetSumOfSquares(arr, size));
+}
+
+/**
+ * @brief Сортировка массива точек, заданного с помощью матрицы в порядке
+ * 				неубывания расстояния от начала координат
+ * @param m матрица
+ */
+void SortByDistance(Matrix m) {
+	InsertionSortRowsMatrixByRowCriteriaF(m, GetDistance);
+}
+
+static void test_SortByDistance_Sorted() {
+	printf("[--------] Sorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {1, 0, 0, 0,
+											 2, 3, 1, 1,
+											 5, 5, 5, 5,
+											 0, 100, 0, 0,
+											 99, 99, 99, 99};
+	int expected_arr[] = {1, 0, 0, 0,
+												2, 3, 1, 1,
+												5, 5, 5, 5,
+												0, 100, 0, 0,
+												99, 99, 99, 99};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	SortByDistance(m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_SortByDistance_Unsorted() {
+	printf("[--------] Unsorted\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {20, 21, 22, 23,
+											 6, 7, 8, 9,
+											 10, 11, 12, 13,
+											 1, 2, 3, 4,
+											 15, 16, 17, 19};
+	int expected_arr[] = {1, 2, 3, 4,
+												6, 7, 8, 9,
+												10, 11, 12, 13,
+												15, 16, 17, 19,
+												20, 21, 22, 23};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	SortByDistance(m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_SortByDistance_OneEl() {
+	printf("[--------] OneEl\n");
+	const size_t kInitialNRows = 1;
+	const size_t kInitialNCols = 1;
+	int initial_arr[] = {34, 723, 132};
+	int expected_arr[] = {34, 723, 132};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	SortByDistance(m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_SortByDistance() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_SortByDistance_Unsorted();
+	test_SortByDistance_Sorted();
+	test_SortByDistance_OneEl();
+}
+
+int main() {
+	test_SortByDistance();
+
+	return 0;
+}
+
+#endif // TASK_9

@@ -128,6 +128,16 @@ void InsertionSortRowsMatrixByRowCriteria(Matrix m,
 																													 size_t));
 
 /**
+ * @brief Сортировка вставками строк матрицы по критерию
+ *
+ * @param m					матрица
+ * @param criteria	критерий сортировки
+ */
+void InsertionSortRowsMatrixByRowCriteriaF(Matrix m,
+																					 double (* criteria)(int*,
+																															 size_t));
+
+/**
  * @brief Сортировка вставками столбцов матрицы по критерию
  *
  * @param m 				матрица
@@ -136,6 +146,16 @@ void InsertionSortRowsMatrixByRowCriteria(Matrix m,
 void InsertionSortColsMatrixByColCriteria(Matrix m,
 																					int (* criteria)(int*,
 																													 size_t));
+
+/**
+ * @brief Сортировка вставками столбцов матрицы по критерию
+ *
+ * @param m 				матрица
+ * @param criteria 	критерий сортировки
+ */
+void InsertionSortColsMatrixByColCriteriaF(Matrix m,
+																					 double (* criteria)(int*,
+																															 size_t));
 
 /**
  * @brief Проверка, является ли данная матрица квадратной
