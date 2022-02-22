@@ -108,8 +108,8 @@ static void test_GetMemArrayOfMatrices_ZeroAmount() {
 				 kInitialNCols);
 	printf("[RUN     ]\n");
 
-	Matrix* ms =
-			GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows, kInitialNCols);
+	Matrix* ms = GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows,
+																		 kInitialNCols);
 	assert(ms == NULL);
 	FreeMemMatrices(ms, kInitialNMatrices);
 	printf("[      OK]\n");
@@ -126,8 +126,8 @@ static void test_GetMemArrayOfMatrices_NonZeroAmount() {
 				 kInitialNCols);
 	printf("[RUN     ]\n");
 
-	Matrix* ms =
-			GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows, kInitialNCols);
+	Matrix* ms = GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows,
+																		 kInitialNCols);
 	assert(ms != NULL);
 	for (size_t i = 0; i < kInitialNMatrices; i++) {
 		assert(ms[i].data != NULL);
@@ -149,8 +149,8 @@ static void test_GetMemArrayOfMatrices_ZeroDimension() {
 				 kInitialNCols);
 	printf("[RUN     ]\n");
 
-	Matrix* ms =
-			GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows, kInitialNCols);
+	Matrix* ms = GetMemArrayOfMatrices(kInitialNMatrices, kInitialNRows,
+																		 kInitialNCols);
 	assert(ms != NULL);
 	for (size_t i = 0; i < kInitialNMatrices; i++) {
 		assert(ms[i].data == NULL);
@@ -172,19 +172,21 @@ static void test_SwapRows_Near() {
 	printf("[--------] Near\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 2;
+	const size_t kI2 = 3;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 2;
-	const size_t kI2 = 3;
 	int expected_arr[] = {1, 2, 3, 4,
 												6, 7, 8, 9,
 												15, 16, 17, 19,
 												10, 11, 12, 13,
 												20, 21, 22, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -192,13 +194,10 @@ static void test_SwapRows_Near() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapRows(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -206,19 +205,21 @@ static void test_SwapRows_OnBounds() {
 	printf("[--------] OnBounds\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 0;
+	const size_t kI2 = 4;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 0;
-	const size_t kI2 = 4;
 	int expected_arr[] = {20, 21, 22, 23,
 												6, 7, 8, 9,
 												10, 11, 12, 13,
 												15, 16, 17, 19,
 												1, 2, 3, 4};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -226,13 +227,10 @@ static void test_SwapRows_OnBounds() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapRows(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -240,19 +238,21 @@ static void test_SwapRows_One() {
 	printf("[--------] One\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 3;
+	const size_t kI2 = 3;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 3;
-	const size_t kI2 = 3;
 	int expected_arr[] = {1, 2, 3, 4,
 												6, 7, 8, 9,
 												10, 11, 12, 13,
 												15, 16, 17, 19,
 												20, 21, 22, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -260,13 +260,10 @@ static void test_SwapRows_One() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapRows(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -281,19 +278,21 @@ static void test_SwapCols_OnBounds() {
 	printf("[--------] OnBounds\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 0;
+	const size_t kI2 = 3;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 0;
-	const size_t kI2 = 3;
 	int expected_arr[] = {4, 2, 3, 1,
 												9, 7, 8, 6,
 												13, 11, 12, 10,
 												19, 16, 17, 15,
 												23, 21, 22, 20};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -301,13 +300,10 @@ static void test_SwapCols_OnBounds() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapCols(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -315,19 +311,21 @@ static void test_SwapCols_Near() {
 	printf("[--------] Near\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 1;
+	const size_t kI2 = 2;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 1;
-	const size_t kI2 = 2;
 	int expected_arr[] = {1, 3, 2, 4,
 												6, 8, 7, 9,
 												10, 12, 11, 13,
 												15, 17, 16, 19,
 												20, 22, 21, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -335,13 +333,10 @@ static void test_SwapCols_Near() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapCols(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -349,19 +344,21 @@ static void test_SwapCols_One() {
 	printf("[--------] One\n");
 	const size_t kInitialNRows = 5;
 	const size_t kInitialNCols = 4;
+	const size_t kI1 = 3;
+	const size_t kI2 = 3;
 	int initial_arr[] = {1, 2, 3, 4,
 											 6, 7, 8, 9,
 											 10, 11, 12, 13,
 											 15, 16, 17, 19,
 											 20, 21, 22, 23};
-	const size_t kI1 = 3;
-	const size_t kI2 = 3;
 	int expected_arr[] = {1, 2, 3, 4,
 												6, 7, 8, 9,
 												10, 11, 12, 13,
 												15, 16, 17, 19,
 												20, 21, 22, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	printf("[--------] n_rows = %zu, n_cols = %zu, i1 = %zu, i2 = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols,
@@ -369,13 +366,10 @@ static void test_SwapCols_One() {
 				 kI2);
 	printf("[RUN     ]\n");
 	SwapCols(m, kI1, kI2);
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -411,18 +405,17 @@ static void test_InsertionSortRowsMatrixByRowCriteria_Sorted() {
 												15, 16, 17, 19,
 												20, 21, 22, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortRowsMatrixByRowCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -441,18 +434,17 @@ static void test_InsertionSortRowsMatrixByRowCriteria_Unsorted() {
 												15, 16, 17, 19,
 												20, 21, 22, 23};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortRowsMatrixByRowCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -463,18 +455,17 @@ static void test_InsertionSortRowsMatrixByRowCriteria_OneEl() {
 	int initial_arr[] = {34};
 	int expected_arr[] = {34};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortRowsMatrixByRowCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -492,18 +483,17 @@ static void test_InsertionSortColsMatrixByColCriteria_OneEl() {
 	int initial_arr[] = {34};
 	int expected_arr[] = {34};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortColsMatrixByColCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -522,18 +512,17 @@ static void test_InsertionSortColsMatrixByColCriteria_Unsorted() {
 												4, 5, 10, 13,
 												5, 6, 11, 14};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortColsMatrixByColCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -552,18 +541,17 @@ static void test_InsertionSortColsMatrixByColCriteria_Sorted() {
 												4, 5, 10, 13,
 												5, 6, 11, 14};
 	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
 	InsertionSortColsMatrixByColCriteria(m, GetSum);
 	printf("[--------] n_rows = %zu, n_cols = %zu\n",
 				 kInitialNRows,
 				 kInitialNCols);
 	printf("[RUN     ]\n");
-	for (size_t i = 0; i < kInitialNRows; i++) {
-		assert(memcmp(m.data[i],
-									expected_arr + i * kInitialNCols,
-									kInitialNCols * sizeof(**m.data)) == 0);
-	}
+	assert(AreTwoMatricesEqual(m, expected_m));
 
 	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
 	printf("[      OK]\n");
 }
 
@@ -832,6 +820,209 @@ static void test_IsSymmetricMatrix() {
 	test_IsSymmetricMatrix_NotSymmetric();
 }
 
+static void test_GetMinValuePos_GetMinValuePos_Normal() {
+	printf("[--------] Normal\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	const Position kMinP = (Position) {0, 2};
+	const Position kMaxP = (Position) {3, 1};
+	int initial_arr[] = {1, 2, -7, 4,
+											 2, 9, 5, 6,
+											 3, 5, 9, 7,
+											 4, 10, 7, 0};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	Position min_p = GetMinValuePos(m);
+	Position max_p = GetMaxValuePos(m);
+
+	assert(memcmp(&min_p, &kMinP, sizeof(min_p)) == 0);
+	assert(memcmp(&max_p, &kMaxP, sizeof(max_p)) == 0);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinValuePos_GetMinValuePos_Duplicates() {
+	printf("[--------] Duplicates\n");
+	const size_t kInitialNRows = 4;
+	const size_t kInitialNCols = 4;
+	const Position kMinP = (Position) {0, 2};
+	const Position kMaxP = (Position) {1, 2};
+	int initial_arr[] = {1, 2, -7, 4,
+											 2, -7, 10, -7,
+											 3, 5, 9, 7,
+											 4, 10, 7, 10};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	Position min_p = GetMinValuePos(m);
+	Position max_p = GetMaxValuePos(m);
+
+	assert(memcmp(&min_p, &kMinP, sizeof(min_p)) == 0);
+	assert(memcmp(&max_p, &kMaxP, sizeof(max_p)) == 0);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinValuePos_GetMinValuePos_OneEl() {
+	printf("[--------] OneEl\n");
+	const size_t kInitialNRows = 1;
+	const size_t kInitialNCols = 1;
+	const Position kMinP = (Position) {0, 0};
+	const Position kMaxP = (Position) {0, 0};
+	int initial_arr[] = {1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	Position min_p = GetMinValuePos(m);
+	Position max_p = GetMaxValuePos(m);
+
+	assert(memcmp(&min_p, &kMinP, sizeof(min_p)) == 0);
+	assert(memcmp(&max_p, &kMaxP, sizeof(max_p)) == 0);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetMinValuePos_GetMinValuePos() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_GetMinValuePos_GetMinValuePos_OneEl();
+	test_GetMinValuePos_GetMinValuePos_Duplicates();
+	test_GetMinValuePos_GetMinValuePos_Normal();
+}
+
+static void test_MulMatrices_Square() {
+	printf("[--------] Square\n");
+	const size_t kInitialNRows = 2;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {1, 0,
+											 0, 1};
+	int expected_arr[] = {1, 0,
+												0, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	m = MulMatrices(m, m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_MulMatrices_Diff() {
+	printf("[--------] Diff\n");
+	const size_t kInitialNRows1 = 3;
+	const size_t kInitialNCols1 = 2;
+	const size_t kInitialNRows2 = 2;
+	const size_t kInitialNCols2 = 4;
+	int initial_arr_1[] = {1, 1,
+												 1, 1,
+												 1, 1};
+	int initial_arr_2[] = {2, 2, 2, 2,
+												 2, 2, 2, 2};
+	int expected_arr[] = {4, 4, 4, 4,
+												4, 4, 4, 4,
+												4, 4, 4, 4};
+	Matrix m_1 = CreateMatrixFromArray(initial_arr_1, kInitialNRows1,
+																		 kInitialNCols1);
+	Matrix m_2 = CreateMatrixFromArray(initial_arr_2, kInitialNRows2,
+																		 kInitialNCols2);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows1,
+																						kInitialNCols2);
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu,"
+				 "n_rows_2 = %zu, n_cols_2 = %zu\n",
+				 kInitialNRows1,
+				 kInitialNCols1,
+				 kInitialNRows2,
+				 kInitialNCols2);
+	printf("[RUN     ]\n");
+	Matrix m = MulMatrices(m_1, m_2);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_MulMatrices() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_MulMatrices_Diff();
+	test_MulMatrices_Square();
+}
+
+static void test_transposeMatrix_Square() {
+	printf("[--------] Square\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 2, 3,
+											 1, 2, 3,
+											 1, 2, 3};
+	int expected_arr[] = {1, 1, 1,
+												2, 2, 2,
+												3, 3, 3};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
+																						kInitialNRows);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	transposeMatrix(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_transposeMatrix_NotSquare() {
+	printf("[--------] NotSquare\n");
+	const size_t kInitialNRows = 2;
+	const size_t kInitialNCols = 3;
+	int initial_arr[] = {1, 2, 3,
+											 1, 2, 3};
+	int expected_arr[] = {1, 1,
+												2, 2,
+												3, 3};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNCols,
+																						kInitialNRows);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	transposeMatrix(&m);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_transposeMatrix() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_transposeMatrix_Square();
+	test_transposeMatrix_NotSquare();
+}
+
 void test_matrix() {
 	printf("[########] %s\n", __FILE__);
 	test_GetMemMatrix_FreeMemMatrix();
@@ -844,5 +1035,8 @@ void test_matrix() {
 	test_AreTwoMatricesEqual();
 	test_IsEMatrix();
 	test_IsSymmetricMatrix();
+	test_transposeMatrix();
+	test_GetMinValuePos_GetMinValuePos();
+	test_MulMatrices();
 	printf("[ PASSED ]\n");
 }

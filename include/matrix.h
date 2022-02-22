@@ -11,8 +11,8 @@ typedef struct Matrix {
 } Matrix;
 
 typedef struct Position {
-	size_t row_index;
-	size_t col_index;
+	size_t row_i;
+	size_t col_i;
 } Position;
 
 /**
@@ -166,6 +166,7 @@ bool AreTwoMatricesEqual(Matrix m_1,
  */
 bool IsEMatrix(Matrix m);
 
+
 /**
  * @brief Проверка, является ли данная матрица симметричной
  *
@@ -174,6 +175,13 @@ bool IsEMatrix(Matrix m);
  * 					'false' в противном случае
  */
 bool IsSymmetricMatrix(Matrix m);
+
+/**
+ * @brief Транспонирование матрицы
+ *
+ * @param m указатель на мтарицу
+ */
+void transposeMatrix(Matrix* m);
 
 /**
  * @brief Получение позиции минимального значения матрицы
@@ -234,7 +242,7 @@ Matrix* CreateArrayOfMatrixFromArray(int* arr,
  * @param m_2 вторая матрица
  * @return результат произведения матриц
  */
-Matrix MuLMatrices(Matrix m_1,
+Matrix MulMatrices(Matrix m_1,
 									 Matrix m_2);
 
 #endif  // MATRIX_H

@@ -168,17 +168,6 @@ void InsertionSortColsMatrixByColCriteria(Matrix m,
 	free(weights);
 }
 
-Matrix CreateMatrixFromArray(int* arr,
-														 const size_t n_rows,
-														 const size_t n_cols) {
-	Matrix m = GetMemMatrix(n_rows, n_cols);
-	for (size_t row_i = 0; row_i < n_rows; row_i++) {
-		memcpy(m.data[row_i], arr + row_i * n_cols, n_cols * sizeof(**m.data));
-	}
-
-	return m;
-}
-
 bool IsSquareMatrix(const Matrix m) {
 	return m.n_rows == m.n_cols;
 }
@@ -234,4 +223,92 @@ bool IsSymmetricMatrix(const Matrix m) {
 	}
 
 	return true;
+}
+
+Position GetMinValuePos(const Matrix m) {
+	size_t min_row_i = 0;
+	size_t min_col_i = 0;
+	int min_val = m.data[0][0];
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_rows; col_i++) {
+			if (m.data[row_i][col_i] < min_val) {
+				min_val = m.data[row_i][col_i];
+				min_row_i = row_i;
+				min_col_i = col_i;
+			}
+		}
+	}
+
+	return (Position) {min_row_i, min_col_i};
+}
+
+void transposeMatrix(Matrix* m) {
+	Matrix t_m = GetMemMatrix(m->n_cols, m->n_rows);
+	for (size_t t_row_i = 0; t_row_i < t_m.n_rows; t_row_i++) {
+		for (size_t t_col_i = 0; t_col_i < t_m.n_cols; t_col_i++) {
+			t_m.data[t_row_i][t_col_i] = m->data[t_col_i][t_row_i];
+		}
+	}
+	FreeMemMatrix(m);
+	*m = t_m;
+}
+
+Position GetMaxValuePos(const Matrix m) {
+	size_t max_row_i = 0;
+	size_t max_col_i = 0;
+	int max_val = m.data[0][0];
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_rows; col_i++) {
+			if (m.data[row_i][col_i] > max_val) {
+				max_val = m.data[row_i][col_i];
+				max_row_i = row_i;
+				max_col_i = col_i;
+			}
+		}
+	}
+
+	return (Position) {max_row_i, max_col_i};
+}
+
+Matrix CreateMatrixFromArray(int* arr,
+														 const size_t n_rows,
+														 const size_t n_cols) {
+	Matrix m = GetMemMatrix(n_rows, n_cols);
+	for (size_t row_i = 0; row_i < n_rows; row_i++) {
+		memcpy(m.data[row_i], arr + row_i * n_cols, n_cols * sizeof(**m.data));
+	}
+
+	return m;
+}
+
+Matrix* CreateArrayOfMatrixFromArray(int* arr,
+																		 const size_t n_matrices,
+																		 const size_t n_rows,
+																		 const size_t n_cols) {
+	Matrix* ms = (Matrix*) malloc(n_matrices * sizeof(*ms));
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		ms[matrix_i] = GetMemMatrix(n_rows, n_cols);
+	}
+}
+
+Matrix MulMatrices(const Matrix m_1,
+									 const Matrix m_2) {
+	if (m_1.n_cols != m_2.n_rows) {
+		THROW_EX(3, "Matrix size error\n");
+	}
+
+	const size_t n_rows = m_1.n_rows;
+	const size_t n_cols = m_2.n_cols;
+	const size_t els_in_row = m_1.n_cols;
+	Matrix m = GetMemMatrix(n_rows, n_cols);
+	for (size_t row_i = 0; row_i < n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < n_cols; col_i++) {
+			m.data[row_i][col_i] = 0;
+			for (size_t el_i = 0; el_i < els_in_row; el_i++) {
+				m.data[row_i][col_i] += m_1.data[row_i][el_i] * m_2.data[el_i][col_i];
+			}
+		}
+	}
+
+	return m;
 }
