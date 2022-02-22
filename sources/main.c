@@ -6,7 +6,8 @@
 // 	#define TASK_2
 //	#define TASK_3
 // 	#define TASK_4
-#define TASK_5
+//	#define TASK_5
+#define TASK_6
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -34,7 +35,7 @@ void SwapRowsWithMinMaxEls(Matrix m) {
 	SwapRows(m, GetMinValuePos(m).row_i, GetMaxValuePos(m).row_i);
 }
 
-static void test_transposeMatrix_DiffRows() {
+static void test_SwapRowsWithMinMaxEls_DiffRows() {
 	printf("[--------] DiffRows\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 3;
@@ -60,7 +61,7 @@ static void test_transposeMatrix_DiffRows() {
 	printf("[      OK]\n");
 }
 
-static void test_transposeMatrix_OneRow() {
+static void test_SwapRowsWithMinMaxEls_OneRow() {
 	printf("[--------] OneRow\n");
 	const size_t kInitialNRows = 3;
 	const size_t kInitialNCols = 3;
@@ -88,8 +89,8 @@ static void test_transposeMatrix_OneRow() {
 
 static void test_SwapRowsWithMinMaxEls() {
 	printf("[========] %s()\n", __FUNCTION__);
-	test_transposeMatrix_DiffRows();
-	test_transposeMatrix_OneRow();
+	test_SwapRowsWithMinMaxEls_DiffRows();
+	test_SwapRowsWithMinMaxEls_OneRow();
 }
 
 int main() {
@@ -525,3 +526,127 @@ int main() {
 }
 
 #endif // TASK_5
+
+//	Даны две квадратные матрицы 𝐴 и 𝐵. Определить, являются ли они взаимно
+//	обратными
+#ifdef TASK_6
+
+/**
+ * @brief Проверка, являются ли матрицы взаимообратными
+ * @param m_1	первая матрица
+ * @param m_2	вторая матрица
+ * @return	'true', если матрицы взаимообратные,
+ * 					'false' в противном случае
+ */
+bool IsMutuallyInverseMatrices(const Matrix m_1,
+															 const Matrix m_2) {
+	if ((m_1.n_rows != m_2.n_rows ||
+			 m_1.n_cols != m_2.n_cols)) {
+		return false;
+	}
+
+	Matrix e = MulMatrices(m_1, m_2);
+
+	if (IsEMatrix(e)) {
+		FreeMemMatrix(&e);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+static void test_IsMutuallyInverseMatrices_True() {
+	printf("[--------] True\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr_1[] = {1, 0, 0,
+												 0, 1, 0,
+												 0, 0, 1};
+	int initial_arr_2[] = {1, 0, 0,
+												 0, 1, 0,
+												 0, 0, 1};
+	Matrix m_1 = CreateMatrixFromArray(initial_arr_1, kInitialNRows,
+																		 kInitialNCols);
+	Matrix m_2 = CreateMatrixFromArray(initial_arr_2, kInitialNRows,
+																		 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(IsMutuallyInverseMatrices(m_1, m_2));
+
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	printf("[      OK]\n");
+}
+
+static void test_IsMutuallyInverseMatrices_False() {
+	printf("[--------] False\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	int initial_arr_1[] = {1, 0, 0,
+												 0, 1, 0,
+												 0, 0, 1};
+	int initial_arr_2[] = {2, 0, 0,
+												 0, 2, 0,
+												 0, 0, 2};
+	Matrix m_1 = CreateMatrixFromArray(initial_arr_1, kInitialNRows,
+																		 kInitialNCols);
+	Matrix m_2 = CreateMatrixFromArray(initial_arr_2, kInitialNRows,
+																		 kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(!IsMutuallyInverseMatrices(m_1, m_2));
+
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	printf("[      OK]\n");
+}
+
+static void test_IsMutuallyInverseMatrices_DiffSizes() {
+	printf("[--------] DiffSizes\n");
+	const size_t kInitialNRows1 = 3;
+	const size_t kInitialNCols1 = 3;
+	const size_t kInitialNRows2 = 4;
+	const size_t kInitialNCols2 = 3;
+	int initial_arr_1[] = {1, 0, 0,
+												 0, 1, 0,
+												 0, 0, 1};
+	int initial_arr_2[] = {2, 0, 0,
+												 0, 2, 0,
+												 0, 0, 2,
+												 0, 0, 0};
+	Matrix m_1 = CreateMatrixFromArray(initial_arr_1, kInitialNRows1,
+																		 kInitialNCols1);
+	Matrix m_2 = CreateMatrixFromArray(initial_arr_2, kInitialNRows2,
+																		 kInitialNCols2);
+	printf("[--------] n_rows_1 = %zu, n_cols_1 = %zu,"
+				 "n_rows_2 = %zu, n_cols_2 = %zu\n",
+				 kInitialNRows1,
+				 kInitialNCols1,
+				 kInitialNRows2,
+				 kInitialNCols2);
+	printf("[RUN     ]\n");
+	assert(!IsMutuallyInverseMatrices(m_1, m_2));
+
+	FreeMemMatrix(&m_1);
+	FreeMemMatrix(&m_2);
+	printf("[      OK]\n");
+}
+
+static void test_IsMutuallyInverseMatrices() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_IsMutuallyInverseMatrices_DiffSizes();
+	test_IsMutuallyInverseMatrices_False();
+	test_IsMutuallyInverseMatrices_True();
+}
+
+int main() {
+	test_IsMutuallyInverseMatrices();
+
+	return 0;
+}
+
+#endif // TASK_6
