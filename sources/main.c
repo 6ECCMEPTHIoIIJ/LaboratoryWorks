@@ -16,7 +16,8 @@
 //	#define TASK_10
 //	#define TASK_11
 //	#define TASK_12
-#define TASK_13
+//	#define TASK_13
+#define TASK_14
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1472,3 +1473,137 @@ int main() {
 }
 
 #endif // TASK_13
+
+//	Дан массив целочисленных матриц. Вывести матрицы, имеющие наибольшее
+//	число нулевых строк
+#ifdef TASK_14
+
+/**
+ * @brief Подсчет кол-ва вхождений искомого значения в массив
+ * @param arr 	указатель на нулевой элемент массива
+ * @param size 	кол-во элементов массива
+ * @param val 	искомое значение
+ * @return кол-во вхождений искомого значения в массив
+ */
+size_t CountValues(int* arr,
+									 const size_t size,
+									 const size_t val) {
+	size_t val_count = 0;
+	for (size_t i = 0; i < size; i++) {
+		val_count += arr[i] == val;
+	}
+
+	return val_count;
+}
+
+/**
+ * @brief Подсчет нулевых строк матрицы
+ * @param m матрица
+ * @return кол-во нулевых строк матрицы
+ */
+size_t CountZeroRows(const Matrix m) {
+	size_t zero_rows_count = 0;
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		zero_rows_count += CountValues(m.data[row_i], m.n_cols, 0) == m.n_cols;
+	}
+
+	return zero_rows_count;
+}
+
+static void test_CountZeroRows_Zero() {
+	printf("[--------] Zero\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {1, 0,
+											 4, 6,
+											 0, 7,
+											 9, 8,
+											 11, 0};
+	const size_t kExpected = 0;
+	Matrix m = CreateMatrixFromArray(initial_arr,
+																	 kInitialNRows,
+																	 kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(CountZeroRows(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_CountZeroRows_NotZero() {
+	printf("[--------] Zero\n");
+	const size_t kInitialNRows = 5;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {0, 0,
+											 4, 0,
+											 0, 7,
+											 9, 8,
+											 0, 0};
+	const size_t kExpected = 2;
+	Matrix m = CreateMatrixFromArray(initial_arr,
+																	 kInitialNRows,
+																	 kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(CountZeroRows(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_CountZeroRows() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_CountZeroRows_NotZero();
+	test_CountZeroRows_Zero();
+}
+
+/**
+ * @brief Поиск максимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	максимальное значение элементов массива
+ */
+size_t GetMax(size_t* arr,
+							const size_t size) {
+	size_t max = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] > max) {
+			max = arr[i];
+		}
+	}
+
+	return max;
+}
+
+void PrintMatrixWithMaxZeroRows(Matrix* ms,
+																const size_t n_matrices) {
+	size_t* ms_zero_rows_counts = (size_t*) malloc(n_matrices *
+																								 sizeof(*ms_zero_rows_counts));
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		ms_zero_rows_counts[matrix_i] = CountZeroRows(ms[matrix_i]);
+	}
+	size_t max_m_zero_rows = GetMax(ms_zero_rows_counts, n_matrices);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		if (ms_zero_rows_counts[matrix_i] == max_m_zero_rows) {
+			OutputMatrix(ms[matrix_i]);
+		}
+	}
+}
+
+int main() {
+	test_CountZeroRows();
+
+	return 0;
+}
+
+#endif // TASK_14
