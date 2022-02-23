@@ -17,7 +17,8 @@
 //	#define TASK_11
 //	#define TASK_12
 //	#define TASK_13
-#define TASK_14
+//  #define TASK_14
+#define TASK_15
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1603,7 +1604,84 @@ void PrintMatrixWithMaxZeroRows(Matrix* ms,
 int main() {
 	test_CountZeroRows();
 
+	size_t n_matrices, n_rows, n_cols;
+	scanf("%zu %zu %zu", &n_matrices, &n_rows, &n_cols);
+	Matrix* ms = GetMemArrayOfMatrices(n_matrices, n_rows, n_cols);
+	InputMatrices(ms, n_matrices);
+	PrintMatrixWithMaxZeroRows(ms, n_matrices);
+
 	return 0;
 }
 
 #endif // TASK_14
+
+//  Дан массив вещественных квадратных матриц. Вывести матрицы с наименьшей
+//	нормой. В качестве нормы матрицы взять максимум абсолютных величин ее
+//	элементов
+#ifdef TASK_15
+
+/**
+ * @brief Поиск максимального абсолютного значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	максимальное абсолютное значение элементов массива
+ */
+int GetMatrixAbsMax(const Matrix m) {
+	int max = abs(m.data[0][0]);
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			if (abs(m.data[row_i][col_i]) > max) {
+				max = abs(m.data[row_i][col_i]);
+			}
+		}
+	}
+
+	return max;
+}
+
+/**
+ * @brief Поиск минимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	минимальное значение элементов массива
+ */
+int GetMin(int* arr,
+					 const size_t size) {
+	int min = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+
+	return min;
+}
+
+void PrintMatrixWithMinNorms(Matrix* ms,
+														 const size_t n_matrices) {
+	int* ms_norms = (int*) malloc(n_matrices *
+																sizeof(*ms_norms));
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		ms_norms[matrix_i] = GetMatrixAbsMax(ms[matrix_i]);
+	}
+	size_t min_m_norm = GetMin(ms_norms, n_matrices);
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		if (ms_norms[matrix_i] == min_m_norm) {
+			OutputMatrix(ms[matrix_i]);
+		}
+	}
+}
+
+int main() {
+	size_t n_matrices, n_rows, n_cols;
+	scanf("%zu %zu %zu", &n_matrices, &n_rows, &n_cols);
+	Matrix* ms = GetMemArrayOfMatrices(n_matrices, n_rows, n_cols);
+	InputMatrices(ms, n_matrices);
+	PrintMatrixWithMinNorms(ms, n_matrices);
+
+	return 0;
+}
+
+#endif // TASK_15
