@@ -382,13 +382,13 @@ static void test_SwapCols() {
 }
 
 static int GetSum(int* arr,
-									const size_t size) {
-	int sum = 0;
-	for (size_t i = 0; i < size; i++) {
-		sum += arr[i];
-	}
+                  const size_t size) {
+  int sum = 0;
+  for (size_t i = 0; i < size; i++) {
+    sum += arr[i];
+  }
 
-	return sum;
+  return sum;
 }
 
 static void test_InsertionSortRowsMatrixByRowCriteria_Sorted() {
