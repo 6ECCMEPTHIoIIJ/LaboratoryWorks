@@ -14,7 +14,8 @@
 //  #define TASK_8
 //	#define TASK_9
 //	#define TASK_10
-#define TASK_11
+//	#define TASK_11
+#define TASK_12
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1183,40 +1184,6 @@ int main() {
 #ifdef TASK_11
 
 /**
- * @brief Вычисление суммы элементов массива
- * @param arr		указатель на нулевой элемент массива
- * @param size	кол-во элементов в массиве
- * @return	сумму элементов массива
- */
-long long GetSum(int* arr,
-								 const size_t size) {
-	long long sum = 0;
-	for (size_t i = 0; i < size; i++) {
-		sum += arr[i];
-	}
-
-	return sum;
-}
-
-/**
- * @brief Поиск максимума в массиве
- * @param arr		указатель на нулевой элемент массива
- * @param size	кол-во элементов в массиве
- * @return индекс первого вхождения максимального элемента в массив
- */
-int GetMax(int* arr,
-					 const size_t size) {
-	int max = arr[0];
-	for (size_t i = 0; i < size; i++) {
-		if (arr[i] > max) {
-			max = arr[i];
-		}
-	}
-
-	return max;
-}
-
-/**
  * @brief Подсчет кол-ва элементов матрицы, больших суммы остальных элементов
  * 				своего столбца
  * @param m матрица
@@ -1225,13 +1192,15 @@ int GetMax(int* arr,
  */
 size_t GetNSpecialEl(const Matrix m) {
 	size_t special_el_count = 0;
-	int* cur_col = (int*) malloc(m.n_rows * sizeof(*cur_col));
 	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+		long long cur_sum = 0;
+		int cur_max = m.data[0][col_i];
 		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
-			cur_col[row_i] = m.data[row_i][col_i];
+			cur_sum += m.data[row_i][col_i];
+			if (m.data[row_i][col_i] > cur_max) {
+				cur_max = m.data[row_i][col_i];
+			}
 		}
-		const long long cur_sum = GetSum(cur_col, m.n_rows);
-		const int cur_max = GetMax(cur_col, m.n_rows);
 		special_el_count += cur_max > cur_sum - cur_max;
 	}
 
@@ -1291,3 +1260,114 @@ int main() {
 }
 
 #endif // TASK_11
+
+#ifdef TASK_12
+
+/**
+ * @brief Поиск позиции самого левого минимального элемента матрицы
+ * @param m матрица
+ * @return позицию самого левого минимального элемента матрицы
+ */
+Position GetLeftMin(const Matrix m) {
+	int min = m.data[0][0];
+	size_t min_row_i = 0;
+	size_t min_col_i = 0;
+	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+			if (m.data[row_i][col_i] < min) {
+				min = m.data[row_i][col_i];
+				min_row_i = row_i;
+				min_col_i = col_i;
+			}
+		}
+	}
+
+	return (Position) {min_row_i, min_col_i};
+}
+
+/**
+ * @brief Замена заданной строки квадратной матрицы на столбец, содержащий
+ * 				самый левый минимальный элемент
+ * @param m						матрица
+ * @param swap_row_i	индекс строки
+ */
+void SwapPenultimateRow(Matrix m,
+												const size_t swap_row_i) {
+	const Position l_min_col_p = GetLeftMin(m);
+	const int t = m.data[swap_row_i][l_min_col_p.col_i];
+	for (size_t col_i = 0, row_i = 0; col_i < m.n_cols; col_i++, row_i++) {
+		if (row_i == swap_row_i) {
+			m.data[swap_row_i][col_i] = t;
+		} else {
+			m.data[swap_row_i][col_i] = m.data[row_i][l_min_col_p.col_i];
+		}
+	}
+}
+
+static void test_SwapPenultimateRow_First() {
+	printf("[--------] First\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	const size_t kInitialSwapRowI = 1;
+	int initial_arr[] = {1, 2, 3,
+											 4, 5, 6,
+											 7, 8, 1};
+	int expected_arr[] = {1, 2, 3,
+												1, 4, 7,
+												7, 8, 1};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	SwapPenultimateRow(m, kInitialSwapRowI);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_SwapPenultimateRow_NotFirst() {
+	printf("[--------] NotFirst\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 3;
+	const size_t kInitialSwapColI = 1;
+	int initial_arr[] = {1, 2, -3,
+											 4, 5, 6,
+											 7, 8, 9};
+	int expected_arr[] = {1, 2, -3,
+												-3, 6, 9,
+												7, 8, 9};
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+																	 kInitialNCols);
+	Matrix expected_m = CreateMatrixFromArray(expected_arr, kInitialNRows,
+																						kInitialNCols);
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	SwapPenultimateRow(m, kInitialSwapColI);
+	assert(AreTwoMatricesEqual(m, expected_m));
+
+	FreeMemMatrix(&m);
+	FreeMemMatrix(&expected_m);
+	printf("[      OK]\n");
+}
+
+static void test_SwapPenultimateRow() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_SwapPenultimateRow_First();
+	test_SwapPenultimateRow_NotFirst();
+}
+
+int main() {
+	test_SwapPenultimateRow();
+
+	return 0;
+}
+
+#endif // TASK_12
