@@ -3,24 +3,25 @@
 #include <malloc.h>
 #include <minmax.h>
 
-//	#define TEST_MATRIX
-//	#define TASK_1
-// 	#define TASK_2
-//	#define TASK_3
-// 	#define TASK_4
-//	#define TASK_5
-//	#define TASK_6
-//	#define TASK_7
-//  #define TASK_8
-//	#define TASK_9
-//	#define TASK_10
-//	#define TASK_11
-//	#define TASK_12
-//	#define TASK_13
-//  #define TASK_14
-//	#define TASK_15
-//  #define TASK_16
-#define TASK_17
+//#define TEST_MATRIX
+//#define TASK_1
+//#define TASK_2
+//#define TASK_3
+//#define TASK_4
+//#define TASK_5
+//#define TASK_6
+//#define TASK_7
+//#define TASK_8
+//#define TASK_9
+//#define TASK_10
+//#define TASK_11
+//#define TASK_12
+//#define TASK_13
+//#define TASK_14
+//#define TASK_15
+//#define TASK_16
+//#define TASK_17
+#define TASK_18
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -773,7 +774,7 @@ static void test_FindSumOfMaxesOfPseudoDiagonal_Toll() {
   printf("[      OK]\n");
 }
 
-static void test_sortRowsByMaxElement() {
+static void test_FindSumOfMaxesOfPseudoDiagonal() {
   printf("[========] %s()\n", __FUNCTION__);
   test_FindSumOfMaxesOfPseudoDiagonal_Square();
   test_FindSumOfMaxesOfPseudoDiagonal_Wide();
@@ -781,7 +782,7 @@ static void test_sortRowsByMaxElement() {
 }
 
 int main() {
-  test_sortRowsByMaxElement();
+  test_FindSumOfMaxesOfPseudoDiagonal();
 
   return 0;
 }
@@ -1934,3 +1935,92 @@ int main() {
 }
 
 #endif // TASK_17
+
+//  *Дана целочисленная квадратная матрица, все элементы которой различны.
+//  Найти скалярное произведение строки, в которой находится наибольший элемент
+//  матрицы, на столбец
+#ifdef TASK_18
+
+long long GetScalarProduct(int* v_1,
+                           int* v_2,
+                           const size_t n) {
+  long long scalar_prod = 0;
+  for (size_t i = 0; i < n; i++) {
+    scalar_prod += v_1[i] * v_2[i];
+  }
+
+  return scalar_prod;
+}
+
+long long GetScalarProductRowAndCol(const Matrix m,
+                                    const size_t init_row_i,
+                                    const size_t init_col_i) {
+  int* cur_col = (int*) malloc(m.n_rows * sizeof(*cur_col));
+  for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+    cur_col[row_i] = m.data[row_i][init_col_i];
+  }
+
+  return GetScalarProduct(m.data[init_row_i], cur_col, m.n_cols);
+}
+
+long long GetSpecialScalarProduct(const Matrix m) {
+  return GetScalarProductRowAndCol(m,
+                                   GetMaxValuePos(m).row_i,
+                                   GetMinValuePos(m).col_i);
+}
+
+static void test_GetSpecialScalarProduct_Simple() {
+  printf("[--------] Simple\n");
+  const size_t kInitialNRows = 3;
+  const size_t kInitialNCols = 3;
+  int initial_arr[] = {1, 2, 3,
+                       4, 5, 6,
+                       7, 8, 9};
+
+  const size_t kExpected = 1 * 7 + 4 * 8 + 7 * 9;
+  Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+                                   kInitialNCols);
+  printf("[--------] n_rows = %zu, n_cols = %zu\n",
+         kInitialNRows,
+         kInitialNCols);
+  printf("[RUN     ]\n");
+  assert(GetSpecialScalarProduct(m) == kExpected);
+
+  FreeMemMatrix(&m);
+  printf("[      OK]\n");
+}
+
+static void test_GetSpecialScalarProduct_NotSimple() {
+  printf("[--------] NotSimple\n");
+  const size_t kInitialNRows = 3;
+  const size_t kInitialNCols = 3;
+  int initial_arr[] = {1, -5, 3,
+                       4, 11, 6,
+                       7, 0, 9};
+
+  const size_t kExpected = -5 * 4 + 11 * 11;
+  Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows,
+                                   kInitialNCols);
+  printf("[--------] n_rows = %zu, n_cols = %zu\n",
+         kInitialNRows,
+         kInitialNCols);
+  printf("[RUN     ]\n");
+  assert(GetSpecialScalarProduct(m) == kExpected);
+
+  FreeMemMatrix(&m);
+  printf("[      OK]\n");
+}
+
+static void test_GetSpecialScalarProduct() {
+  printf("[========] %s()\n", __FUNCTION__);
+  test_GetSpecialScalarProduct_Simple();
+  test_GetSpecialScalarProduct_NotSimple();
+}
+
+int main() {
+  test_GetSpecialScalarProduct();
+
+  return 0;
+}
+
+#endif // TASK_18
