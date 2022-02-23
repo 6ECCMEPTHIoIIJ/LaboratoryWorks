@@ -15,7 +15,8 @@
 //	#define TASK_9
 //	#define TASK_10
 //	#define TASK_11
-#define TASK_12
+//	#define TASK_12
+#define TASK_13
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1179,7 +1180,7 @@ int main() {
 
 #endif // TASK_10
 
-// Дана матрица. Определить 𝑘 – количество "особых" элементов матрицы, считая
+// 	Дана матрица. Определить 𝑘 – количество "особых" элементов матрицы, считая
 //	элемент "особым", если он больше суммы остальных элементов своего столбца
 #ifdef TASK_11
 
@@ -1261,6 +1262,8 @@ int main() {
 
 #endif // TASK_11
 
+// 	Дана квадратная матрица. Заменить предпоследнюю строку матрицы первым
+//	из столбцов, в котором находится минимальный элемент матрицы.
 #ifdef TASK_12
 
 /**
@@ -1371,3 +1374,101 @@ int main() {
 }
 
 #endif // TASK_12
+
+// 	Дан массив матриц одного размера. Определить число матриц, строки которых
+// 	упорядочены по неубыванию элементов
+#ifdef TASK_13
+
+/**
+ * @brief Проверка, является ли массив неубывающей последовательностью
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов в массиве
+ * @return	'true', если массив упорядочен по неубыванию,
+ * 					'false' в противном случае
+ */
+bool IsNonDecreasingSorted(int* arr,
+													 const size_t size) {
+	for (size_t i = 1; i < size; i++) {
+		if (arr[i] < arr[i - 1]) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @brief Проверка, что все строки матрицы упорядочены по неубыванию
+ *
+ * @param m	матрица
+ * @return	'true', се строки матрицы упорядочены по неубыванию,
+ * 					'false' в противном случае
+ */
+bool HasAllNonDecreasingRows(const Matrix m) {
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		if (!IsNonDecreasingSorted(m.data[row_i], m.n_cols)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @brief Подсчет матриц, содержащих все строки, упорядоченные по неубыванию
+ *
+ * @param ms
+ * @param n_matrices
+ * @return
+ */
+size_t CountNonDescendingRowsMatrices(Matrix* ms,
+																			const size_t n_matrices) {
+	size_t non_descending_row_ms_count = 0;
+	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
+		non_descending_row_ms_count += HasAllNonDecreasingRows(ms[matrix_i]);
+	}
+
+	return non_descending_row_ms_count;
+}
+
+static void test_CountNonDescendingRowsMatrices() {
+	printf("[========] %s()\n", __FUNCTION__);
+	const size_t kInitialNMatrices = 4;
+	const size_t kInitialNRows = 2;
+	const size_t kInitialNCols = 2;
+	int initial_arr[] = {7, 1,
+											 1, 1,
+
+											 1, 6,
+											 2, 2,
+
+											 5, 4,
+											 2, 3,
+
+											 1, 3,
+											 7, 9};
+	const size_t kExpected = 2;
+	Matrix* ms = CreateArrayOfMatrixFromArray(initial_arr,
+																						kInitialNMatrices,
+																						kInitialNRows,
+																						kInitialNCols);
+
+	printf("[--------] n_matrices = %zu,  n_rows = %zu, n_cols = %zu\n",
+				 kInitialNMatrices,
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(CountNonDescendingRowsMatrices(ms, kInitialNMatrices) == kExpected);
+
+	FreeMemMatrices(ms, kInitialNMatrices);
+	printf("[      OK]\n");
+}
+
+int main() {
+	test_CountNonDescendingRowsMatrices();
+
+	return 0;
+}
+
+#endif // TASK_13

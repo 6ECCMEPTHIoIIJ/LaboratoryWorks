@@ -330,8 +330,12 @@ Matrix* CreateArrayOfMatrixFromArray(int* arr,
 																		 const size_t n_cols) {
 	Matrix* ms = (Matrix*) malloc(n_matrices * sizeof(*ms));
 	for (size_t matrix_i = 0; matrix_i < n_matrices; matrix_i++) {
-		ms[matrix_i] = GetMemMatrix(n_rows, n_cols);
+		ms[matrix_i] = CreateMatrixFromArray(arr + matrix_i * n_rows * n_cols,
+																				 n_rows,
+																				 n_cols);
 	}
+
+	return ms;
 }
 
 Matrix MulMatrices(const Matrix m_1,
