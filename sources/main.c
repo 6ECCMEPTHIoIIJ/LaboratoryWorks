@@ -13,7 +13,8 @@
 //	#define TASK_7
 //  #define TASK_8
 //	#define TASK_9
-#define TASK_10
+//	#define TASK_10
+#define TASK_11
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1080,7 +1081,7 @@ int cmp_long_long(const void* pa,
 }
 
 /**
- * @brief Сортировка массива и подсчет кол-ва групп неуникальных элементов
+ * @brief Сортировка массива и подсчет кол-ва групп различных элементов
  * 				массива
  * @param arr 	указатель на нулевой элемент массива
  * @param size 	кол-во элементов массива
@@ -1101,6 +1102,11 @@ size_t CountNUnique(long long* arr,
 	return n_unique_count;
 }
 
+/**
+ * @brief Подсчет кол-ва классов эквивалентных по сумме строк
+ * @param m матрица
+ * @return кол-во классов эквивалентных по сумме строк
+ */
 size_t CountEqClassesByRowsSum(const Matrix m) {
 	long long* rows_sums = (long long*) malloc(m.n_cols * sizeof(*rows_sums));
 	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
@@ -1171,3 +1177,117 @@ int main() {
 }
 
 #endif // TASK_10
+
+// Дана матрица. Определить 𝑘 – количество "особых" элементов матрицы, считая
+//	элемент "особым", если он больше суммы остальных элементов своего столбца
+#ifdef TASK_11
+
+/**
+ * @brief Вычисление суммы элементов массива
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов в массиве
+ * @return	сумму элементов массива
+ */
+long long GetSum(int* arr,
+								 const size_t size) {
+	long long sum = 0;
+	for (size_t i = 0; i < size; i++) {
+		sum += arr[i];
+	}
+
+	return sum;
+}
+
+/**
+ * @brief Поиск максимума в массиве
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов в массиве
+ * @return индекс первого вхождения максимального элемента в массив
+ */
+int GetMax(int* arr,
+					 const size_t size) {
+	int max = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] > max) {
+			max = arr[i];
+		}
+	}
+
+	return max;
+}
+
+/**
+ * @brief Подсчет кол-ва элементов матрицы, больших суммы остальных элементов
+ * 				своего столбца
+ * @param m матрица
+ * @return 	кол-во элементов матрицы, больших суммы остальных элементов
+ * 					своего столбца
+ */
+size_t GetNSpecialEl(const Matrix m) {
+	size_t special_el_count = 0;
+	int* cur_col = (int*) malloc(m.n_rows * sizeof(*cur_col));
+	for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+		for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+			cur_col[row_i] = m.data[row_i][col_i];
+		}
+		const long long cur_sum = GetSum(cur_col, m.n_rows);
+		const int cur_max = GetMax(cur_col, m.n_rows);
+		special_el_count += cur_max > cur_sum - cur_max;
+	}
+
+	return special_el_count;
+}
+
+static void test_GetNSpecialEl_SomeEl() {
+	printf("[--------] SomeEl\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {3, 5, 5, 4,
+											 2, 3, 6, 7,
+											 12, 2, 1, 2};
+	const size_t kSpecialCount = 2;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetNSpecialEl(m) == kSpecialCount);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetNSpecialEl_None() {
+	printf("[--------] None\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 4;
+	int initial_arr[] = {3, 5, 5, 4,
+											 2, 3, 6, 6,
+											 5, 2, 1, 2};
+	const size_t kSpecialCount = 0;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetNSpecialEl(m) == kSpecialCount);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_CountEqClassesByRowsSum() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_GetNSpecialEl_SomeEl();
+	test_GetNSpecialEl_None();
+}
+
+int main() {
+	test_CountEqClassesByRowsSum();
+
+	return 0;
+}
+
+#endif // TASK_11
