@@ -18,7 +18,8 @@
 //	#define TASK_12
 //	#define TASK_13
 //  #define TASK_14
-#define TASK_15
+//	#define TASK_15
+#define TASK_16
 
 //	Тестирование основных функций библиотеки matrix.h
 #ifdef TEST_MATRIX
@@ -1250,14 +1251,14 @@ static void test_GetNSpecialEl_None() {
 	printf("[      OK]\n");
 }
 
-static void test_CountEqClassesByRowsSum() {
+static void test_GetNSpecialEl() {
 	printf("[========] %s()\n", __FUNCTION__);
 	test_GetNSpecialEl_SomeEl();
 	test_GetNSpecialEl_None();
 }
 
 int main() {
-	test_CountEqClassesByRowsSum();
+	test_GetNSpecialEl();
 
 	return 0;
 }
@@ -1685,3 +1686,116 @@ int main() {
 }
 
 #endif // TASK_15
+
+//	*Дана матрица. Определить 𝑘 – количество "особых" элементов данной матрицы,
+//	считая элемент "особым" если в строке слева от него находятся меньшие
+//	элементы, а справа – большие
+#ifdef TASK_16
+
+/**
+ * @brief Поиск максимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	максимальное значение элементов массива
+ */
+int GetMax(int* arr,
+					 const size_t size) {
+	int max = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] > max) {
+			max = arr[i];
+		}
+	}
+
+	return max;
+}
+
+/**
+ * @brief Поиск минимального значения элементов массива
+ *
+ * @param arr		указатель на нулевой элемент массива
+ * @param size	кол-во элементов массива
+ * @return	минимальное значение элементов массива
+ */
+int GetMin(int* arr,
+					 const size_t size) {
+	int min = arr[0];
+	for (size_t i = 0; i < size; i++) {
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+
+	return min;
+}
+
+size_t GetNSpecialEl2(const Matrix m) {
+	size_t specials_count = 0;
+	for (size_t row_i = 0; row_i < m.n_rows; row_i++) {
+		for (size_t col_i = 0; col_i < m.n_cols; col_i++) {
+			bool l_cond = col_i == 0 ||
+										GetMax(m.data[row_i], col_i) < m.data[row_i][col_i];
+			bool r_cond = col_i == m.n_cols - 1 ||
+										GetMin(m.data[row_i] + col_i + 1, m.n_cols - col_i - 1) >
+										m.data[row_i][col_i];
+			specials_count += l_cond && r_cond;
+		}
+	}
+
+	return specials_count;
+}
+
+static void test_GetNSpecialEl2_SomeEl() {
+	printf("[--------] SomeEl\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 5;
+	int initial_arr[] = {2, 3, 5, 5, 4,
+											 6, 2, 3, 8, 12,
+											 12, 12, 2, 1, 2};
+	const size_t kExpected = 4;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetNSpecialEl2(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetNSpecialEl2_None() {
+	printf("[--------] SomeEl\n");
+	const size_t kInitialNRows = 3;
+	const size_t kInitialNCols = 5;
+	int initial_arr[] = {2, 1, 5, 5, 4,
+											 6, 2, 3, 8, 6,
+											 12, 12, 2, 1, 2};
+	const size_t kExpected = 0;
+	Matrix m = CreateMatrixFromArray(initial_arr, kInitialNRows, kInitialNCols);
+
+	printf("[--------] n_rows = %zu, n_cols = %zu\n",
+				 kInitialNRows,
+				 kInitialNCols);
+	printf("[RUN     ]\n");
+	assert(GetNSpecialEl2(m) == kExpected);
+
+	FreeMemMatrix(&m);
+	printf("[      OK]\n");
+}
+
+static void test_GetNSpecialEl2() {
+	printf("[========] %s()\n", __FUNCTION__);
+	test_GetNSpecialEl2_SomeEl();
+	test_GetNSpecialEl2_None();
+}
+
+int main() {
+	test_GetNSpecialEl2();
+
+	return 0;
+}
+
+#endif // TASK_16
