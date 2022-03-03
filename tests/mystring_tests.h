@@ -1,7 +1,6 @@
 #ifndef INC_5E_MYSTRING_TESTS_H
 #define INC_5E_MYSTRING_TESTS_H
 
-#include <malloc.h>
 #include "../include/mystring.h"
 #include "tests.h"
 
@@ -47,7 +46,7 @@ static void test_mystrlen() {
 }
 
 static void test_find_firstSymbol() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t index = 0;
   ASSERT_PTR(str + index,
              find(str, str + mystrlen(str), 'a'));
@@ -55,7 +54,7 @@ static void test_find_firstSymbol() {
 }
 
 static void test_find_lastSymbol() {
-  char* str = "abacab=d";
+  char str[] = "abacab=d";
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index,
              find(str, str + mystrlen(str), 'd'));
@@ -63,7 +62,7 @@ static void test_find_lastSymbol() {
 }
 
 static void test_find_notFirstNotLast() {
-  char* str = "abczbca";
+  char str[] = "abczbca";
   const size_t index = 3;
   ASSERT_PTR(str + index,
              find(str, str + mystrlen(str), 'z'));
@@ -71,7 +70,7 @@ static void test_find_notFirstNotLast() {
 }
 
 static void test_find_notFound() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t index = mystrlen(str);
   ASSERT_PTR(str + index,
              find(str, str + mystrlen(str), 'z'));
@@ -79,7 +78,7 @@ static void test_find_notFound() {
 }
 
 static void test_find_NullDiapason() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t begin = 1;
   const size_t end = 1;
   const size_t index = end;
@@ -90,7 +89,7 @@ static void test_find_NullDiapason() {
 }
 
 static void test_find_notFullWordNotFound() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t begin = 1;
   const size_t end = 2;
   const size_t index = end;
@@ -101,7 +100,7 @@ static void test_find_notFullWordNotFound() {
 }
 
 static void test_find_notFullWordFirst() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t begin = 2;
   const size_t end = 4;
   const size_t index = begin;
@@ -112,7 +111,7 @@ static void test_find_notFullWordFirst() {
 }
 
 static void test_find_notFullWordLast() {
-  char* str = "abacaba";
+  char str[] = "abacaba";
   const size_t begin = 3;
   const size_t end = 5;
   const size_t index = end - 1;
@@ -123,7 +122,7 @@ static void test_find_notFullWordLast() {
 }
 
 static void test_find_notFullWordNotFirstNotLast() {
-  char* str = "abbcaba";
+  char str[] = "abbcaba";
   const size_t begin = 1;
   const size_t end = 6;
   const size_t index = 4;
@@ -148,7 +147,7 @@ static void test_find() {
 }
 
 static void test_findNonSpace_first() {
-  char* str = "a  asd";
+  char str[] = "a  asd";
   const size_t index = 0;
   ASSERT_PTR(str + index,
              findNonSpace(str));
@@ -156,7 +155,7 @@ static void test_findNonSpace_first() {
 }
 
 static void test_findNonSpace_last() {
-  char* str = "    a";
+  char str[] = "    a";
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index,
              findNonSpace(str));
@@ -164,7 +163,7 @@ static void test_findNonSpace_last() {
 }
 
 static void test_findNonSpace_notFound() {
-  char* str = "    ";
+  char str[] = "    ";
   const size_t index = mystrlen(str);
   ASSERT_PTR(str + index,
              findNonSpace(str));
@@ -172,7 +171,7 @@ static void test_findNonSpace_notFound() {
 }
 
 static void test_findNonSpace_notFirstNotLast() {
-  char* str = "  gff";
+  char str[] = "  gff";
   const size_t index = 2;
   ASSERT_PTR(str + index,
              findNonSpace(str));
@@ -180,7 +179,7 @@ static void test_findNonSpace_notFirstNotLast() {
 }
 
 static void test_findNonSpace_notFullWordNotFirstNotLast() {
-  char* str = "   gff";
+  char str[] = "   gff";
   const size_t begin = 1;
   const size_t index = 3;
   ASSERT_PTR(str + index,
@@ -189,7 +188,7 @@ static void test_findNonSpace_notFullWordNotFirstNotLast() {
 }
 
 static void test_findNonSpace_notFullWordFirst() {
-  char* str = "   gff";
+  char str[] = "   gff";
   const size_t begin = 3;
   const size_t index = begin;
   ASSERT_PTR(str + index,
@@ -198,7 +197,7 @@ static void test_findNonSpace_notFullWordFirst() {
 }
 
 static void test_findNonSpace_notFullWordLast() {
-  char* str = "ffg g";
+  char str[] = "ffg g";
   const size_t begin = 3;
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index,
@@ -207,7 +206,7 @@ static void test_findNonSpace_notFullWordLast() {
 }
 
 static void test_findNonSpace_notFullWordNotFound() {
-  char* str = "avds ";
+  char str[] = "avds ";
   const size_t begin = 4;
   const size_t index = mystrlen(str);
   ASSERT_PTR(str + index,
@@ -229,7 +228,7 @@ static void test_findNonSpace() {
 }
 
 static void test_findSpace_first() {
-  char* str = "  asd";
+  char str[] = "  asd";
   const size_t index = 0;
   ASSERT_PTR(str + index,
              findSpace(str));
@@ -237,7 +236,7 @@ static void test_findSpace_first() {
 }
 
 static void test_findSpace_last() {
-  char* str = "aaaaaaa ";
+  char str[] = "aaaaaaa ";
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index,
              findSpace(str));
@@ -245,7 +244,7 @@ static void test_findSpace_last() {
 }
 
 static void test_findSpace_notFound() {
-  char* str = "gggggg";
+  char str[] = "gggggg";
   const size_t index = mystrlen(str);
   ASSERT_PTR(str + index,
              findSpace(str));
@@ -253,7 +252,7 @@ static void test_findSpace_notFound() {
 }
 
 static void test_findSpace_notFirstNotLast() {
-  char* str = "gf  f";
+  char str[] = "gf  f";
   const size_t index = 2;
   ASSERT_PTR(str + index,
              findSpace(str));
@@ -261,7 +260,7 @@ static void test_findSpace_notFirstNotLast() {
 }
 
 static void test_findSpace_notFullWordNotFirstNotLast() {
-  char* str = "gff    ";
+  char str[] = "gff    ";
   const size_t begin = 1;
   const size_t index = 3;
   ASSERT_PTR(str + index,
@@ -270,7 +269,7 @@ static void test_findSpace_notFullWordNotFirstNotLast() {
 }
 
 static void test_findSpace_notFullWordFirst() {
-  char* str = "aaa ff";
+  char str[] = "aaa ff";
   const size_t begin = 3;
   const size_t index = begin;
   ASSERT_PTR(str + index,
@@ -279,7 +278,7 @@ static void test_findSpace_notFullWordFirst() {
 }
 
 static void test_findSpace_notFullWordLast() {
-  char* str = " aa ";
+  char str[] = " aa ";
   const size_t begin = 3;
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index,
@@ -288,7 +287,7 @@ static void test_findSpace_notFullWordLast() {
 }
 
 static void test_findSpace_notFullWordNotFound() {
-  char* str = "    a";
+  char str[] = "    a";
   const size_t begin = 4;
   const size_t index = mystrlen(str);
   ASSERT_PTR(str + index,
@@ -310,7 +309,7 @@ static void test_findSpace() {
 }
 
 static void test_findNonSpaceReverse_first() {
-  char* str = "a     ";
+  char str[] = "a     ";
   const size_t index = 0;
   ASSERT_PTR(str + index, findNonSpaceReverse(str - 1,
                                               str + mystrlen(str) - 1));
@@ -318,7 +317,7 @@ static void test_findNonSpaceReverse_first() {
 }
 
 static void test_findNonSpaceReverse_last() {
-  char* str = "    a";
+  char str[] = "    a";
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index, findNonSpaceReverse(str - 1,
                                               str + mystrlen(str) - 1));
@@ -326,7 +325,7 @@ static void test_findNonSpaceReverse_last() {
 }
 
 static void test_findNonSpaceReverse_notFound() {
-  char* str = "    ";
+  char str[] = "    ";
   const size_t index = -1;
   ASSERT_PTR(str + index, findNonSpaceReverse(str - 1,
                                               str + mystrlen(str) - 1));
@@ -334,7 +333,7 @@ static void test_findNonSpaceReverse_notFound() {
 }
 
 static void test_findNonSpaceReverse_notFirstNotLast() {
-  char* str = "jhg   ";
+  char str[] = "jhg   ";
   const size_t index = 2;
   ASSERT_PTR(str + index, findNonSpaceReverse(str - 1,
                                               str + mystrlen(str) - 1));
@@ -342,7 +341,7 @@ static void test_findNonSpaceReverse_notFirstNotLast() {
 }
 
 static void test_findNonSpaceReverse_notFullWordNotFirstNotLast() {
-  char* str = "   g ff";
+  char str[] = "   g ff";
   const size_t begin = 1;
   const size_t end = 4;
   const size_t index = 3;
@@ -353,7 +352,7 @@ static void test_findNonSpaceReverse_notFullWordNotFirstNotLast() {
 }
 
 static void test_findNonSpaceReverse_notFullWordFirst() {
-  char* str = "  g  ";
+  char str[] = "  g  ";
   const size_t begin = 2;
   const size_t end = 4;
   const size_t index = begin;
@@ -364,7 +363,7 @@ static void test_findNonSpaceReverse_notFullWordFirst() {
 }
 
 static void test_findNonSpaceReverse_notFullWordLast() {
-  char* str = "ffg g";
+  char str[] = "ffg g";
   const size_t begin = 0;
   const size_t end = 3;
   const size_t index = end - 1;
@@ -375,7 +374,7 @@ static void test_findNonSpaceReverse_notFullWordLast() {
 }
 
 static void test_findNonSpaceReverse_notFullWordNotFound() {
-  char* str = "avds   ";
+  char str[] = "avds   ";
   const size_t begin = 5;
   const size_t end = 6;
   const size_t index = begin - 1;
@@ -386,7 +385,7 @@ static void test_findNonSpaceReverse_notFullWordNotFound() {
 }
 
 static void test_findNonSpaceReverse_ZeroDiapason() {
-  char* str = "avds   ";
+  char str[] = "avds   ";
   const size_t begin = 5;
   const size_t end = 5;
   const size_t index = begin - 1;
@@ -411,7 +410,7 @@ static void test_findNonSpaceReverse() {
 }
 
 static void test_findSpaceReverse_first() {
-  char* str = "\nasdnajsd";
+  char str[] = "\nasdnajsd";
   const size_t index = 0;
   ASSERT_PTR(str + index, findSpaceReverse(str - 1,
                                            str + mystrlen(str) - 1));
@@ -419,7 +418,7 @@ static void test_findSpaceReverse_first() {
 }
 
 static void test_findSpaceReverse_last() {
-  char* str = " sf s fs\t";
+  char str[] = " sf s fs\t";
   const size_t index = mystrlen(str) - 1;
   ASSERT_PTR(str + index, findSpaceReverse(str - 1,
                                            str + mystrlen(str) - 1));
@@ -427,7 +426,7 @@ static void test_findSpaceReverse_last() {
 }
 
 static void test_findSpaceReverse_notFound() {
-  char* str = "asfdsdf";
+  char str[] = "asfdsdf";
   const size_t index = -1;
   ASSERT_PTR(str + index, findSpaceReverse(str - 1,
                                            str + mystrlen(str) - 1));
@@ -435,7 +434,7 @@ static void test_findSpaceReverse_notFound() {
 }
 
 static void test_findSpaceReverse_notFirstNotLast() {
-  char* str = "as\nfsdfsd";
+  char str[] = "as\nfsdfsd";
   const size_t index = 2;
   ASSERT_PTR(str + index, findSpaceReverse(str - 1,
                                            str + mystrlen(str) - 1));
@@ -443,7 +442,7 @@ static void test_findSpaceReverse_notFirstNotLast() {
 }
 
 static void test_findSpaceReverse_notFullWordNotFirstNotLast() {
-  char* str = "das ffddd";
+  char str[] = "das ffddd";
   const size_t begin = 1;
   const size_t end = 4;
   const size_t index = 3;
@@ -454,7 +453,7 @@ static void test_findSpaceReverse_notFullWordNotFirstNotLast() {
 }
 
 static void test_findSpaceReverse_notFullWordFirst() {
-  char* str = "   ff";
+  char str[] = "   ff";
   const size_t begin = 2;
   const size_t end = 4;
   const size_t index = begin;
@@ -465,7 +464,7 @@ static void test_findSpaceReverse_notFullWordFirst() {
 }
 
 static void test_findSpaceReverse_notFullWordLast() {
-  char* str = "aa     ";
+  char str[] = "aa     ";
   const size_t begin = 0;
   const size_t end = 3;
   const size_t index = end - 1;
@@ -476,7 +475,7 @@ static void test_findSpaceReverse_notFullWordLast() {
 }
 
 static void test_findSpaceReverse_notFullWordNotFound() {
-  char* str = "    asd";
+  char str[] = "    asd";
   const size_t begin = 5;
   const size_t end = 6;
   const size_t index = begin - 1;
@@ -487,7 +486,7 @@ static void test_findSpaceReverse_notFullWordNotFound() {
 }
 
 static void test_findSpaceReverse_ZeroDiapason() {
-  char* str = "avds   ";
+  char str[] = "avds   ";
   const size_t begin = 5;
   const size_t end = 5;
   const size_t index = begin - 1;
@@ -538,27 +537,27 @@ static void test_mystrcmp() {
 }
 
 static void test_copy_emptyString() {
-  char* initial = "";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
+  char initial[] = "";
+  char str[mystrlen(initial) + 1];
   char* dst_ptr = copy(initial, initial + mystrlen(initial), str);
-  char* expected = "";
+  char expected[] = "";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copy_notEmptyString() {
-  char* initial = "abacaba";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
+  char initial[] = "abacaba";
+  char str[mystrlen(initial) + 1];
   char* dst_ptr = copy(initial, initial + mystrlen(initial), str);
-  char* expected = "abacaba";
+  char expected[] = "abacaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copy() {
@@ -573,39 +572,36 @@ static int testCondition(const int ch) {
 }
 
 static void test_copyIf_copyAll() {
-  char* initial = "abacaba";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
-  char* expected = "abacaba";
+  char initial[] = "abacaba";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char expected[] = "abacaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIf_copyPart() {
-  char* initial = "\ta23ba\nc-a b   a67";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
-  char* expected = "abacaba";
+  char initial[] = "\ta23ba\nc-a b   a67";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char expected[] = "abacaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIf_nothing() {
-  char* initial = "\t23\n-    67";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
-  char* expected = "";
+  char initial[] = "\t23\n-    67";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char expected[] = "";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIf() {
@@ -617,45 +613,42 @@ static void test_copyIf() {
 }
 
 static void test_copyIfReverse_copyAll() {
-  char* initial = "abaddbz";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char initial[] = "abaddbz";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
-  char* expected = "zbddaba";
+  char expected[] = "zbddaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIfReverse_copyPart() {
-  char* initial = "\ta23ba\nd-d b   z67";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char initial[] = "\ta23ba\nd-d b   z67";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
-  char* expected = "zbddaba";
+  char expected[] = "zbddaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIfReverse_nothing() {
-  char* initial = "\t23\n-    67";
-  char* str = (char*) malloc(mystrlen(initial) + 1);
-  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char initial[] = "\t23\n-    67";
+  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
-  char* expected = "";
+  char expected[] = "";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  free(str);
+  
 }
 
 static void test_copyIfReverse() {
