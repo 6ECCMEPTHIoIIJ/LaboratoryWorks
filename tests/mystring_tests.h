@@ -545,7 +545,6 @@ static void test_copy_emptyString() {
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copy_notEmptyString() {
@@ -557,7 +556,6 @@ static void test_copy_notEmptyString() {
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copy() {
@@ -573,35 +571,38 @@ static int testCondition(const int ch) {
 
 static void test_copyIf_copyAll() {
   char initial[] = "abacaba";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str,
+                         testCondition);
   char expected[] = "abacaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIf_copyPart() {
   char initial[] = "\ta23ba\nc-a b   a67";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str,
+                         testCondition);
   char expected[] = "abacaba";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIf_nothing() {
   char initial[] = "\t23\n-    67";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str, testCondition);
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIf(initial, initial + mystrlen(initial), str,
+                         testCondition);
   char expected[] = "";
   *dst_ptr = '\0';
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIf() {
@@ -614,7 +615,8 @@ static void test_copyIf() {
 
 static void test_copyIfReverse_copyAll() {
   char initial[] = "abaddbz";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
   char expected[] = "zbddaba";
@@ -622,12 +624,12 @@ static void test_copyIfReverse_copyAll() {
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIfReverse_copyPart() {
   char initial[] = "\ta23ba\nd-d b   z67";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
   char expected[] = "zbddaba";
@@ -635,12 +637,12 @@ static void test_copyIfReverse_copyPart() {
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIfReverse_nothing() {
   char initial[] = "\t23\n-    67";
-  char str[mystrlen(initial) + 1];  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyIfReverse(initial - 1, initial + mystrlen(initial) - 1,
                                 str,
                                 testCondition);
   char expected[] = "";
@@ -648,7 +650,6 @@ static void test_copyIfReverse_nothing() {
   ASSERT_STRING(expected, str);
   ASSERT_PTR(str + mystrlen(str), dst_ptr);
   fprintf(stderr, "-------------------\n");
-  
 }
 
 static void test_copyIfReverse() {
@@ -656,6 +657,155 @@ static void test_copyIfReverse() {
   test_copyIfReverse_copyAll();
   test_copyIfReverse_copyPart();
   test_copyIfReverse_nothing();
+  fprintf(stderr, "\n");
+}
+
+static void test_getWord_empty() {
+  char initial[] = "";
+  WordDescriptor word;
+  int has_word_found = getWord(initial, &word);
+  ASSERT_INT(0, has_word_found);
+  ASSERT_PTR(initial + mystrlen(initial), word.begin);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWord_noOneWord() {
+  char initial[] = "         ";
+  WordDescriptor word;
+  int has_word_found = getWord(initial, &word);
+  ASSERT_INT(0, has_word_found);
+  ASSERT_PTR(initial + mystrlen(initial), word.begin);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWord_oneWordWithSpaces() {
+  char initial[] = "  asd   ";
+  WordDescriptor word;
+  int has_word_found = getWord(initial, &word);
+  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial + 2, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + 5, word.end);
+  ASSERT_INT(' ', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWord_oneWordWithoutSpaces() {
+  char initial[] = "asd";
+  WordDescriptor word;
+  int has_word_found = getWord(initial, &word);
+  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + mystrlen(initial), word.end);
+  ASSERT_INT('\0', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWord_manyWords() {
+  char initial[] = "b  asd   ";
+  WordDescriptor word;
+  int has_word_found = getWord(initial, &word);
+  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial, word.begin);
+  ASSERT_INT('b', *word.begin);
+  ASSERT_PTR(initial + 1, word.end);
+  ASSERT_INT(' ', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWord() {
+  fprintf(stderr, "-------------------\n");
+  test_getWord_noOneWord();
+  test_getWord_empty();
+  test_getWord_oneWordWithSpaces();
+  test_getWord_manyWords();
+  test_getWord_oneWordWithoutSpaces();
+  fprintf(stderr, "\n");
+}
+
+static void test_getWordReverse_empty() {
+  char initial[] = "";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);
+  ASSERT_INT(0, has_word_found);
+  ASSERT_PTR(initial, word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse_noOneWord() {
+  char initial[] = "         ";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);
+  ASSERT_INT(0, has_word_found);
+  ASSERT_PTR(initial, word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse_oneWordWithSpaces() {
+  char initial[] = "  asd   ";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial + 2, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + 5, word.end);
+  ASSERT_INT(' ', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse_oneWordOneLetter() {
+  char initial[] = "a";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + 1, word.end);
+  ASSERT_INT('\0', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse_oneWordWithoutSpaces() {
+  char initial[] = "asd";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + mystrlen(initial), word.end);
+  ASSERT_INT('\0', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse_manyWords() {
+  char initial[] = "b  asd   ";
+  WordDescriptor word;
+  int has_word_found = getWordReverse(initial - 1,
+                                      initial + mystrlen(initial) - 1,
+                                      &word);  ASSERT_INT(1, has_word_found);
+  ASSERT_PTR(initial + 3, word.begin);
+  ASSERT_INT('a', *word.begin);
+  ASSERT_PTR(initial + 6, word.end);
+  ASSERT_INT(' ', *word.end);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getWordReverse() {
+  fprintf(stderr, "-------------------\n");
+  test_getWordReverse_noOneWord();
+  test_getWordReverse_empty();
+  test_getWordReverse_oneWordWithSpaces();
+  test_getWordReverse_manyWords();
+  test_getWordReverse_oneWordWithoutSpaces();
+  test_getWordReverse_oneWordOneLetter();
   fprintf(stderr, "\n");
 }
 
@@ -670,6 +820,8 @@ void test_mystring() {
   test_copy();
   test_copyIf();
   test_copyIfReverse();
+  test_getWord();
+  test_getWordReverse();
 }
 
 #endif // INC_5E_MYSTRING_TESTS_H

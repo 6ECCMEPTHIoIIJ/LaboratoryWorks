@@ -4,6 +4,39 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define MAX_STRING_SIZE 255
+
+static char _string_buffer[MAX_STRING_SIZE + 1];
+
+typedef struct WordDescriptor {
+  char* begin;
+  char* end;
+} WordDescriptor;
+
+/**
+ * @brief   Поиск слова
+ * @param begin_search  указатель на начало строки
+ * @param word          адрес переменной, в которую будет записан результат
+ *                      поиска
+ * @return  1, если в строке есть слово, и 0 в противном случае
+ */
+int getWord(char* begin_search,
+            WordDescriptor* word);
+
+/**
+ * @brief   Поиск слова в обратном порядке
+ * @param r_begin_search    указатель на ячейку памяти, следующую после последнего
+ *                          символа  строки
+ * @param r_end_search      указатель на ячейку памяти, предшествующую. началу
+ *                          строки
+ * @param word              адрес переменной, в которую будет записан результат
+ *                          поиска
+ * @return  1, если в строке есть слово, и 0 в противном случае
+ */
+int getWordReverse(char* r_end_search,
+                   char* r_begin_search,
+                   WordDescriptor* word);
+
 /**
  * @brief   Вычисление длины строки
  * @param begin указатель но начало строки
@@ -101,7 +134,7 @@ char* copy(char* begin_src,
 char* copyIf(char* begin_src,
              char* end_src,
              char* begin_dst,
-             int (*condition)(int));
+             int (* condition)(int));
 
 /**
  * @brief   Копирование элементов строки, удовлетворяющих условию
@@ -117,6 +150,6 @@ char* copyIf(char* begin_src,
 char* copyIfReverse(char* r_end_src,
                     char* r_begin_src,
                     char* begin_dst,
-                    int (*condition)(int));
+                    int (* condition)(int));
 
 #endif // INC_5E_MYSTRING_H

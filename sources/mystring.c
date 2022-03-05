@@ -1,6 +1,31 @@
 #include <memory.h>
 #include "../include/mystring.h"
 
+int getWord(char* begin_search,
+            WordDescriptor* word) {
+  word->begin = findNonSpace(begin_search);
+  if (*word->begin == '\0') {
+    return 0;
+  }
+
+  word->end = findSpace(word->begin);
+
+  return 1;
+}
+
+int getWordReverse(char* r_end_search,
+                   char* r_begin_search,
+                   WordDescriptor* word) {
+  word->end = findNonSpaceReverse(r_end_search, r_begin_search) + 1;
+  if (word->end == r_end_search + 1) {
+    return 0;
+  }
+
+  word->begin = findSpaceReverse(r_end_search, word->end - 1) + 1;
+
+  return 1;
+}
+
 size_t mystrlen(char* begin) {
   char* end = begin;
   while (*end != '\0') {

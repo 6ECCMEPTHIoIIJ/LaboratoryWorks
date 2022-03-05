@@ -5,9 +5,13 @@ int isnonspace(const int ch) {
   return !isspace(ch);
 }
 
-void removeSpaces(char* begin) {
-  char* end = begin + mystrlen(begin);
-  *copyIf(begin, end, begin, isnonspace) = '\0';
+/**
+ * @brief Удаление всех пробелов из строки
+ * @param str указатель на начало строки
+ */
+void removeSpaces(char* str) {
+  char* end = str + mystrlen(str);
+  *copyIf(str, end, str, isnonspace) = '\0';
 }
 
 void test_removeSpaces_empty() {

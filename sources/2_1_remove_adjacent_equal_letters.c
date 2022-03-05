@@ -1,13 +1,17 @@
 #include "../tests/tests.h"
 
-void removeAdjacentEqualLetters(char* begin) {
-  char* begin_dst = begin;
-  while (*begin != '\0') {
-    if (*begin != *(begin + 1)) {
-      *begin_dst = *begin;
+/**
+ * @brief   Удаление идущих подряд одинаковых символов
+ * @param str указатель на начало строки
+ */
+void removeAdjacentEqualLetters(char* str) {
+  char* begin_dst = str;
+  while (*str != '\0') {
+    if (*str != *(str + 1)) {
+      *begin_dst = *str;
       begin_dst++;
     }
-    begin++;
+    str++;
   }
   *begin_dst = '\0';
 }
@@ -28,7 +32,7 @@ void test_removeAdjacentEqualLetters_allAreEqual() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_notAnySpaces() {
+void test_removeExtraSpaces_nonLettersNoneDigits() {
   char str[] = "aabbccdd";
   removeAdjacentEqualLetters(str);
   char expected[] = "abcd";
@@ -36,7 +40,7 @@ void test_removeExtraSpaces_notAnySpaces() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_someSpacesAreExtra() {
+void test_removeExtraSpaces_noneLetters() {
   char str[] = "abcdabcd";
   removeAdjacentEqualLetters(str);
   char expected[] = "abcdabcd";
@@ -44,7 +48,7 @@ void test_removeExtraSpaces_someSpacesAreExtra() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_extraSpacesOnBounds() {
+void test_removeExtraSpaces_someWords() {
   char str[] = "aaabccc d d eee";
   removeAdjacentEqualLetters(str);
   char expected[] = "abc d d e";
@@ -56,9 +60,9 @@ void test_removeAdjacentEqualLetters() {
   fprintf(stderr, "-------------------\n");
   test_removeAdjacentEqualLetters_empty();
   test_removeAdjacentEqualLetters_allAreEqual();
-  test_removeExtraSpaces_notAnySpaces();
-  test_removeExtraSpaces_someSpacesAreExtra();
-  test_removeExtraSpaces_extraSpacesOnBounds();
+  test_removeExtraSpaces_nonLettersNoneDigits();
+  test_removeExtraSpaces_noneLetters();
+  test_removeExtraSpaces_someWords();
   fprintf(stderr, "\n");
 }
 

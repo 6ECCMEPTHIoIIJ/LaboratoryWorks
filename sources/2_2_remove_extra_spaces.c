@@ -1,15 +1,20 @@
 #include "../include/mystring.h"
 #include "../tests/tests.h"
 
-void removeExtraSpaces(char* begin) {
-  char* begin_dst = begin;
-  begin = findNonSpace(begin);
-  while (*begin != '\0') {
-    if (*begin != ' ' || (*(begin + 1) != ' ' && *(begin + 1) != '\0')) {
-      *begin_dst = *begin;
+/**
+ * @brief   Удаление лишних пробелов в начале и конце строки, сокращение числа
+ *          пробелов между словами до 1
+ * @param str указатель на начало строки
+ */
+void removeExtraSpaces(char* str) {
+  char* begin_dst = str;
+  str = findNonSpace(str);
+  while (*str != '\0') {
+    if (*str != ' ' || (*(str + 1) != ' ' && *(str + 1) != '\0')) {
+      *begin_dst = *str;
       begin_dst++;
     }
-    begin++;
+    str++;
   }
   *begin_dst = '\0';
 }
@@ -22,7 +27,7 @@ void test_removeExtraSpaces_empty() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_allAreSpaces() {
+void test_removeExtraSpaces_oneWord() {
   char str[] = "             ";
   removeExtraSpaces(str);
   char expected[] = "";
@@ -30,7 +35,7 @@ void test_removeExtraSpaces_allAreSpaces() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_notAnySpaces() {
+void test_removeExtraSpaces_nonLettersNoneDigits() {
   char str[] = "aabbccdd";
   removeExtraSpaces(str);
   char expected[] = "aabbccdd";
@@ -38,7 +43,7 @@ void test_removeExtraSpaces_notAnySpaces() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_someSpacesAreExtra() {
+void test_removeExtraSpaces_noneLetters() {
   char str[] = "asd s    ff a";
   removeExtraSpaces(str);
   char expected[] = "asd s ff a";
@@ -46,7 +51,7 @@ void test_removeExtraSpaces_someSpacesAreExtra() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_extraSpacesOnBounds() {
+void test_removeExtraSpaces_someWords() {
   char str[] = "    asd   asd     ";
   removeExtraSpaces(str);
   char expected[] = "asd asd";
@@ -57,10 +62,10 @@ void test_removeExtraSpaces_extraSpacesOnBounds() {
 void test_removeExtraSpaces() {
   fprintf(stderr, "-------------------\n");
   test_removeExtraSpaces_empty();
-  test_removeExtraSpaces_allAreSpaces();
-  test_removeExtraSpaces_notAnySpaces();
-  test_removeExtraSpaces_someSpacesAreExtra();
-  test_removeExtraSpaces_extraSpacesOnBounds();
+  test_removeExtraSpaces_oneWord();
+  test_removeExtraSpaces_nonLettersNoneDigits();
+  test_removeExtraSpaces_noneLetters();
+  test_removeExtraSpaces_someWords();
   fprintf(stderr, "\n");
 }
 
