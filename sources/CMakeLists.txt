@@ -13,5 +13,8 @@ add_executable(${TASK_2_2_NAME} ${TASK_2_2_SOURCES})
 set(TASK_3_SOURCES "3_digit_to_start_reverse.c" "mystring.c")
 add_executable(${TASK_3_NAME} ${TASK_3_SOURCES})
 
-set(TASK_3_1_SOURCES "3_1_letters_to_stard_digits_to_end.c" "mystring.c")
+set(TASK_3_1_SOURCES "3_1_letters_to_start_digits_to_end.c" "mystring.c")
 add_executable(${TASK_3_1_NAME} ${TASK_3_1_SOURCES})
+
+set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
+add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})
