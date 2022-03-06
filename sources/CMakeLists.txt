@@ -19,6 +19,9 @@ add_executable(${TASK_3_1_NAME} ${TASK_3_1_SOURCES})
 set(TASK_4_SOURCES "4_replace_digits_by_spaces.c" "mystring.c")
 add_executable(${TASK_4_NAME} ${TASK_4_SOURCES})
 
+set(TASK_5_SOURCES "5_replace.c" "mystring.c")
+add_executable(${TASK_5_NAME} ${TASK_5_SOURCES})
+
 set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
 add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})
 
