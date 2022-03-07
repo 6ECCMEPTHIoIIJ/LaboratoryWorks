@@ -511,20 +511,20 @@ static void test_findSpaceReverse() {
 }
 
 static void test_mystrcmp_equal() {
-  ASSERT_INT(mystrcmp("abacaba", "abacaba"), 0);
+  ASSERT_INT(0, mystrcmp("abacaba", "abacaba"));
   fprintf(stderr, "-------------------\n");
 }
 
 static void test_mystrcmp_notEqual() {
-  ASSERT_INT(mystrcmp("abzcaba", "abacaba"), 'z' - 'a');
-  ASSERT_INT(mystrcmp("abacaba", "abacaza"), 'b' - 'z');
-  ASSERT_INT(mystrcmp("bacaza", "abacaba"), 'b' - 'a');
+  ASSERT_INT('z' - 'a', mystrcmp("abzcaba", "abacaba"));
+  ASSERT_INT('b' - 'z', mystrcmp("abacaba", "abacaza"));
+  ASSERT_INT('b' - 'a', mystrcmp("bacaza", "abacaba"));
   fprintf(stderr, "-------------------\n");
 }
 
 static void test_mystrcmp_diffLen() {
-  ASSERT_INT(mystrcmp("abacaba", "aba"), 'c');
-  ASSERT_INT(mystrcmp("aba", "abacaba"), -'c');
+  ASSERT_INT('c', mystrcmp("abacaba", "aba"));
+  ASSERT_INT(-'c', mystrcmp("aba", "abacaba"));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -751,7 +751,8 @@ static void test_getWordReverse_oneWordWithSpaces() {
   WordDescriptor word;
   int has_word_found = getWordReverse(initial - 1,
                                       initial + mystrlen(initial) - 1,
-                                      &word);  ASSERT_INT(1, has_word_found);
+                                      &word);
+  ASSERT_INT(1, has_word_found);
   ASSERT_PTR(initial + 2, word.begin);
   ASSERT_INT('a', *word.begin);
   ASSERT_PTR(initial + 5, word.end);
@@ -764,7 +765,8 @@ static void test_getWordReverse_oneWordOneLetter() {
   WordDescriptor word;
   int has_word_found = getWordReverse(initial - 1,
                                       initial + mystrlen(initial) - 1,
-                                      &word);  ASSERT_INT(1, has_word_found);
+                                      &word);
+  ASSERT_INT(1, has_word_found);
   ASSERT_PTR(initial, word.begin);
   ASSERT_INT('a', *word.begin);
   ASSERT_PTR(initial + 1, word.end);
@@ -777,7 +779,8 @@ static void test_getWordReverse_oneWordWithoutSpaces() {
   WordDescriptor word;
   int has_word_found = getWordReverse(initial - 1,
                                       initial + mystrlen(initial) - 1,
-                                      &word);  ASSERT_INT(1, has_word_found);
+                                      &word);
+  ASSERT_INT(1, has_word_found);
   ASSERT_PTR(initial, word.begin);
   ASSERT_INT('a', *word.begin);
   ASSERT_PTR(initial + mystrlen(initial), word.end);
@@ -790,7 +793,8 @@ static void test_getWordReverse_manyWords() {
   WordDescriptor word;
   int has_word_found = getWordReverse(initial - 1,
                                       initial + mystrlen(initial) - 1,
-                                      &word);  ASSERT_INT(1, has_word_found);
+                                      &word);
+  ASSERT_INT(1, has_word_found);
   ASSERT_PTR(initial + 3, word.begin);
   ASSERT_INT('a', *word.begin);
   ASSERT_PTR(initial + 6, word.end);
@@ -809,6 +813,145 @@ static void test_getWordReverse() {
   fprintf(stderr, "\n");
 }
 
+static void test_wordcmp_equal() {
+  char str_1[] = "abac asd a";
+  char str_2[] = "abac asgn D";
+  WordDescriptor w_1;
+  getWord(str_1, &w_1);
+  WordDescriptor w_2;
+  getWord(str_2, &w_2);
+  ASSERT_INT(0, wordcmp(w_1, w_2));
+  ASSERT_INT(0, wordcmp(w_1, w_2));
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_wordcmp_notEqual() {
+  char str_1[] = "a asd a";
+  char str_2[] = "abac asgn D";
+  WordDescriptor w_1;
+  getWord(str_1, &w_1);
+  WordDescriptor w_2;
+  getWord(str_2, &w_2);
+  ASSERT_INT(-'b', wordcmp(w_1, w_2));
+  char str_3[] = "abc";
+  char str_4[] = "abd";
+  getWord(str_3, &w_1);
+  getWord(str_4, &w_2);
+  ASSERT_INT('c' - 'd', wordcmp(w_1, w_2));
+  char str_5[] = "ab";
+  char str_6[] = "aaaaaaaaab";
+  getWord(str_5, &w_1);
+  getWord(str_6, &w_2);
+  ASSERT_INT('b' - 'a', wordcmp(w_1, w_2));
+  char str_7[] = "   avad ";
+  char str_8[] = "hell";
+  getWord(str_7, &w_1);
+  getWord(str_8, &w_2);
+  ASSERT_INT('a' - 'h', wordcmp(w_1, w_2));
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_wordcmp() {
+  fprintf(stderr, "-------------------\n");
+  test_wordcmp_equal();
+  test_wordcmp_notEqual();
+  fprintf(stderr, "\n");
+}
+
+static void test_wordDescriptorToString_empty() {
+  char initial[] = "";
+  WordDescriptor word;
+  getWord(initial, &word);
+  char expected[] = "";
+  char str_from_word[1];
+  wordDescriptorToString(word, str_from_word);
+  ASSERT_STRING(expected, str_from_word);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_wordDescriptorToString_oneLetter() {
+  char initial[] = "g";
+  WordDescriptor word;
+  getWord(initial, &word);
+  char expected[] = "g";
+  char str_from_word[word.end - word.begin + 1];
+  wordDescriptorToString(word, str_from_word);
+  ASSERT_STRING(expected, str_from_word);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_wordDescriptorToString_notEmpty() {
+  char initial[] = "asfas";
+  WordDescriptor word;
+  getWord(initial, &word);
+  char expected[] = "asfas";
+  char str_from_word[word.end - word.begin + 1];
+  wordDescriptorToString(word, str_from_word);
+  ASSERT_STRING(expected, str_from_word);
+  fprintf(stderr, "-------------------\n");
+}
+
+
+static void test_wordDescriptorToString() {
+  fprintf(stderr, "-------------------\n");
+  test_wordDescriptorToString_empty();
+  test_wordDescriptorToString_oneLetter();
+  test_wordDescriptorToString_notEmpty();
+  fprintf(stderr, "\n");
+}
+
+static void test_getBagOfWords_empty() {
+  char str[] = "";
+  BagOfWords bag;
+  getBagOfWords(str, &bag);
+  ASSERT_INT(0, bag.size);
+  char expected_0[] = "";
+  char str_from_w_0[1];
+  wordDescriptorToString(bag.words[0], str_from_w_0);
+  ASSERT_STRING(expected_0, str_from_w_0);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getBagOfWords_oneWord() {
+  char str[] = " dasd";
+  BagOfWords bag;
+  getBagOfWords(str, &bag);
+  ASSERT_INT(1, bag.size);
+  char expected_0[] = "dasd";
+  char str_from_w_0[bag.words[0].end - bag.words[0].begin + 1];
+  wordDescriptorToString(bag.words[0], str_from_w_0);
+  ASSERT_STRING(expected_0, str_from_w_0);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getBagOfWords_manyWords() {
+  char str[] = " asd dasd fds";
+  BagOfWords bag;
+  getBagOfWords(str, &bag);
+  ASSERT_INT(3, bag.size);
+  char expected_0[] = "asd";
+  char str_from_w_0[bag.words[0].end - bag.words[0].begin + 1];
+  wordDescriptorToString(bag.words[0], str_from_w_0);
+  ASSERT_STRING(expected_0, str_from_w_0);
+  char expected_1[] = "dasd";
+  char str_from_w_1[bag.words[1].end - bag.words[1].begin + 1];
+  wordDescriptorToString(bag.words[1], str_from_w_1);
+  ASSERT_STRING(expected_1, str_from_w_1);
+  char expected_2[] = "fds";
+  char str_from_w_2[bag.words[2].end - bag.words[2].begin + 1];
+  wordDescriptorToString(bag.words[2], str_from_w_2);
+  ASSERT_STRING(expected_2, str_from_w_2);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_getBagOfWords() {
+  fprintf(stderr, "-------------------\n");
+  test_getBagOfWords_empty();
+  test_getBagOfWords_oneWord();
+  test_getBagOfWords_manyWords();
+  fprintf(stderr, "\n");
+}
+
 void test_mystring() {
   test_mystrlen();
   test_find();
@@ -822,6 +965,9 @@ void test_mystring() {
   test_copyIfReverse();
   test_getWord();
   test_getWordReverse();
+  test_wordcmp();
+  test_wordDescriptorToString();
+  test_getBagOfWords();
 }
 
 #endif // INC_5E_MYSTRING_TESTS_H

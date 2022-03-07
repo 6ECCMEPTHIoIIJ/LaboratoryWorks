@@ -25,6 +25,9 @@ add_executable(${TASK_5_NAME} ${TASK_5_SOURCES})
 set(TASK_6_SOURCES "6_are_words_sorted.c" "mystring.c")
 add_executable(${TASK_6_NAME} ${TASK_6_SOURCES})
 
+set(TASK_7_SOURCES "7_output_words_in_reverse_order.c" "mystring.c")
+add_executable(${TASK_7_NAME} ${TASK_7_SOURCES})
+
 set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
 add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})
 

@@ -1,24 +1,6 @@
 #include "../include/mystring.h"
 #include "../tests/mystring_tests.h"
 
-static int wordcmp(WordDescriptor w_1,
-            WordDescriptor w_2) {
-  int w_1_size = w_1.end - w_1.begin;
-  int w_2_size = w_2.end - w_2.begin;
-
-  if (w_1_size != w_2_size) {
-    return w_1_size - w_2_size;
-  }
-
-  while (w_1.begin != w_1.end - 1 &&
-         *w_1.begin == *w_2.begin) {
-    w_1.begin++;
-    w_2.begin++;
-  }
-
-  return *w_1.begin - *w_2.begin;
-}
-
 void replace(char* str,
              char* w_1,
              char* w_2) {

@@ -9,6 +9,7 @@ set(TASK_3_1_NAME "3_1_letters_to_start_digits_to_end")
 set(TASK_4_NAME "4_replace_digits_by_spaces")
 set(TASK_5_NAME "5_replace")
 set(TASK_6_NAME "6_are_words_sorted")
+set(TASK_7_NAME "7_output_words_in_reverse_order")
 set(TASK_19_NAME "19_is_substring_by_symbols")
 
 project(${PROJECT_NAME} VERSION "0.0.1" LANGUAGES C)
@@ -82,6 +83,13 @@ set_target_properties(${TASK_6_NAME}
         RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_6_NAME}_debug")
+
+target_include_directories(${TASK_7_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_7_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_7_NAME}_debug")
 
 target_include_directories(${TASK_19_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_19_NAME}

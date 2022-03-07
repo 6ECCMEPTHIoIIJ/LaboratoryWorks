@@ -4,9 +4,17 @@
 #include <stdio.h>
 #include <ctype.h>
 
+// Максимальная длина строки
 #define MAX_STRING_SIZE 255
+// Максимальная длина одного слова (слово может занимать всю строку)
+#define MAX_WORD_SIZE MAX_STRING_SIZE
+// Максимальное кол-во слов в строке (между каждой парой слов должен стоять
+// пробельный символ)
+#define MAX_N_WORDS_IN_STRING ((MAX_STRING_SIZE + 1) / 2)
 
+// Буфер для хранения промежуточных состояний строк
 static char _string_buffer[MAX_STRING_SIZE + 1];
+
 
 /*
  * begin - адрес первого символа слова
@@ -18,10 +26,25 @@ typedef struct WordDescriptor {
 } WordDescriptor;
 
 /*
+ * words - массив слов
+ * size - кол-во слов в массиве
+ */
+typedef struct BagOfWords {
+  WordDescriptor words[MAX_N_WORDS_IN_STRING];
+  size_t size;
+} BagOfWords;
+
+// Первый буфер для хранения множества слов
+static BagOfWords _bag_1;
+// Второй буфер для хранения множества слов
+static BagOfWords _bag_2;
+
+/*
  * Возвращает 1, если в диапазоне [begin ... первый '\0'-символ) было найдено
  * слово, и записывает адрес первого символа слова в word.begin, а адрес ячейки
  * памяти, следующей после последнего символа слова в word.end, в противном случае
- * возвращает 0, оставляет word без изменений
+ * возвращает 0, в word.begin сохраняет адрес первого '\0'-символа, значение
+ * word.end остается без изменений
  */
 int getWord(char* begin_search,
             WordDescriptor* word);
@@ -30,11 +53,36 @@ int getWord(char* begin_search,
  * Возвращает 1, если в диапазоне (r_end_search ... r_begin_search] было
  * найдено слово, и записывает адрес первого символа слова в word.begin, а
  * адрес ячейки памяти, следующей после последнего символа слова в word.end,
- * в противном случае возвращает 0, оставляет word без изменений
+ * в противном случае возвращает 0, в word.end сохраняет адрес нулевого
+ * символа строки, значение word.begin остается без изменений
  */
 int getWordReverse(char* r_end_search,
                    char* r_begin_search,
                    WordDescriptor* word);
+
+/*
+ * Возвращает положительное значение, если слово w_1 лексикографически стоит
+ * после слова w_2, отрицательное значение, если слово w_1 лексикографически
+ * стоит перед словом w_2, и ноль, если слова лексикографически равны
+ * (возвращаемое значение по модулю численно равно разнице кодов
+ * несовпадающих символов, в случае, когда строки различны, и 0, когда они
+ * равны)
+ */
+int wordcmp(WordDescriptor w_1,
+            WordDescriptor w_2);
+
+/*
+ * Выводит слово word в поток stdout
+ */
+void outputWord(WordDescriptor word);
+
+/*
+ * Записывает все слова, найденные в диапазоне
+ * [begin_search ... первый '\0'-символ) в массив bag.words, устанавливает
+ * bag.size в значение, равное кол-ву найденных в строке слов
+ */
+void getBagOfWords(char* begin_search,
+                   BagOfWords* bag);
 
 /*
  * Возвращает кол-во символов, лежащих в диапазоне [begin ... первый '\0'-символ)
@@ -125,5 +173,12 @@ char* copyIfReverse(char* r_end_src,
                     char* r_begin_src,
                     char* begin_dst,
                     int (* condition)(int));
+
+/*
+ * преобразовывает слово word в строку dst, дописывает в конец строки
+ * '\0'-символ
+ */
+void wordDescriptorToString(WordDescriptor word,
+                            char* dst);
 
 #endif // INC_5E_MYSTRING_H

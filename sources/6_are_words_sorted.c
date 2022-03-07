@@ -1,24 +1,6 @@
 #include "../include/mystring.h"
 #include "../tests/mystring_tests.h"
 
-static int wordcmp(WordDescriptor w_1,
-            WordDescriptor w_2) {
-  int w_1_size = w_1.end - w_1.begin;
-  int w_2_size = w_2.end - w_2.begin;
-
-  if (w_1_size != w_2_size) {
-    return w_1_size - w_2_size;
-  }
-
-  while (w_1.begin != w_1.end - 1 &&
-         *w_1.begin == *w_2.begin) {
-    w_1.begin++;
-    w_2.begin++;
-  }
-
-  return *w_1.begin - *w_2.begin;
-}
-
 int areWordsSorted(char* str) {
   WordDescriptor pre_word;
   if (getWord(str, &pre_word)) {
@@ -50,14 +32,22 @@ void test_areWordsSorted_oneWord() {
 }
 
 void test_areWordsSorted_sorted() {
-  char str[] = " abc    bca cba";
-  ASSERT_INT(1, areWordsSorted(str));
+  char str_1[] = " abc  abc  abca bcac bcac";
+  ASSERT_INT(1, areWordsSorted(str_1));
+  char str_2[] = "a b c ca cb da daa daaa  daab";
+  ASSERT_INT(1, areWordsSorted(str_2));
+  char str_3[] = "aaaaaaaaa b caaaa cab";
+  ASSERT_INT(1, areWordsSorted(str_3));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_areWordsSorted_notSorted() {
-  char str[] = " abc  acb  aca ";
-  ASSERT_INT(0, areWordsSorted(str));
+  char str_1[] = " abca   abc abc abc bcac";
+  ASSERT_INT(0, areWordsSorted(str_1));
+  char str_2[] = "daab ka an dsa ";
+  ASSERT_INT(0, areWordsSorted(str_2));
+  char str_3[] = "ab aaaaaaaaa";
+  ASSERT_INT(0, areWordsSorted(str_3));
   fprintf(stderr, "-------------------\n");
 }
 
