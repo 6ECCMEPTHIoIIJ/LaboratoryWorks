@@ -11,6 +11,7 @@ set(TASK_5_NAME "5_replace")
 set(TASK_6_NAME "6_are_words_sorted")
 set(TASK_7_NAME "7_output_words_in_reverse_order")
 set(TASK_8_NAME "8_count_poly")
+set(TASK_9_NAME "9_mix_words")
 set(TASK_19_NAME "19_is_substring_by_symbols")
 
 project(${PROJECT_NAME} VERSION "0.0.1" LANGUAGES C)
@@ -98,6 +99,13 @@ set_target_properties(${TASK_8_NAME}
         RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_8_NAME}_debug")
+
+target_include_directories(${TASK_9_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_9_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_9_NAME}_debug")
 
 
 target_include_directories(${TASK_19_NAME} PRIVATE "include" "tests")
