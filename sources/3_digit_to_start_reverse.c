@@ -1,11 +1,68 @@
-#include "../include/mystring.h"
-#include "../tests/tests.h"
+#include "mystring.h"
+#include "mystring_tests.h"
 
 void digitToStartReverse(WordDescriptor word) {
   char* end_string_buffer = copy(word.begin, word.end, _string_buffer);
   char* rec_position = copyIfReverse(_string_buffer - 1, end_string_buffer - 1,
                                      word.begin, isdigit);
   copyIf(_string_buffer , end_string_buffer, rec_position, isalpha);
+}
+
+void test_digitToStartReverse_lettersAndDigits() {
+  char str[] = "a1s23d";
+  WordDescriptor word;
+  getWord(str, &word);
+  digitToStartReverse(word);
+  char expected[] = "321asd";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_digitToStartReverse_nonLettersNoneDigits() {
+  char str[] = "-%%\?";
+  WordDescriptor word;
+  getWord(str, &word);
+  digitToStartReverse(word);
+  char expected[] = "-%%\?";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_digitToStartReverse_noneLetters() {
+  char str[] = "123";
+  WordDescriptor word;
+  getWord(str, &word);
+  digitToStartReverse(word);
+  char expected[] = "321";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_digitToStartReverse_noneDigits() {
+  char str[] = "asd";
+  WordDescriptor word;
+  getWord(str, &word);
+  digitToStartReverse(word);
+  char expected[] = "asd";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_lettersToStartDigitsToEnd() {
+  fprintf(stderr, "-------------------\n");
+  test_digitToStartReverse_lettersAndDigits();
+  test_digitToStartReverse_nonLettersNoneDigits();
+  test_digitToStartReverse_noneLetters();
+  test_digitToStartReverse_noneDigits();
+  fprintf(stderr, "\n");
 }
 
 /**
@@ -84,6 +141,7 @@ void test_digitToStartReverseStr() {
 
 
 int main() {
+  test_lettersToStartDigitsToEnd();
   test_digitToStartReverseStr();
 
   return 0;

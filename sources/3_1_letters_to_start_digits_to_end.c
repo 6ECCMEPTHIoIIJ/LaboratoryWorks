@@ -1,5 +1,5 @@
 #include "../include/mystring.h"
-#include "../tests/tests.h"
+#include "../tests/mystring_tests.h"
 
 void lettersToStartDigitsToEnd(WordDescriptor word) {
   char* end_string_buffer = copy(word.begin, word.end, _string_buffer);
@@ -8,6 +8,63 @@ void lettersToStartDigitsToEnd(WordDescriptor word) {
                               word.begin,
                               isdigit);
   copyIf(_string_buffer, end_string_buffer, rec_position, isalpha);
+}
+
+void test_lettersToStartDigitsToEnd_lettersAndDigits() {
+  char str[] = "a1s23d";
+  WordDescriptor word;
+  getWord(str, &word);
+  lettersToStartDigitsToEnd(word);
+  char expected[] = "123asd";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_lettersToStartDigitsToEnd_nonLettersNoneDigits() {
+  char str[] = "-%%\?";
+  WordDescriptor word;
+  getWord(str, &word);
+  lettersToStartDigitsToEnd(word);
+  char expected[] = "-%%\?";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_lettersToStartDigitsToEnd_noneLetters() {
+  char str[] = "123";
+  WordDescriptor word;
+  getWord(str, &word);
+  lettersToStartDigitsToEnd(word);
+  char expected[] = "123";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_lettersToStartDigitsToEnd_noneDigits() {
+  char str[] = "asd";
+  WordDescriptor word;
+  getWord(str, &word);
+  lettersToStartDigitsToEnd(word);
+  char expected[] = "asd";
+  WordDescriptor expected_word;
+  getWord(expected, &expected_word);
+  ASSERT_WORD(expected_word, word);
+  fprintf(stderr, "-------------------\n");
+}
+
+void test_lettersToStartDigitsToEnd() {
+  fprintf(stderr, "-------------------\n");
+  test_lettersToStartDigitsToEnd_lettersAndDigits();
+  test_lettersToStartDigitsToEnd_nonLettersNoneDigits();
+  test_lettersToStartDigitsToEnd_noneLetters();
+  test_lettersToStartDigitsToEnd_noneDigits();
+  fprintf(stderr, "\n");
 }
 
 /**
@@ -85,6 +142,7 @@ void test_lettersToStartDigitsToEndStr() {
 }
 
 int main() {
+  test_lettersToStartDigitsToEnd();
   test_lettersToStartDigitsToEndStr();
 
   return 0;

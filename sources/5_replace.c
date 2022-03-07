@@ -1,5 +1,5 @@
-#include "../include/mystring.h"
-#include "../tests/mystring_tests.h"
+#include "mystring.h"
+#include "mystring_tests.h"
 
 void replace(char* str,
              char* w_1,

@@ -1,5 +1,5 @@
-#include "../include/mystring.h"
-#include "../tests/tests.h"
+#include "mystring.h"
+#include "tests.h"
 
 #include <stdbool.h>
 

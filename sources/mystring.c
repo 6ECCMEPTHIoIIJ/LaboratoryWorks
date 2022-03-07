@@ -1,5 +1,5 @@
 #include <memory.h>
-#include "../include/mystring.h"
+#include "mystring.h"
 
 int getWord(char* begin_search,
             WordDescriptor* word) {
@@ -18,6 +18,7 @@ int getWordReverse(char* r_end_search,
                    WordDescriptor* word) {
   word->end = findNonSpaceReverse(r_end_search, r_begin_search) + 1;
   if (word->end == r_end_search + 1) {
+    word->begin = r_begin_search + 1;
     return 0;
   }
 
@@ -49,9 +50,14 @@ int wordcmp(WordDescriptor w_1,
   }
 }
 
-void outputWord(WordDescriptor word) {
+void fprintw(FILE* out,
+             WordDescriptor word) {
+  if (*word.begin == '\0') {
+    return;
+  }
+
   while (word.begin != word.end) {
-    putchar(*word.begin);
+    putc(*word.begin, out);
     word.begin++;
   }
 }

@@ -1,5 +1,5 @@
-#include "../include/mystring.h"
-#include "../tests/tests.h"
+#include "mystring.h"
+#include "mystring_tests.h"
 
 /**
  * @brief   Удаление лишних пробелов в начале и конце строки, сокращение числа

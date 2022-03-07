@@ -53,8 +53,8 @@ int getWord(char* begin_search,
  * Возвращает 1, если в диапазоне (r_end_search ... r_begin_search] было
  * найдено слово, и записывает адрес первого символа слова в word.begin, а
  * адрес ячейки памяти, следующей после последнего символа слова в word.end,
- * в противном случае возвращает 0, в word.end сохраняет адрес нулевого
- * символа строки, значение word.begin остается без изменений
+ * в противном случае возвращает 0, в word.begin записывает значение
+ * r_begin_search + 1, в word.end записывает r_end_search + 1
  */
 int getWordReverse(char* r_end_search,
                    char* r_begin_search,
@@ -72,9 +72,10 @@ int wordcmp(WordDescriptor w_1,
             WordDescriptor w_2);
 
 /*
- * Выводит слово word в поток stdout
+ * Выводит слово word в указанный поток out
  */
-void outputWord(WordDescriptor word);
+void fprintw(FILE* out,
+             WordDescriptor word);
 
 /*
  * Записывает все слова, найденные в диапазоне

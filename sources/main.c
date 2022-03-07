@@ -1,4 +1,4 @@
-#include "../tests/mystring_tests.h"
+#include "mystring_tests.h"
 
 int main() {
   test_mystring();

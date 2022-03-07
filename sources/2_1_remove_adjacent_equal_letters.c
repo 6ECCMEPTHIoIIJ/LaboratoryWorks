@@ -1,4 +1,5 @@
-#include "../tests/tests.h"
+#include "tests.h"
+#include "mystring_tests.h"
 
 /**
  * @brief   Удаление идущих подряд одинаковых символов

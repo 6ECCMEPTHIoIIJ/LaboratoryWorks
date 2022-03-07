@@ -3,25 +3,7 @@
 
 #include <stdio.h>
 
-#include "../include/mystring.h"
-
-#define ASSERT_STRING(EXPECTED, GOT) \
-assertString(EXPECTED, GOT, __FILE__, __FUNCTION__, __LINE__)
-
-void assertString(char* expected,
-                  char* got,
-                  const char* fileName,
-                  const char* funcName,
-                  const size_t line) {
-  if (mystrcmp(expected, got) != 0) {
-    fprintf(stderr, "File %s\n", fileName);
-    fprintf(stderr, "%s - failed on line %zu\n", funcName, line);
-    fprintf(stderr, "Expected: \"%s\"\n", expected);
-    fprintf(stderr, "Got: \"%s\"\n", got);
-  } else {
-    fprintf(stderr, "%s - OK\n", funcName);
-  }
-}
+#include "mystring.h"
 
 #define ASSERT_INT(EXPECTED, GOT) \
 assertInt(EXPECTED, GOT, __FILE__, __FUNCTION__, __LINE__)

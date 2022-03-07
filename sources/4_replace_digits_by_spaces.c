@@ -1,5 +1,5 @@
-#include "../include/mystring.h"
-#include "../tests/tests.h"
+#include "mystring.h"
+#include "mystring_tests.h"
 
 void replaceDigitsBySpaces(char* str) {
   char* read_ptr = str;

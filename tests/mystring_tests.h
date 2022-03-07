@@ -1,8 +1,48 @@
 #ifndef INC_5E_MYSTRING_TESTS_H
 #define INC_5E_MYSTRING_TESTS_H
 
-#include "../include/mystring.h"
+#include "mystring.h"
 #include "tests.h"
+
+#define ASSERT_STRING(EXPECTED, GOT) \
+assertString(EXPECTED, GOT, __FILE__, __FUNCTION__, __LINE__)
+
+void assertString(char* expected,
+                  char* got,
+                  const char* fileName,
+                  const char* funcName,
+                  const size_t line) {
+  if (mystrcmp(expected, got) != 0) {
+    fprintf(stderr, "File %s\n", fileName);
+    fprintf(stderr, "%s - failed on line %zu\n", funcName, line);
+    fprintf(stderr, "Expected: \"%s\"\n", expected);
+    fprintf(stderr, "Got: \"%s\"\n", got);
+  } else {
+    fprintf(stderr, "%s - OK\n", funcName);
+  }
+}
+
+#define ASSERT_WORD(EXPECTED, GOT) \
+assertWord(EXPECTED, GOT, __FILE__, __FUNCTION__, __LINE__)
+
+void assertWord(WordDescriptor expected,
+                WordDescriptor got,
+                const char* fileName,
+                const char* funcName,
+                const size_t line) {
+  if (wordcmp(expected, got) != 0) {
+    fprintf(stderr, "File %s\n", fileName);
+    fprintf(stderr, "%s - failed on line %zu\n", funcName, line);
+    fprintf(stderr, "Expected: \"");
+    fprintw(stderr,expected);
+    fprintf(stderr, "\"\n");
+    fprintf(stderr, "Got: \"");
+    fprintw(stderr,got);
+    fprintf(stderr, "\"\n");
+  } else {
+    fprintf(stderr, "%s - OK\n", funcName);
+  }
+}
 
 static void test_mystrlen_Normal() {
   ASSERT_INT(7, (int) mystrlen("abacaba"));
@@ -732,6 +772,7 @@ static void test_getWordReverse_empty() {
                                       &word);
   ASSERT_INT(0, has_word_found);
   ASSERT_PTR(initial, word.end);
+  ASSERT_PTR(initial + mystrlen(initial), word.begin);
   fprintf(stderr, "-------------------\n");
 }
 
@@ -743,6 +784,7 @@ static void test_getWordReverse_noOneWord() {
                                       &word);
   ASSERT_INT(0, has_word_found);
   ASSERT_PTR(initial, word.end);
+  ASSERT_PTR(initial + mystrlen(initial), word.begin);
   fprintf(stderr, "-------------------\n");
 }
 
