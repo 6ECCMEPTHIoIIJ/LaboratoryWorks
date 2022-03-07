@@ -1,7 +1,7 @@
 #include "../include/mystring.h"
 #include "../tests/mystring_tests.h"
 
-int wordcmp(WordDescriptor w_1,
+static int wordcmp(WordDescriptor w_1,
             WordDescriptor w_2) {
   int w_1_size = w_1.end - w_1.begin;
   int w_2_size = w_2.end - w_2.begin;
@@ -123,7 +123,7 @@ void test_replace_notAllWordsAreSoughtW1LenBiggerW2Len() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_digitToStartReverseStr() {
+void test_replace() {
   fprintf(stderr, "-------------------\n");
   test_replace_empty();
   test_replace_manySoughtWords();
@@ -136,7 +136,7 @@ void test_digitToStartReverseStr() {
 }
 
 int main() {
-  test_digitToStartReverseStr();
+  test_replace();
 
   return 0;
 }
