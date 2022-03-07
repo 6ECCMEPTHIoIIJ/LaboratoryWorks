@@ -69,7 +69,7 @@ void test_mixWords_equalLength() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPoly() {
+void test_mixWords() {
   fprintf(stderr, "-------------------\n");
   test_mixWords_empty();
   test_mixWords_secondLonger();
@@ -78,9 +78,8 @@ void test_countPoly() {
   fprintf(stderr, "\n");
 }
 
-
 int main() {
-  test_countPoly();
+  test_mixWords();
 
   return 0;
 }

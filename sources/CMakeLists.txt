@@ -34,6 +34,9 @@ add_executable(${TASK_8_NAME} ${TASK_8_SOURCES})
 set(TASK_9_SOURCES "9_mix_words.c" "mystring.c")
 add_executable(${TASK_9_NAME} ${TASK_9_SOURCES})
 
+set(TASK_10_SOURCES "10_reverse_words_order.c" "mystring.c")
+add_executable(${TASK_10_NAME} ${TASK_10_SOURCES})
+
 set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
 add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})
 
