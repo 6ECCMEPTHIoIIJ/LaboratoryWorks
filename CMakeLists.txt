@@ -18,10 +18,13 @@ set(TASK_9_NAME "9_mix_words")
 set(TASK_10_NAME "10_reverse_words_order")
 set(TASK_11_NAME "11_get_word_before_first_word_with_symbol")
 set(TASK_12_NAME "12_find_last_equal_word_in_both_str")
+set(TASK_13_NAME "13_has_string_equal_words")
+set(TASK_15_NAME "15_get_str_from_words_not_equal_to_the_last")
 set(TASK_19_NAME "19_is_substring_by_symbols")
 
-# написали версию сборки (зачем? - понятия не имею) и список связанных с
-# проектом языков (их может быть и больше одного)
+# написали версию сборки (зачем? - сам не знаю, этот параметр пока что ни на
+# что не влияет) и список связанных с проектом языков (их может быть и больше
+# одного)
 project(${PROJECT_NAME} VERSION "0.11.0" LANGUAGES C)
 
 # указали стандарт С и С++ и указали, что необходимо запускать компиляцию в
@@ -160,6 +163,21 @@ set_target_properties(${TASK_12_NAME}
         RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_12_NAME}_debug")
+
+target_include_directories(${TASK_13_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_13_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_13_NAME}_debug")
+
+target_include_directories(${TASK_15_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_15_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_15_NAME}_debug")
+
 
 target_include_directories(${TASK_19_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_19_NAME}
