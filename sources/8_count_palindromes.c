@@ -1,7 +1,7 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
-int isPoly(WordDescriptor word) {
+static int isPalindrome(WordDescriptor word) {
   word.end--;
   while (word.begin < word.end) {
     if (*word.begin != *word.end) {
@@ -14,100 +14,100 @@ int isPoly(WordDescriptor word) {
   return 1;
 }
 
-void test_isPoly_true() {
+void test_Panidrome_true() {
   char str_1[] = "abacaba";
   char str_2[] = "abacddcaba";
   char str_3[] = "a";
   WordDescriptor word;
   getWord(str_1, &word);
-  ASSERT_INT(1, isPoly(word));
+  ASSERT_INT(1, isPalindrome(word));
   getWord(str_2, &word);
-  ASSERT_INT(1, isPoly(word));
+  ASSERT_INT(1, isPalindrome(word));
   getWord(str_3, &word);
-  ASSERT_INT(1, isPoly(word));
+  ASSERT_INT(1, isPalindrome(word));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_isPoly_false() {
+void test_Panidrome_false() {
   char str_1[] = "abdcaba";
   char str_2[] = "abacddaba";
   WordDescriptor word;
   getWord(str_1, &word);
-  ASSERT_INT(0, isPoly(word));
+  ASSERT_INT(0, isPalindrome(word));
   getWord(str_2, &word);
-  ASSERT_INT(0, isPoly(word));
+  ASSERT_INT(0, isPalindrome(word));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_isPoly() {
+void test_Panidrome() {
   fprintf(stderr, "-------------------\n");
-  test_isPoly_true();
-  test_isPoly_false();
+  test_Panidrome_true();
+  test_Panidrome_false();
   fprintf(stderr, "\n");
 }
 
-size_t countPoly(char* str, char separator) {
-  size_t count_poly = 0;
+size_t countPanidromes(char* str, char separator) {
+  size_t count_Panidromes = 0;
   char* begin = str;
   char* end;
   size_t str_len = mystrlen(str);
   WordDescriptor word;
   while (*(end = find(begin, str + str_len, separator)) != '\0') {
     getWordReverse(begin - 1, end - 1, &word);
-    count_poly += isPoly(word);
+    count_Panidromes += isPalindrome(word);
     begin = end + 1;
   }
 
   getWordReverse(begin - 1, end - 1, &word);
-  count_poly += isPoly(word);
+  count_Panidromes += isPalindrome(word);
 
-  return count_poly;
+  return count_Panidromes;
 }
 
-void test_countPoly_allArePoly() {
+void test_countPanidromes_allArePanidromes() {
   char str[] = "aba,abaccaba ,a";
-  ASSERT_INT(3, countPoly(str, ','));
+  ASSERT_INT(3, countPanidromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPoly_notAllArePoly() {
+void test_countPanidromes_notAllArePanidromes() {
   char str[] = "ab, caba  , aba,io, i";
-  ASSERT_INT(2, countPoly(str, ','));
+  ASSERT_INT(2, countPanidromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPoly_allAreNotPoly() {
+void test_countPanidromes_allAreNotPanidromes() {
   char str[] = "ab, caba, ba, io, ik";
-  ASSERT_INT(0, countPoly(str, ','));
+  ASSERT_INT(0, countPanidromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPoly_oneWord() {
+void test_countPanidromes_oneWord() {
   char str[] = "abcaba";
-  ASSERT_INT(0, countPoly(str, ','));
+  ASSERT_INT(0, countPanidromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
 
-void test_countPoly_oneWordAndIsPoly() {
+void test_countPanidromes_oneWordAndPanidrome() {
   char str[] = "abacaba";
-  ASSERT_INT(1, countPoly(str, ','));
+  ASSERT_INT(1, countPanidromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPoly() {
+void test_countPanidromes() {
   fprintf(stderr, "-------------------\n");
-  test_countPoly_allArePoly();
-  test_countPoly_notAllArePoly();
-  test_countPoly_allAreNotPoly();
-  test_countPoly_oneWord();
-  test_countPoly_oneWordAndIsPoly();
+  test_countPanidromes_allArePanidromes();
+  test_countPanidromes_notAllArePanidromes();
+  test_countPanidromes_allAreNotPanidromes();
+  test_countPanidromes_oneWord();
+  test_countPanidromes_oneWordAndPanidrome();
   fprintf(stderr, "\n");
 }
 
 int main() {
-  test_isPoly();
-  test_countPoly();
+  test_Panidrome();
+  test_countPanidromes();
 
   return 0;
 }

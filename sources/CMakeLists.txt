@@ -28,7 +28,7 @@ add_executable(${TASK_6_NAME} ${TASK_6_SOURCES})
 set(TASK_7_SOURCES "7_output_words_in_reverse_order.c" "mystring.c")
 add_executable(${TASK_7_NAME} ${TASK_7_SOURCES})
 
-set(TASK_8_SOURCES "8_count_poly.c" "mystring.c")
+set(TASK_8_SOURCES "8_count_palindromes.c" "mystring.c")
 add_executable(${TASK_8_NAME} ${TASK_8_SOURCES})
 
 set(TASK_9_SOURCES "9_mix_words.c" "mystring.c")
@@ -56,6 +56,9 @@ add_executable(${TASK_15_NAME} ${TASK_15_SOURCES})
 
 set(TASK_17_1_SOURCES "17_1_remove_words_equal_to_the_last.c" "mystring.c")
 add_executable(${TASK_17_1_NAME} ${TASK_17_1_SOURCES})
+
+set(TASK_17_2_SOURCES "17_2_remove_palindromes.c" "mystring.c")
+add_executable(${TASK_17_2_NAME} ${TASK_17_2_SOURCES})
 
 set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
 add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})

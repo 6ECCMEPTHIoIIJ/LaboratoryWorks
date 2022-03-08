@@ -3,7 +3,8 @@ cmake_minimum_required(VERSION 3.23)
 
 # создали список переменных для именования целей, дабы потом не прописывать
 # каждый раз их полные имена
-set(PROJECT_NAME "5e")
+set(PROJECT_NAME "string_library")
+set(TEST_NAME "test")
 set(TASK_1_NAME "1_remove_spaces")
 set(TASK_2_1_NAME "2_1_remove_adjacent_equal_letters")
 set(TASK_2_2_NAME "2_2_remove_extra_spaces")
@@ -13,7 +14,7 @@ set(TASK_4_NAME "4_replace_digits_by_spaces")
 set(TASK_5_NAME "5_replace")
 set(TASK_6_NAME "6_are_words_sorted")
 set(TASK_7_NAME "7_output_words_in_reverse_order")
-set(TASK_8_NAME "8_count_poly")
+set(TASK_8_NAME "8_count_palindromes")
 set(TASK_9_NAME "9_mix_words")
 set(TASK_10_NAME "10_reverse_words_order")
 set(TASK_11_NAME "11_get_word_before_first_word_with_symbol")
@@ -21,6 +22,7 @@ set(TASK_12_NAME "12_find_last_equal_word_in_both_str")
 set(TASK_13_NAME "13_has_string_equal_words")
 set(TASK_15_NAME "15_get_str_from_words_not_equal_to_the_last")
 set(TASK_17_1_NAME "17_1_remove_words_equal_to_the_last")
+set(TASK_17_2_NAME "17_2_remove_palindromes")
 set(TASK_19_NAME "19_is_substring_by_symbols")
 
 # написали версию сборки (зачем? - сам не знаю, этот параметр пока что ни на
@@ -186,6 +188,12 @@ set_target_properties(${TASK_17_1_NAME}
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_17_1_NAME}_debug")
 
+target_include_directories(${TASK_17_2_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_17_2_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_17_2_NAME}_debug")
 
 target_include_directories(${TASK_19_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_19_NAME}
