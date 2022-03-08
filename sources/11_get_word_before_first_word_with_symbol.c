@@ -71,7 +71,7 @@ void test_getWordBeforeFirstWordWithSymbol_notFoundWordWithSymbolManyWords() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_getWordBeforeFirstWordWithSymbol_wordFound() {
+void test_getWordBeforeFirstWordWithSymbol_notLast() {
   char str[] = "meet in hell my dear";
   WordDescriptor word;
   ASSERT_INT(kWordFound, getWordBeforeFirstWordWithSymbol(str, &word, 'a'));
@@ -99,7 +99,7 @@ void test_isSubstringBySymbols() {
   test_getWordBeforeFirstWordWithSymbol_firstWordWithSymbol();
   test_getWordBeforeFirstWordWithSymbol_notFoundWordWithSymbolOneWord();
   test_getWordBeforeFirstWordWithSymbol_notFoundWordWithSymbolManyWords();
-  test_getWordBeforeFirstWordWithSymbol_wordFound();
+  test_getWordBeforeFirstWordWithSymbol_notLast();
   test_getWordBeforeFirstWordWithSymbol_wordFoundTwoWords();
   fprintf(stderr, "\n");
 }
