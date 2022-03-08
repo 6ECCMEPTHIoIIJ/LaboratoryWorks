@@ -52,6 +52,11 @@ add_executable(${TASK_13_NAME} ${TASK_13_SOURCES})
 set(TASK_15_SOURCES "15_get_str_from_words_not_equal_to_the_last.c" "mystring.c")
 add_executable(${TASK_15_NAME} ${TASK_15_SOURCES})
 
+#TODO: TASK_16_2
+
+set(TASK_17_1_SOURCES "17_1_remove_words_equal_to_the_last.c" "mystring.c")
+add_executable(${TASK_17_1_NAME} ${TASK_17_1_SOURCES})
+
 set(TASK_19_SOURCES "19_is_substring_by_symbols.c" "mystring.c")
 add_executable(${TASK_19_NAME} ${TASK_19_SOURCES})
 

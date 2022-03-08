@@ -65,13 +65,13 @@ size_t countPoly(char* str, char separator) {
 }
 
 void test_countPoly_allArePoly() {
-  char str[] = "aba, abaccaba ,a";
+  char str[] = "aba,abaccaba ,a";
   ASSERT_INT(3, countPoly(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_countPoly_notAllArePoly() {
-  char str[] = "ab, caba, aba, io, i";
+  char str[] = "ab, caba  , aba,io, i";
   ASSERT_INT(2, countPoly(str, ','));
   fprintf(stderr, "-------------------\n");
 }
