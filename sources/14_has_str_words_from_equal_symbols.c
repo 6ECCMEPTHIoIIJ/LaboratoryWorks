@@ -78,6 +78,10 @@ void test_removeAdjacentEqualLettersInWord() {
   fprintf(stderr, "\n");
 }
 
+/*
+ * Возвращает true, если строка str содержит слова, составленные из
+ * одинаковых символов, и false в противном случае
+ */
 bool hasStrWordsFromEqualSymbols(char* str) {
   *copy(str, str + mystrlen(str), _string_buffer) = '\0';
   getBagOfWords(_string_buffer, &_bag_1);

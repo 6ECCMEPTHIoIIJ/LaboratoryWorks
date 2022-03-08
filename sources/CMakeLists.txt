@@ -56,7 +56,8 @@ add_executable(${TASK_15_NAME} ${TASK_15_SOURCES})
 
 set(TASK_16_1_SOURCES "16_1_find_last_equal_word_in_both_str.c" "mystring.c")
 add_executable(${TASK_16_1_NAME} ${TASK_16_1_SOURCES})
-#TODO: TASK_16_2
+set(TASK_16_2_SOURCES "16_2_get_word_before_first_word_in_both_str.c" "mystring.c")
+add_executable(${TASK_16_2_NAME} ${TASK_16_2_SOURCES})
 
 set(TASK_17_1_SOURCES "17_1_remove_words_equal_to_the_last.c" "mystring.c")
 add_executable(${TASK_17_1_NAME} ${TASK_17_1_SOURCES})

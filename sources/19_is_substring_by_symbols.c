@@ -24,7 +24,7 @@ void getLettersInString(char* str,
  */
 bool isSubstringBySymbols(char* str_1,
                           char* str_2) {
-  bool letters[ASCII_SYMBOLS_AMOUNT] = {0};
+  bool letters[ASCII_SYMBOLS_AMOUNT] = {false};
   getLettersInString(str_2, letters);
 
   while (*str_1 != '\0') {

@@ -23,7 +23,7 @@ typedef enum WordBeforeFirstWordWithSymbolReturnCode {
  * противном случае
  */
 bool isSymbolInWord(WordDescriptor word,
-                   const char symbol) {
+                    const char symbol) {
   return find(word.begin, word.end, symbol) != word.end;
 }
 

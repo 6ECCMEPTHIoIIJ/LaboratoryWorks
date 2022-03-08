@@ -3,6 +3,10 @@
 
 #include <stdbool.h>
 
+/*
+ * Возвращает true, если слово word найдено в строке str, и false в противном
+ * случае
+ */
 static bool isWordFound(char* str,
                 WordDescriptor word) {
   WordDescriptor cur_word;
