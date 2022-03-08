@@ -1,6 +1,9 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
+/*
+ * Возвращает true, если слово word - палиндром, и false в противном случае
+ */
 static int isPalindrome(WordDescriptor word) {
   word.end--;
   while (word.begin < word.end) {
@@ -19,6 +22,10 @@ static int isPalindrome(WordDescriptor word) {
  * 8_count_palindromes.c)
  -------------------------------------------------------*/
 
+/*
+ * Удаляет из строки str все слова-палиндромы. Сохраняет все пробельные символы
+ * исходной строки
+ */
 void removePalindromes(char* str) {
   char* begin_src = str;
   char* begin_dst = str;

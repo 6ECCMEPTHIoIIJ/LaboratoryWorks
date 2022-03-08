@@ -1,6 +1,11 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
+/*
+ * Преобразует строку str, оставляя в ней только слова, отличные от ее
+ * последнего слова, не сохраняет пробельные символы исходной строки. В
+ * качестве разделителя использует символ пробела
+ */
 void getStrFromWordsNotEqualToTheLast(char* str) {
   char* r_end = str - 1;
   char* r_begin = str + mystrlen(str) - 1;

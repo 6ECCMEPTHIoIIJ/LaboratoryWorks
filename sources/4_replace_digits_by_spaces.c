@@ -1,6 +1,9 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
+/*
+ * Заменяет цифры в строке str соответствующим им кол-вом пробелов
+ */
 void replaceDigitsBySpaces(char* str) {
   char* read_ptr = str;
   char* write_ptr = _string_buffer;

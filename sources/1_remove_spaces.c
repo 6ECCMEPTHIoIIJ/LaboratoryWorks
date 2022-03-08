@@ -1,13 +1,16 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
-int isnonspace(const int ch) {
+/*
+ * Возвращает 1, если символ ch является непробельным, и 0 в противном случае
+ */
+int isnonspace(const int ch) { // тип int обусловлен совместимостью со
+  // стандартными функциями
   return !isspace(ch);
 }
 
-/**
- * @brief Удаление всех пробелов из строки
- * @param str указатель на начало строки
+/*
+ * Удаляет все пробелы из строки
  */
 void removeSpaces(char* str) {
   char* end = str + mystrlen(str);

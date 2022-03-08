@@ -1,6 +1,10 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
+/*
+ * Заменяет все слова w_1 на слова w_2 в строке str, сохраняет все пробельные
+ * символы исходной строки
+ */
 void replace(char* str,
              char* w_1,
              char* w_2) {
@@ -46,11 +50,11 @@ void test_replace_empty() {
 }
 
 void test_replace_manySoughtWords() {
-  char str[15] = "aba, aba aba";
+  char str[18] = "aba,    aba aba";
   char w_1[] = "aba";
   char w_2[] = "caba";
   replace(str, w_1, w_2);
-  char expected[] = "aba, caba caba";
+  char expected[] = "aba,    caba caba";
   ASSERT_STRING(expected, str);
   fprintf(stderr, "-------------------\n");
 }

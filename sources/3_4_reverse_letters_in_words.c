@@ -1,6 +1,9 @@
 #include "../include/mystring.h"
 #include "../tests/mystring_tests.h"
 
+/*
+ * Обращает символы в слове word
+ */
 void reverseWord(WordDescriptor word) {
   char* end_string_buffer = copyReverse(word.begin - 1,
                                         word.end - 1,
@@ -39,11 +42,8 @@ void test_reverseWord() {
   fprintf(stderr, "\n");
 }
 
-/**
- * @brief   Преобразование строки таким образом, чтобы цифры каждого слова
- *          были перенесены в начало слова без изменения порядка не обратный, а
- *          буквы - в конец слова
- * @param str указатель на начало строки
+/*
+ * Обращает символы каждого слова строки str
  */
 void reverseLettersInWords(char* str) {
   char* begin_search = str;

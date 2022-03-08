@@ -1,6 +1,10 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
+/*
+ * Удаляет из строки str все вхождения слов, равных последнему слову строки,
+ * включая последнее. Сохраняет все пробельные символы исходной строки
+ */
 void removeWordsEqualToTheLast(char* str) {
   char* r_end = str - 1;
   char* r_begin = str + mystrlen(str) - 1;

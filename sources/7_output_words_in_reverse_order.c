@@ -1,5 +1,9 @@
 #include "mystring.h"
 
+/*
+ * Выводит в поток stdout слова строки str в обратном порядке, в качестве
+ * разделителя используется символ '\n'
+ */
 void outputWordsInReverseOrder(char* str) {
   getBagOfWords(str, &_bag_1);
 

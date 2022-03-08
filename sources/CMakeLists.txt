@@ -6,16 +6,15 @@ add_executable(${TASK_1_NAME} ${TASK_1_SOURCES})
 
 set(TASK_2_1_SOURCES "2_1_remove_adjacent_equal_letters.c" "mystring.c")
 add_executable(${TASK_2_1_NAME} ${TASK_2_1_SOURCES})
-
 set(TASK_2_2_SOURCES "2_2_remove_extra_spaces.c" "mystring.c")
 add_executable(${TASK_2_2_NAME} ${TASK_2_2_SOURCES})
 
-set(TASK_3_SOURCES "3_digit_to_start_reverse.c" "mystring.c")
-add_executable(${TASK_3_NAME} ${TASK_3_SOURCES})
-
 set(TASK_3_1_SOURCES "3_1_letters_to_start_digits_to_end.c" "mystring.c")
 add_executable(${TASK_3_1_NAME} ${TASK_3_1_SOURCES})
-
+set(TASK_3_2_SOURCES "3_2_digits_to_end_reverse.c" "mystring.c")
+add_executable(${TASK_3_2_NAME} ${TASK_3_2_SOURCES})
+set(TASK_3_3_SOURCES "3_3_letters_to_end_digits_to_start.c" "mystring.c")
+add_executable(${TASK_3_3_NAME} ${TASK_3_3_SOURCES})
 set(TASK_3_4_SOURCES "3_4_reverse_letters_in_words.c" "mystring.c")
 add_executable(${TASK_3_4_NAME} ${TASK_3_4_SOURCES})
 
@@ -49,7 +48,6 @@ add_executable(${TASK_12_NAME} ${TASK_12_SOURCES})
 set(TASK_13_SOURCES "13_has_string_equal_words.c" "mystring.c")
 add_executable(${TASK_13_NAME} ${TASK_13_SOURCES})
 
-
 #TODO: TASK_14
 
 set(TASK_15_SOURCES "15_get_str_from_words_not_equal_to_the_last.c" "mystring.c")
@@ -59,7 +57,6 @@ add_executable(${TASK_15_NAME} ${TASK_15_SOURCES})
 
 set(TASK_17_1_SOURCES "17_1_remove_words_equal_to_the_last.c" "mystring.c")
 add_executable(${TASK_17_1_NAME} ${TASK_17_1_SOURCES})
-
 set(TASK_17_2_SOURCES "17_2_remove_palindromes.c" "mystring.c")
 add_executable(${TASK_17_2_NAME} ${TASK_17_2_SOURCES})
 

@@ -1,113 +1,122 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
-static int isPalindrome(WordDescriptor word) {
+#include <stdbool.h>
+
+/*
+ * Возвращает true, если слово word - палиндром, и false в противном случае
+ */
+static bool isPalindrome(WordDescriptor word) {
   word.end--;
   while (word.begin < word.end) {
     if (*word.begin != *word.end) {
-      return 0;
+      return false;
     }
     word.begin++;
     word.end--;
   }
 
-  return 1;
+  return true;
 }
 
-void test_Panidrome_true() {
+void test_isPalindrome_true() {
   char str_1[] = "abacaba";
   char str_2[] = "abacddcaba";
   char str_3[] = "a";
   WordDescriptor word;
   getWord(str_1, &word);
-  ASSERT_INT(1, isPalindrome(word));
+  ASSERT_INT(true, isPalindrome(word));
   getWord(str_2, &word);
-  ASSERT_INT(1, isPalindrome(word));
+  ASSERT_INT(true, isPalindrome(word));
   getWord(str_3, &word);
-  ASSERT_INT(1, isPalindrome(word));
+  ASSERT_INT(true, isPalindrome(word));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_Panidrome_false() {
+void test_isPalindrome_false() {
   char str_1[] = "abdcaba";
   char str_2[] = "abacddaba";
   WordDescriptor word;
   getWord(str_1, &word);
-  ASSERT_INT(0, isPalindrome(word));
+  ASSERT_INT(false, isPalindrome(word));
   getWord(str_2, &word);
-  ASSERT_INT(0, isPalindrome(word));
+  ASSERT_INT(false, isPalindrome(word));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_Panidrome() {
+void test_isPalindrome() {
   fprintf(stderr, "-------------------\n");
-  test_Panidrome_true();
-  test_Panidrome_false();
+  test_isPalindrome_true();
+  test_isPalindrome_false();
   fprintf(stderr, "\n");
 }
 
-size_t countPanidromes(char* str, char separator) {
-  size_t count_Panidromes = 0;
+/*
+ * Возвращает кол-во палиндромов, содержащихся в строке str и разделенных
+ * символом separator
+ */
+size_t countPalindromes(char* str, char separator) {
+  size_t count_isPalindromes = 0;
   char* begin = str;
   char* end;
   size_t str_len = mystrlen(str);
   WordDescriptor word;
   while (*(end = find(begin, str + str_len, separator)) != '\0') {
     getWordReverse(begin - 1, end - 1, &word);
-    count_Panidromes += isPalindrome(word);
+    count_isPalindromes += isPalindrome(word);
     begin = end + 1;
   }
 
   getWordReverse(begin - 1, end - 1, &word);
-  count_Panidromes += isPalindrome(word);
+  count_isPalindromes += isPalindrome(word);
 
-  return count_Panidromes;
+  return count_isPalindromes;
 }
 
-void test_countPanidromes_allArePanidromes() {
+void test_countPalindromes_allArePalindromes() {
   char str[] = "aba,abaccaba ,a";
-  ASSERT_INT(3, countPanidromes(str, ','));
+  ASSERT_INT(3, countPalindromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPanidromes_notAllArePanidromes() {
+void test_countPalindromes_notAllArePalindromes() {
   char str[] = "ab, caba  , aba,io, i";
-  ASSERT_INT(2, countPanidromes(str, ','));
+  ASSERT_INT(2, countPalindromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPanidromes_allAreNotPanidromes() {
+void test_countPalindromes_allAreNotPalindromes() {
   char str[] = "ab, caba, ba, io, ik";
-  ASSERT_INT(0, countPanidromes(str, ','));
+  ASSERT_INT(0, countPalindromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPanidromes_oneWord() {
+void test_countPalindromes_oneWord() {
   char str[] = "abcaba";
-  ASSERT_INT(0, countPanidromes(str, ','));
+  ASSERT_INT(0, countPalindromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
 
-void test_countPanidromes_oneWordAndPanidrome() {
+void test_countPalindromes_oneWordAndPalindrome() {
   char str[] = "abacaba";
-  ASSERT_INT(1, countPanidromes(str, ','));
+  ASSERT_INT(1, countPalindromes(str, ','));
   fprintf(stderr, "-------------------\n");
 }
 
-void test_countPanidromes() {
+void test_countPalindromes() {
   fprintf(stderr, "-------------------\n");
-  test_countPanidromes_allArePanidromes();
-  test_countPanidromes_notAllArePanidromes();
-  test_countPanidromes_allAreNotPanidromes();
-  test_countPanidromes_oneWord();
-  test_countPanidromes_oneWordAndPanidrome();
+  test_countPalindromes_allArePalindromes();
+  test_countPalindromes_notAllArePalindromes();
+  test_countPalindromes_allAreNotPalindromes();
+  test_countPalindromes_oneWord();
+  test_countPalindromes_oneWordAndPalindrome();
   fprintf(stderr, "\n");
 }
 
 int main() {
-  test_Panidrome();
-  test_countPanidromes();
+  test_isPalindrome();
+  test_countPalindromes();
 
   return 0;
 }

@@ -3,8 +3,13 @@
 
 #include <stdbool.h>
 
+// кол-во различных символов, которые может представить тип char
 #define ASCII_SYMBOLS_AMOUNT 256
 
+/*
+ * Устанавливает значения ячеек массива letters, чей индекс численно равен
+ * коду символов, содержащихся в строке str в значение true
+ */
 void getLettersInString(char* str,
                         bool letters[ASCII_SYMBOLS_AMOUNT]) {
   while (*str != '\0') {
@@ -13,6 +18,10 @@ void getLettersInString(char* str,
   }
 }
 
+/*
+ * Возвращает true, если все символы строки str_1 содержатся в строке str_2,
+ * и false в противном случае
+ */
 bool isSubstringBySymbols(char* str_1,
                           char* str_2) {
   bool letters[ASCII_SYMBOLS_AMOUNT] = {0};
@@ -22,7 +31,7 @@ bool isSubstringBySymbols(char* str_1,
     if (!letters[*str_1]) {
       return false;
     }
-    
+
     str_1++;
   }
 
@@ -32,38 +41,38 @@ bool isSubstringBySymbols(char* str_1,
 void test_isSubstringBySymbols_bothEmpty() {
   char str_1[] = "";
   char str_2[] = "";
-  ASSERT_INT(1, isSubstringBySymbols(str_1, str_2));
+  ASSERT_INT(true, isSubstringBySymbols(str_1, str_2));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_isSubstringBySymbols_firstEmpty() {
   char str_1[] = "";
   char str_2[] = " asf adf";
-  ASSERT_INT(1, isSubstringBySymbols(str_1, str_2));
+  ASSERT_INT(true, isSubstringBySymbols(str_1, str_2));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_isSubstringBySymbols_secondEmpty() {
   char str_1[] = " avdfdbs d ";
   char str_2[] = "";
-  ASSERT_INT(0, isSubstringBySymbols(str_1, str_2));
+  ASSERT_INT(false, isSubstringBySymbols(str_1, str_2));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_isSubstringBySymbols_diffAmountOfLetters() {
   char str_1[] = "hell";
   char str_2[] = "oleh";
-  ASSERT_INT(1, isSubstringBySymbols(str_1, str_2));
+  ASSERT_INT(true, isSubstringBySymbols(str_1, str_2));
   char str_3[] = "d        ea    th";
   char str_4[] = " death";
-  ASSERT_INT(1, isSubstringBySymbols(str_3, str_4));
+  ASSERT_INT(true, isSubstringBySymbols(str_3, str_4));
   fprintf(stderr, "-------------------\n");
 }
 
 void test_isSubstringBySymbols_false() {
   char str_1[] = "hell";
   char str_2[] = "  oeh  ";
-  ASSERT_INT(0, isSubstringBySymbols(str_1, str_2));
+  ASSERT_INT(false, isSubstringBySymbols(str_1, str_2));
   fprintf(stderr, "-------------------\n");
 }
 

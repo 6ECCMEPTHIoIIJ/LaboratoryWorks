@@ -1,18 +1,20 @@
 #include "mystring_tests.h"
 #include "mystring.h"
 
-int isWordFound(char* str,
+#include <stdbool.h>
+
+bool isWordFound(char* str,
                 WordDescriptor word) {
   WordDescriptor cur_word;
   char *begin = str;
   while (getWord(begin, &cur_word)) {
     if (wordcmp(word, cur_word) == 0) {
-      return 1;
+      return true;
     }
     begin = cur_word.end;
   }
 
-  return 0;
+  return false;
 }
 
 void test_isWordFound_empty() {
@@ -20,7 +22,7 @@ void test_isWordFound_empty() {
   WordDescriptor word;
   char word_in_char[] = "find_me";
   getWord(word_in_char, &word);
-  ASSERT_INT(0, isWordFound(str, word));
+  ASSERT_INT(false, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -29,7 +31,7 @@ void test_isWordFound_notFound() {
   WordDescriptor word;
   char word_in_char[] = "find_me";
   getWord(word_in_char, &word);
-  ASSERT_INT(0, isWordFound(str, word));
+  ASSERT_INT(false, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -38,7 +40,7 @@ void test_isWordFound_foundNotFirst() {
   WordDescriptor word;
   char word_in_char[] = "destroy";
   getWord(word_in_char, &word);
-  ASSERT_INT(1, isWordFound(str, word));
+  ASSERT_INT(true, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -47,7 +49,7 @@ void test_isWordFound_foundFirst() {
   WordDescriptor word;
   char word_in_char[] = "I";
   getWord(word_in_char, &word);
-  ASSERT_INT(1, isWordFound(str, word));
+  ASSERT_INT(true, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -56,7 +58,7 @@ void test_isWordFound_foundLast() {
   WordDescriptor word;
   char word_in_char[] = "everything";
   getWord(word_in_char, &word);
-  ASSERT_INT(1, isWordFound(str, word));
+  ASSERT_INT(true, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -65,7 +67,7 @@ void test_isWordFound_foundOneWord() {
   WordDescriptor word;
   char word_in_char[] = "haha";
   getWord(word_in_char, &word);
-  ASSERT_INT(1, isWordFound(str, word));
+  ASSERT_INT(true, isWordFound(str, word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -80,8 +82,13 @@ void test_isWordFound() {
   fprintf(stderr, "\n");
 }
 
-
-int findLastEqualWordInBothStr(char* str_1,
+/*
+ * Возвращает true, если строки str_1 и str_2 содержат одинаковые слова,
+ * сохраняет последнее слово строки str_1, содержащееся и в str_2 в
+ * last_word, в противном случае возвращает false и оставляет значение
+ * last_word оставляет без изменения
+ */
+bool findLastEqualWordInBothStr(char* str_1,
                                 char* str_2,
                                 WordDescriptor* last_word) {
   char* r_end_1 = str_1 - 1;
@@ -90,19 +97,19 @@ int findLastEqualWordInBothStr(char* str_1,
   while (getWordReverse(r_end_1, r_begin_1, &cur_word)) {
     if (isWordFound(str_2, cur_word)) {
       *last_word = cur_word;
-      return 1;
+      return true;
     }
     r_begin_1 = cur_word.begin - 1;
   }
 
-  return 0;
+  return false;
 }
 
 void test_findLastEqualWordInBothStr_notLast() {
   char str_1[] = "meet in hell my dear";
   char str_2[] = "in hell , I said";
   WordDescriptor word;
-  ASSERT_INT(1, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(true, findLastEqualWordInBothStr(str_1, str_2, &word));
   char expected[] = "hell";
   char got[sizeof(expected)];
   wordDescriptorToString(word, got);
@@ -126,7 +133,7 @@ void test_findLastEqualWordInBothStr_lastForSecondStr() {
   char str_1[] = "meet in hell my dear";
   char str_2[] = "in hell";
   WordDescriptor word;
-  ASSERT_INT(1, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(true, findLastEqualWordInBothStr(str_1, str_2, &word));
   char expected[] = "hell";
   char got[sizeof(expected)];
   wordDescriptorToString(word, got);
@@ -138,7 +145,7 @@ void test_findLastEqualWordInBothStr_emptyBoth() {
   char str_1[] = "";
   char str_2[] = "";
   WordDescriptor word;
-  ASSERT_INT(0, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(false, findLastEqualWordInBothStr(str_1, str_2, &word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -146,7 +153,7 @@ void test_findLastEqualWordInBothStr_emptyFirst() {
   char str_1[] = "";
   char str_2[] = "one by one";
   WordDescriptor word;
-  ASSERT_INT(0, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(false, findLastEqualWordInBothStr(str_1, str_2, &word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -154,7 +161,7 @@ void test_findLastEqualWordInBothStr_emptySecond() {
   char str_1[] = "my friend of misery";
   char str_2[] = "";
   WordDescriptor word;
-  ASSERT_INT(0, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(false, findLastEqualWordInBothStr(str_1, str_2, &word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -162,7 +169,7 @@ void test_findLastEqualWordInBothStr_notFound() {
   char str_1[] = "my friend of misery";
   char str_2[] = "meet in hell";
   WordDescriptor word;
-  ASSERT_INT(0, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(false, findLastEqualWordInBothStr(str_1, str_2, &word));
   fprintf(stderr, "-------------------\n");
 }
 
@@ -170,7 +177,7 @@ void test_findLastEqualWordInBothStr_oneWord() {
   char str_1[] = "armageddon";
   char str_2[] = "armageddon";
   WordDescriptor word;
-  ASSERT_INT(1, findLastEqualWordInBothStr(str_1, str_2, &word));
+  ASSERT_INT(true, findLastEqualWordInBothStr(str_1, str_2, &word));
   char expected[] = "armageddon";
   char got[sizeof(expected)];
   wordDescriptorToString(word, got);

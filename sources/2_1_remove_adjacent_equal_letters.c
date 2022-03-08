@@ -1,9 +1,8 @@
 #include "tests.h"
 #include "mystring_tests.h"
 
-/**
- * @brief   Удаление идущих подряд одинаковых символов
- * @param str указатель на начало строки
+/*
+ * Сокращает число идущих подряд символов строки str до одного
  */
 void removeAdjacentEqualLetters(char* str) {
   char* begin_dst = str;

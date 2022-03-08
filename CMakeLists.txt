@@ -8,8 +8,9 @@ set(TEST_NAME "test")
 set(TASK_1_NAME "1_remove_spaces")
 set(TASK_2_1_NAME "2_1_remove_adjacent_equal_letters")
 set(TASK_2_2_NAME "2_2_remove_extra_spaces")
-set(TASK_3_NAME "3_digit_to_start_reverse")
 set(TASK_3_1_NAME "3_1_letters_to_start_digits_to_end")
+set(TASK_3_2_NAME "3_2_digits_to_end_reverse")
+set(TASK_3_3_NAME "3_3_letters_to_end_digits_to_start")
 set(TASK_3_4_NAME "3_4_reverse_letters_in_words")
 set(TASK_4_NAME "4_replace_digits_by_spaces")
 set(TASK_5_NAME "5_replace")
@@ -91,19 +92,26 @@ set_target_properties(${TASK_2_2_NAME}
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_2_2_NAME}_debug")
 
-target_include_directories(${TASK_3_NAME} PRIVATE "include" "tests")
-set_target_properties(${TASK_3_NAME}
-        PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
-        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
-        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_3_NAME}_debug")
-
 target_include_directories(${TASK_3_1_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_3_1_NAME}
         PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_3_1_NAME}_debug")
+
+target_include_directories(${TASK_3_2_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_3_2_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_3_2_NAME}_debug")
+
+target_include_directories(${TASK_3_3_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_3_3_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_3_3_NAME}_debug")
 
 target_include_directories(${TASK_3_4_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_3_4_NAME}

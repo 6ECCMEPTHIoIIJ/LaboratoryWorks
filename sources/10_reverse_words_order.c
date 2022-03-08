@@ -1,7 +1,13 @@
 #include "mystring.h"
 #include "mystring_tests.h"
 
-void reverseWordsOrder(char* str) {
+/*
+ * Меняет порядок слов в строке str на обратный, не сохраняет пробельные
+ * символы исходной строки. В качестве разделителя использует символ пробела
+ */
+void reverseWordsOrder(char* str) { // отсутствие сохранения исходных
+  // пробельных символов обусловлено спецификой задания: не использовать
+  // BagOfWords
   char* r_begin_src = str + mystrlen(str) - 1;
   char* r_end_src = str - 1;
   char* begin_dst = _string_buffer;
@@ -32,7 +38,7 @@ void test_reverseWordsOrder_oneWord() {
 }
 
 void test_reverseWordsOrder_someWords() {
-  char str[] = "death is near";
+  char str[] = "death   is  near";
   reverseWordsOrder(str);
   char expected[] = "near is death";
   ASSERT_STRING(expected, str);
