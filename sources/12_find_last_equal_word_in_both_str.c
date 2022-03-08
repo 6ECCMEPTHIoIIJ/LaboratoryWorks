@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-bool isWordFound(char* str,
+static bool isWordFound(char* str,
                 WordDescriptor word) {
   WordDescriptor cur_word;
   char *begin = str;
@@ -88,7 +88,7 @@ void test_isWordFound() {
  * last_word, в противном случае возвращает false и оставляет значение
  * last_word оставляет без изменения
  */
-bool findLastEqualWordInBothStr(char* str_1,
+static bool findLastEqualWordInBothStr(char* str_1,
                                 char* str_2,
                                 WordDescriptor* last_word) {
   char* r_end_1 = str_1 - 1;

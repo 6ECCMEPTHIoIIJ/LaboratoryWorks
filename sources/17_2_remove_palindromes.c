@@ -18,7 +18,7 @@ static int isPalindrome(WordDescriptor word) {
 }
 
 /*--------------------------------------------------------
- * TESTING: this function was tested in task 8 (watch file
+ * TESTING: эта функция была протестирована в задании 8 (см. файл
  * 8_count_palindromes.c)
  -------------------------------------------------------*/
 
