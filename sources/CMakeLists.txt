@@ -48,7 +48,8 @@ add_executable(${TASK_12_NAME} ${TASK_12_SOURCES})
 set(TASK_13_SOURCES "13_has_string_equal_words.c" "mystring.c")
 add_executable(${TASK_13_NAME} ${TASK_13_SOURCES})
 
-#TODO: TASK_14
+set(TASK_14_SOURCES "14_has_str_words_from_equal_symbols.c" "mystring.c")
+add_executable(${TASK_14_NAME} ${TASK_14_SOURCES})
 
 set(TASK_15_SOURCES "15_get_str_from_words_not_equal_to_the_last.c" "mystring.c")
 add_executable(${TASK_15_NAME} ${TASK_15_SOURCES})

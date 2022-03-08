@@ -34,7 +34,7 @@ void test_removeExtraSpaces_oneWord() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_nonLettersNoneDigits() {
+void test_removeExtraSpaces_allAreDuplicates() {
   char str[] = "aabbccdd";
   removeExtraSpaces(str);
   char expected[] = "aabbccdd";
@@ -42,7 +42,7 @@ void test_removeExtraSpaces_nonLettersNoneDigits() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_noneLetters() {
+void test_removeExtraSpaces_noneDuplicates() {
   char str[] = "asd s    ff a";
   removeExtraSpaces(str);
   char expected[] = "asd s ff a";
@@ -62,8 +62,8 @@ void test_removeExtraSpaces() {
   fprintf(stderr, "-------------------\n");
   test_removeExtraSpaces_empty();
   test_removeExtraSpaces_oneWord();
-  test_removeExtraSpaces_nonLettersNoneDigits();
-  test_removeExtraSpaces_noneLetters();
+  test_removeExtraSpaces_allAreDuplicates();
+  test_removeExtraSpaces_noneDuplicates();
   test_removeExtraSpaces_someWords();
   fprintf(stderr, "\n");
 }

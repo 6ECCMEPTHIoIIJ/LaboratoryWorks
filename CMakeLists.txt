@@ -22,6 +22,7 @@ set(TASK_10_NAME "10_reverse_words_order")
 set(TASK_11_NAME "11_get_word_before_first_word_with_symbol")
 set(TASK_12_NAME "12_find_last_equal_word_in_both_str")
 set(TASK_13_NAME "13_has_string_equal_words")
+set(TASK_14_NAME "14_has_str_words_from_equal_symbols")
 set(TASK_15_NAME "15_get_str_from_words_not_equal_to_the_last")
 set(TASK_16_1_NAME "16_1_find_last_equal_word_in_both_str")
 set(TASK_17_1_NAME "17_1_remove_words_equal_to_the_last")
@@ -190,6 +191,13 @@ set_target_properties(${TASK_13_NAME}
         RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
         RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
         RUNTIME_OUTPUT_NAME_DEBUG "${TASK_13_NAME}_debug")
+
+target_include_directories(${TASK_14_NAME} PRIVATE "include" "tests")
+set_target_properties(${TASK_14_NAME}
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}/bin/debug"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}/bin/release"
+        RUNTIME_OUTPUT_NAME_DEBUG "${TASK_14_NAME}_debug")
 
 target_include_directories(${TASK_15_NAME} PRIVATE "include" "tests")
 set_target_properties(${TASK_15_NAME}

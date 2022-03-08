@@ -32,7 +32,7 @@ void test_removeAdjacentEqualLetters_allAreEqual() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_nonLettersNoneDigits() {
+void test_removeExtraSpaces_allAreDuplicates() {
   char str[] = "aabbccdd";
   removeAdjacentEqualLetters(str);
   char expected[] = "abcd";
@@ -40,7 +40,7 @@ void test_removeExtraSpaces_nonLettersNoneDigits() {
   fprintf(stderr, "-------------------\n");
 }
 
-void test_removeExtraSpaces_noneLetters() {
+void test_removeExtraSpaces_noneDuplicates() {
   char str[] = "abcdabcd";
   removeAdjacentEqualLetters(str);
   char expected[] = "abcdabcd";
@@ -60,8 +60,8 @@ void test_removeAdjacentEqualLetters() {
   fprintf(stderr, "-------------------\n");
   test_removeAdjacentEqualLetters_empty();
   test_removeAdjacentEqualLetters_allAreEqual();
-  test_removeExtraSpaces_nonLettersNoneDigits();
-  test_removeExtraSpaces_noneLetters();
+  test_removeExtraSpaces_allAreDuplicates();
+  test_removeExtraSpaces_noneDuplicates();
   test_removeExtraSpaces_someWords();
   fprintf(stderr, "\n");
 }
