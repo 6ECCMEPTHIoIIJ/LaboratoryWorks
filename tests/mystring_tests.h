@@ -34,10 +34,10 @@ void assertWord(WordDescriptor expected,
     fprintf(stderr, "File %s\n", fileName);
     fprintf(stderr, "%s - failed on line %zu\n", funcName, line);
     fprintf(stderr, "Expected: \"");
-    fprintw(stderr,expected);
+    fprintw(stderr, expected);
     fprintf(stderr, "\"\n");
     fprintf(stderr, "Got: \"");
-    fprintw(stderr,got);
+    fprintw(stderr, got);
     fprintf(stderr, "\"\n");
   } else {
     fprintf(stderr, "%s - OK\n", funcName);
@@ -605,6 +605,37 @@ static void test_copy() {
   fprintf(stderr, "\n");
 }
 
+static void test_copyReverse_emptyString() {
+  char initial[] = "";
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyReverse(initial - 1, initial + mystrlen(initial) - 1,
+                              str);
+  char expected[] = "";
+  *dst_ptr = '\0';
+  ASSERT_STRING(expected, str);
+  ASSERT_PTR(str + mystrlen(str), dst_ptr);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_copyReverse_notEmptyString() {
+  char initial[] = "abcdefg";
+  char str[mystrlen(initial) + 1];
+  char* dst_ptr = copyReverse(initial - 1, initial + mystrlen(initial) - 1,
+                              str);
+  char expected[] = "gfedcba";
+  *dst_ptr = '\0';
+  ASSERT_STRING(expected, str);
+  ASSERT_PTR(str + mystrlen(str), dst_ptr);
+  fprintf(stderr, "-------------------\n");
+}
+
+static void test_copyReverse() {
+  fprintf(stderr, "-------------------\n");
+  test_copyReverse_emptyString();
+  test_copyReverse_notEmptyString();
+  fprintf(stderr, "\n");
+}
+
 static int testCondition(const int ch) {
   return ch >= 'a' && ch <= 'z';
 }
@@ -933,7 +964,6 @@ static void test_wordDescriptorToString_notEmpty() {
   fprintf(stderr, "-------------------\n");
 }
 
-
 static void test_wordDescriptorToString() {
   fprintf(stderr, "-------------------\n");
   test_wordDescriptorToString_empty();
@@ -1003,6 +1033,7 @@ void test_mystring() {
   test_findSpaceReverse();
   test_mystrcmp();
   test_copy();
+  test_copyReverse();
   test_copyIf();
   test_copyIfReverse();
   test_getWord();

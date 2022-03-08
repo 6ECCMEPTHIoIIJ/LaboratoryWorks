@@ -145,6 +145,19 @@ char* copy(char* begin_src,
   return begin_dst + (end_src - begin_src);
 }
 
+char* copyReverse(char* r_end_src,
+                  char* r_begin_src,
+                  char* begin_dst) {
+  char* cur = r_begin_src;
+  while (cur != r_end_src) {
+    *begin_dst = *cur;
+    begin_dst++;
+    cur--;
+  }
+
+  return begin_dst;
+}
+
 char* copyIf(char* begin_src,
              char* end_src,
              char* begin_dst,
