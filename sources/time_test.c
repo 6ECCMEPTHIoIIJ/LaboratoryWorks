@@ -53,7 +53,7 @@ static double getMeanForRandomDependentFuncs(SortFunc sort_func,
                                              GeneratingFunc generating_func,
                                              const size_t size,
                                              GenBase* inner_buf) {
-  double time_arr[sort_func.amount_of_repeats];
+  double time_arr[max(sort_func.amount_of_repeats, 3)];
   for (size_t i = 0; i < ARRAY_SIZE(time_arr); i++) {
     generating_func.generate(inner_buf, size);
     TIME_TEST((sort_func).sort(inner_buf, size), time_arr[i]);
@@ -67,9 +67,9 @@ static double getMeanForRandomDependentFuncs(SortFunc sort_func,
 }
 
 static double getMeanForNotRandomDependentFuncs(SortFunc sort_func,
-                                             GeneratingFunc generating_func,
-                                             const size_t size,
-                                             GenBase* inner_buf) {
+                                                GeneratingFunc generating_func,
+                                                const size_t size,
+                                                GenBase* inner_buf) {
   double time_arr[min(sort_func.amount_of_repeats, 3)];
   for (size_t i = 0; i < ARRAY_SIZE(time_arr); i++) {
     generating_func.generate(inner_buf, size);
@@ -85,17 +85,18 @@ static double getMeanForNotRandomDependentFuncs(SortFunc sort_func,
 
 void createFile(char* file_name,
                 const SortFunc sort_func,
-                const char* experiment_name) {
+                const char* experiment_name,
+                const char* suffix) {
   char file_dir[MAX_STR_LEN + 1];
   mkdir(DATA_DIR);
   sprintf(file_dir, "%s/%s/", DATA_DIR, sort_func.name);
   mkdir(file_dir);
-  sprintf(file_name, "%s/%s_time.csv", file_dir, experiment_name);
+  sprintf(file_name, "%s/%s_%s.csv", file_dir, experiment_name, suffix);
 }
 
 void checkTime(SortFunc sort_func,
                GeneratingFunc generating_func,
-               size_t size) {
+               const size_t size) {
   static size_t run_count = 1;
   static GenBase inner_buf[INNER_BUF_SIZE];
   generating_func.generate(inner_buf, size);
@@ -113,7 +114,7 @@ void checkTime(SortFunc sort_func,
                                           inner_buf);
   } else {
     time = getMeanForNotRandomDependentFuncs(sort_func, generating_func, size,
-                                          inner_buf);
+                                             inner_buf);
   }
 
   printf("Status: ");
@@ -121,7 +122,7 @@ void checkTime(SortFunc sort_func,
     printf("OK! Time: %.3f s.\n", time);
 
     char file_name[MAX_STR_LEN + 1];
-    createFile(file_name, sort_func, experiment_name);
+    createFile(file_name, sort_func, experiment_name, "time");
     FILE* f = fopen(file_name, "a");
     if (f == NULL) {
       fprintf(stderr, "FILE_OPEN_ERROR %s\n", file_name);
@@ -136,3 +137,35 @@ void checkTime(SortFunc sort_func,
   }
 }
 
+void checkNComp(SortFunc sort_func,
+                GeneratingFunc generating_func,
+                const size_t size) {
+  static size_t run_count = 1;
+  static int inner_buf[INNER_BUF_SIZE];
+  generating_func.generate(inner_buf, size);
+  printf("Run #%zu| ", run_count++);
+  char experiment_name[sizeof(sort_func.name) +
+                       sizeof(generating_func.name) - 1];
+  sprintf(experiment_name, "%s_%s", sort_func.name, generating_func.name);
+  printf("Name: %s_%s\n", sort_func.name, generating_func.name);
+  size_t nComps = sort_func.nComp(inner_buf, size);
+
+  printf("Status: ");
+  if (isOrderedInt(inner_buf, size)) {
+    printf("OK! N compares: %zu\n", nComps);
+
+    char file_name[MAX_STR_LEN + 1];
+    createFile(file_name, sort_func, experiment_name, "n_comps");
+    FILE* f = fopen(file_name, "a");
+    if (f == NULL) {
+      fprintf(stderr, "FILE_OPEN_ERROR %s\n", file_name);
+      exit(1);
+    }
+    fprintf(f, "%zu; %zu\n", size, nComps);
+    fclose(f);
+  } else {
+    printf("Wrong!\n{");
+    fprintarr(stdout, inner_buf, size);
+    printf("}\n");
+  }
+}
