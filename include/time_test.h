@@ -17,13 +17,27 @@
   TIME = (double) test_time / CLOCKS_PER_SEC;\
 }
 
-void checkTime(void (* sortFunc )(int*,
-                                  size_t),
-               bool is_random_dependent_func,
-               void (* generateFunc )(int*,
-                                      size_t),
-               size_t size,
-               char* experiment_name,
-               char* file_path);
+typedef enum RandomDependence {
+  none,
+  part,
+  full
+} RandomDependence;
+
+/*
+ * Функция генерации последовательности
+ * generate - указатель на функцию-генератор
+ * name - имя генератора, используемое при выводе
+ */
+typedef struct SortFunc {
+  void (* sort)(GenBase* arr,     // указатель на ф-цию генерации
+                size_t n);        // последовательности
+  RandomDependence random_dependence;       // является ли функция рандомо-зависимой
+  size_t amount_of_repeats;       // только для random_dependence_ = true
+  char name[MAX_STR_LEN + 1];     // имя генератора
+} SortFunc;
+
+void checkTime(SortFunc sort_func,
+               GeneratingFunc generating_func,
+               size_t size);
 
 #endif // FUNCTION_TESTING_LIB_TIME_TEST_H

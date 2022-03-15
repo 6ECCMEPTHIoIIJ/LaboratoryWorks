@@ -9,10 +9,13 @@ static bool _is_uninitialized = true;
 
 XorshiftBase xorshift() {
   if (_is_uninitialized) {
-    setXorshiftSeed((XorshiftState) {(uint32_t) time(NULL) ^ 0x0000FFFF,
-                                     (uint32_t) time(NULL) ^ 0xFF0FFF,
-                                     (uint32_t) time(NULL) ^ 0x00F000FF,
-                                     (uint32_t) time(NULL) ^ 0xF00F000F});
+    uint32_t init_time = (uint32_t) time(NULL);
+    setXorshiftSeed((XorshiftState) {init_time ^ 0x0000FFFF,
+                                     init_time ^ 0xFFF +
+                                                 init_time ^ 0xFF0000 >> 16,
+                                     init_time ^ 0xFF +
+                                                 init_time ^ 0xF000 >> 8,
+                                     init_time ^ 0xF00F000F});
     _is_uninitialized = false;
   }
   XorshiftBase t = _xorshift_state._3;

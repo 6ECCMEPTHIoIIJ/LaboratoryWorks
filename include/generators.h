@@ -30,11 +30,6 @@ void generateRandomArray(GenBase* arr,
                          size_t n);
 
 /*
- * Функция генерации неупорядоченной псевдослучайной последовательности
- */
-static GeneratingFunc _generateRandomArray = {generateRandomArray, "random"};
-
-/*
  * Генерирует массива arr заданной длины n, элементы которого
  * представляют собой упорядоченную последовательность
  */
@@ -42,22 +37,10 @@ void generateOrderedArray(GenBase* arr,
                           size_t n);
 
 /*
- * Функция генерации упорядоченной последовательности
- */
-static GeneratingFunc _generateOrderedArray = {generateOrderedArray, "ordered"};
-
-/*
  * Генерирует массива arr заданной длины n, элементы которого
  * представляют собой упорядоченную в обратном порядке последовательность
  */
 void generateOrderedBackwardsArray(GenBase* arr,
                                    size_t n);
-
-/*
- * Функция генерации упорядоченной в обратном порядке последовательности
- */
-static GeneratingFunc _generateOrderedBackwardsArray =
-    {generateOrderedBackwardsArray,
-     "ordered backwards"};
 
 #endif // FUNCTION_TESTING_LIB_GENERATORS_H
