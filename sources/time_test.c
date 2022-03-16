@@ -140,6 +140,9 @@ void checkTime(SortFunc sort_func,
 void checkNComp(SortFunc sort_func,
                 GeneratingFunc generating_func,
                 const size_t size) {
+  if (sort_func.nComp == NULL) {
+    return;
+  }
   static size_t run_count = 1;
   static int inner_buf[INNER_BUF_SIZE];
   generating_func.generate(inner_buf, size);
